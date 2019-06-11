@@ -15,21 +15,25 @@
 	"main": "./src/extension.js",
 	"contributes": {
 		"configuration": {
-            "type": "object",
-            "title": "TCli configuration",
-            "properties": {
-                "tcli.react": {
-                    "type": "string",
-                    "default": "",
-                    "description": "Set React template"
-                },
-                "tcli.vue": {
-                    "type": "string",
-                    "default": "",
-                    "description": "Set Vue template"
-                }
-            }
-        },
+			"type": "object",
+			"title": "TCli configuration",
+			"properties": {
+				"tcli.template": {
+					"type": "object",
+					"default": {
+						"react": {
+							"root": "",
+							"type": ".js"
+						},
+						"vue": {
+							"root": "",
+							"type": ".vue"
+						}
+					},
+					"description": "Set template"
+				}
+			}
+		},
 		"commands": [
 			{
 				"command": "extension.createReact",
@@ -46,6 +50,7 @@
 		"@types/mocha": "^2.2.42",
 		"@types/node": "^10.12.21",
 		"eslint": "^5.13.0",
+		"mkdirp": "^0.5.1",
 		"typescript": "^3.3.1",
 		"vscode": "^1.1.28"
 	}
