@@ -1,65 +1,60 @@
-# tcli README
+# Tcli 说明文档
 
-This is the README for your extension "tcli". After writing up a brief description, we recommend including the following sections.
+![](./show.gif)
 
-## Features
+## 概论
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+帮助快速生成自定义模板文件
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
 
-\!\[feature X\]\(images/feature-x.png\)
+## 1.设置 VSCode settings.json, 添加相关配置项
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+```
+{
+    "tcli.template": {
+        "react": {
+            "root": "/Users/aaa/bbb/tcli模板/index.js", //本地模板文件路径
+            "type": ".js" //文件格式
+        },
+        "vue": {
+            "root": "/Users/aaa/bbb/tcli模板/index.vue", //本地模板文件路径
+            "type": ".vue" //文件格式
+        }
+        //更多...
+    }
+}
+```
+### 2.按下`ctrl+shift+P(`⇧`+`⌘`+`P`)`,输入`>tcli:create`，会弹出一个输入框
 
-## Requirements
+### 3.在输入框内输入`react src index `
+> 格式： `框架` `目录` `文件名`
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Note
+1.由于会全局替换模板文件中的App,故建立模板文件时，请使用App字段
+```
+<template>
+    <div class="wrapper">
 
-## Extension Settings
+    </div>
+</template>
+<script>
+export default {
+    name: 'App', // 这里请使用App，生成的文件会替换这里的App
+    data() {
+        return {
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+        }
+    },
+    mounted() {
+        
+    },
+    methods: {
 
-For example:
+    }
+}
+</script>
+```
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+## License
+MIT

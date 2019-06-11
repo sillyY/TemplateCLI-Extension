@@ -10,13 +10,13 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.createReact"
+		"onCommand:extension.create"
 	],
 	"main": "./src/extension.js",
 	"contributes": {
 		"configuration": {
 			"type": "object",
-			"title": "TCli configuration",
+			"title": "Tcli configuration",
 			"properties": {
 				"tcli.template": {
 					"type": "object",
@@ -36,9 +36,9 @@
 		},
 		"commands": [
 			{
-				"command": "extension.createReact",
-				"title": "createReact",
-				"category": "TCli"
+				"command": "extension.create",
+				"title": "create",
+				"category": "Tcli"
 			}
 		]
 	},

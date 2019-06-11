@@ -2,16 +2,13 @@ const vscode = require('vscode')
 
 const tcli = require('./tcli')
 
-const log = console.log
-
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
   let disposable = vscode.commands.registerCommand(
-    'extension.createReact',
+    'extension.create',
     function() {
-      let fileConfig, configuration
       vscode.window
         .showInputBox({
           // 调出输入框
@@ -20,21 +17,15 @@ function activate(context) {
         })
         .then(function(input) {
           if (!input) return
-		  let [frame, path, ...filenames] = input.split(' ')
-		  log(path)
-          fileConfig = {
-            frame,
-            path,
-            filenames
-          }
+          
+          let [frame, path, ...filenames] = input.split(' '),
+          configuration = vscode.workspace.getConfiguration('tcli')  //用户配置信息
 
-          configuration = vscode.workspace.getConfiguration('tcli')
           const template = configuration.template,
             { root, type } = template[frame],
-			rootPath = vscode.workspace.rootPath
-			
-          tcli.init(root, filenames, `${rootPath}/${path}`, type)
-          vscode.window.showInformationMessage('文件创建成功')
+            rootPath = vscode.workspace.rootPath
+
+          tcli.init(root, filenames, `${rootPath}/${path}`, type).then(msg => vscode.window.showInformationMessage(msg))
         })
     }
   )
@@ -43,9 +34,6 @@ function activate(context) {
 }
 exports.activate = activate
 
-function deactivate() {}
-
 module.exports = {
-  activate,
-  deactivate
+  activate
 }
