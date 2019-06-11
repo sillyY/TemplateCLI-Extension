@@ -2,7 +2,7 @@
 	"name": "tcli",
 	"displayName": "TCli",
 	"description": "template cli",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.35.0"
 	},
@@ -13,6 +13,8 @@
 		"onCommand:extension.create"
 	],
 	"main": "./src/extension.js",
+	"publisher": "sillyY",
+	"repository": "https://github.com/sillyY/TemplateCLI-Extension.git",
 	"contributes": {
 		"configuration": {
 			"type": "object",
@@ -46,11 +48,13 @@
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"test": "node ./node_modules/vscode/bin/test"
 	},
+	"dependencies": {
+		"mkdirp": "^0.5.1"
+    },
 	"devDependencies": {
 		"@types/mocha": "^2.2.42",
 		"@types/node": "^10.12.21",
 		"eslint": "^5.13.0",
-		"mkdirp": "^0.5.1",
 		"typescript": "^3.3.1",
 		"vscode": "^1.1.28"
 	}
