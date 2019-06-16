@@ -2,7 +2,8 @@
 	"name": "tcli",
 	"displayName": "TCli",
 	"description": "template cli",
-	"version": "0.0.3",
+	"version": "0.0.4",
+	"icon": "images/tcli.png",
 	"engines": {
 		"vscode": "^1.35.0"
 	},
