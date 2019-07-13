@@ -13,13 +13,31 @@
 ```
 {
     "tcli.template": {
-        "react": {
+        "react": { 
             "root": "/Users/aaa/bbb/tcli模板/index.js", //本地模板文件路径
             "type": ".js" //文件格式
         },
+
+        // 支持简写
+        "r": {
+            "root": "/Users/aaa/bbb/tcli模板/index.js", //本地模板文件路径
+            "type": ".js" //文件格式
+        },
+
         "vue": {
             "root": "/Users/aaa/bbb/tcli模板/index.vue", //本地模板文件路径
             "type": ".vue" //文件格式
+        },
+
+        // 支持简写
+        "v": {
+            "root": "/Users/aaa/bbb/tcli模板/index.vue", //本地模板文件路径
+            "type": ".vue" //文件格式
+        }
+
+        "md": {
+             "root": "/Users/aaa/bbb/tcli模板/README.md", //本地模板文件路径
+            "type": ".md" //文件格式
         }
         //更多...
     }
