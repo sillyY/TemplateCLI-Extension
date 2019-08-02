@@ -1,55 +1,56 @@
-# Tcli 说明文档
+# Tcli
+Help generate template files quickly
 
+screenshot:
 ![](./show.gif)
 
-## 概论
-
-帮助快速生成自定义模板文件
-
-## Usage
-
-## 1.设置 VSCode settings.json, 添加相关配置项
-
+##  Usage
+- 1.Setting
 ```
 {
     "tcli.template": {
         "react": { 
-            "root": "/Users/aaa/bbb/tcli模板/index.js", //本地模板文件路径
-            "type": ".js" //文件格式
+            "root": "/Users/aaa/bbb/tcli-template/index.js", // local template file path
+            "type": ".js" // file format
         },
 
         // 支持简写
         "r": {
-            "root": "/Users/aaa/bbb/tcli模板/index.js", //本地模板文件路径
-            "type": ".js" //文件格式
+            "root": "/Users/aaa/bbb/tcli-template/index.js", // local template file path
+            "type": ".js" // file format
         },
 
         "vue": {
-            "root": "/Users/aaa/bbb/tcli模板/index.vue", //本地模板文件路径
-            "type": ".vue" //文件格式
+            "root": "/Users/aaa/bbb/tcli-template/index.vue", // local template file path
+            "type": ".vue" // file format
         },
 
-        // 支持简写
+        // support shorthand
         "v": {
-            "root": "/Users/aaa/bbb/tcli模板/index.vue", //本地模板文件路径
-            "type": ".vue" //文件格式
+            "root": "/Users/aaa/bbb/tcli-template/index.vue", // local template file path
+            "type": ".vue" // file format
         }
 
         "md": {
-             "root": "/Users/aaa/bbb/tcli模板/README.md", //本地模板文件路径
-            "type": ".md" //文件格式
+             "root": "/Users/aaa/bbb/tcli-template/README.md", // local template file path
+            "type": ".md" // file format
         }
-        //更多...
+        // More...
     }
 }
 ```
-### 2.按下`ctrl+shift+P(`⇧`+`⌘`+`P`)`,输入`>tcli:create`，会弹出一个输入框
 
-### 3.在输入框内输入`react src index `
-> 格式： `框架` `目录` `文件名`
+- 2.Command  
+`Win: `  `Ctrl + Shift + P`
+`Mac: `  `Command + Shift + P`
+
+- 3.Input  
+Input `react src index`  
+Foramt: `Frame` `Path` `Filename`
+
 
 ## Note
-1.由于会全局替换模板文件中的App,故建立模板文件时，请使用App字段
+- Please use the App field when you create a template file because the app in the template file is replaced globally
 ```
 <template>
     <div class="wrapper">
@@ -58,7 +59,7 @@
 </template>
 <script>
 export default {
-    name: 'App', // 这里请使用App，生成的文件会替换这里的App
+    name: 'App', // Here use the app, the filename will replace the app here
     data() {
         return {
 
@@ -73,6 +74,14 @@ export default {
 }
 </script>
 ```
+
+## Next to do
+- delete File
+- "App" Configurable
+- More...
+
+## Finally
+> Please help me perfect it if you can. thanks!
 
 ## License
 MIT
