@@ -11,7 +11,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.create",
+		"onCommand:extension.add",
 		"onCommand:extension.remove",
 		"onCommand:extension.version"
 	],
@@ -27,14 +27,14 @@
 					"type": "object",
 					"default": {
 						"react": {
-							"root": "/Users/sillyy/学习/tcli模板/index.js",
+							"root": "",
 							"type": ".js",
-							"mark": "Index"
+							"mark": "App"
 						},
 						"vue": {
-							"root": "/Users/sillyy/学习/tcli模板/index.vue",
+							"root": "",
 							"type": ".vue",
-							"mark": "Index"
+							"mark": "App"
 						}
 					},
 					"description": "Set template"
@@ -43,8 +43,8 @@
 		},
 		"commands": [
 			{
-				"command": "extension.create",
-				"title": "create",
+				"command": "extension.add",
+				"title": "add",
 				"category": "Tcli"
 			},
 			{

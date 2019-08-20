@@ -2,7 +2,7 @@ const vscode = require('vscode')
 const Add = require('../libs/add')
 const getConfig = require('../libs/config')
 
-let create = vscode.commands.registerCommand('extension.create', function() {
+let add = vscode.commands.registerCommand('extension.add', function() {
   vscode.window
     .showInputBox({
       // 调出输入框
@@ -30,4 +30,4 @@ let create = vscode.commands.registerCommand('extension.create', function() {
     })
 })
 
-module.exports = create
+module.exports = add

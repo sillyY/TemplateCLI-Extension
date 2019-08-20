@@ -1,5 +1,5 @@
 # Tcli
-Help generate template files quickly
+Help handle template files quickly!
 
 screenshot:
 ![](./show.gif)
@@ -9,44 +9,47 @@ screenshot:
 ```
 {
     "tcli.template": {
-        "react": { 
-            "root": "/Users/aaa/bbb/tcli-template/index.js", // local template file path
-            "type": ".js" // file format
-        },
-
-        // 支持简写
-        "r": {
-            "root": "/Users/aaa/bbb/tcli-template/index.js", // local template file path
-            "type": ".js" // file format
-        },
-
-        "vue": {
-            "root": "/Users/aaa/bbb/tcli-template/index.vue", // local template file path
-            "type": ".vue" // file format
-        },
-
-        // support shorthand
-        "v": {
-            "root": "/Users/aaa/bbb/tcli-template/index.vue", // local template file path
-            "type": ".vue" // file format
+        [name]: {
+            "root": String // local template file path
+            "type": String // file format
+            "mark": String // configurable App
         }
-
-        "md": {
-             "root": "/Users/aaa/bbb/tcli-template/README.md", // local template file path
-            "type": ".md" // file format
+    }
+}
+// For example
+{
+    "tcli.template": {
+        'vue': {
+            "root": '/Users/AAA/BBB/CCC/index.js' // local template file path
+            "type": '.vue' // file format
+            "mark": 'App' // configurable App
         }
-        // More...
     }
 }
 ```
 
 - 2.Command  
 `Win: `  `Ctrl + Shift + P`
-`Mac: `  `Command + Shift + P`
+`Mac: `  `Command + Shift + P`  
+> Input `tcli:[command]`
 
-- 3.Input  
-Input `react src index`  
-Foramt: `Frame` `Path` `Filename`
+## Feats
+- add  
+>   `tcli:add`
+
+    Input `react src index`  
+    Foramt: `Frame` `Path` `Filename`
+
+- remove
+>   `tcli:remove`
+
+    Input `src index.vue`  
+    Format `Path` `Filename(contains format)`
+
+- version
+>   `tcli:version`
+
+    Not Input
 
 
 ## Note
@@ -59,7 +62,7 @@ Foramt: `Frame` `Path` `Filename`
 </template>
 <script>
 export default {
-    name: 'App', // Here use the app, the filename will replace the app here
+    name: 'App', // You can configure your 'App', the filename will replace this here.
     data() {
         return {
 
@@ -75,9 +78,10 @@ export default {
 </script>
 ```
 
+- If you want delete folder，please input `src/ `(`path`+ `space`)
+
 ## Next to do
-- delete File
-- "App" Configurable
+- File load
 - More...
 
 ## Finally

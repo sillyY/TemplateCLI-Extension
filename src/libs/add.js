@@ -65,6 +65,7 @@ class Add {
    * @param filename {filename} 目标文件文件名
    */
   handleTemplate(template, filename) {
+    if(!this.mark || !this.mark.length) return template
     const reg = new RegExp(this.mark, 'g');
     return template.replace(
       reg,
