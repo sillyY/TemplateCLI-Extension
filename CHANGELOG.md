@@ -23,3 +23,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.7]
 
 - feat: docs support english 
+
+## [0.0.8]
+
+- feat: support delete, version
+
+- style: modify create to add
+
+- refactor: modify add code
