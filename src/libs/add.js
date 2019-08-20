@@ -4,7 +4,21 @@ const mkdirp = require('mkdirp')
 
 const getDirName = require('path').dirname
 
-class Tcli {
+class Add {
+  constructor(opts) {
+    const {
+      root,
+      filenames,
+      destPath,
+      type, 
+      mark
+    } = opts;
+    this.root = root;
+    this.filenames = filenames;
+    this.destPath = destPath;
+    this.type = type;
+    this.mark = mark;
+  }
   /**
    * 执行函数
    * @param path {String} 模板文件路径
@@ -12,16 +26,16 @@ class Tcli {
    * @param destPath {String} 目标文件路径
    * @param type {String} 目标文件格式(可配置)
    */
-  init(path, filenames, destPath, type) {
+  init() {
     return new Promise(async (resolve, reject) => {
       try {
         // 获取模板
-        let template = await this.getTemplate(path)
-
+        let template = await this.getTemplate()
+        
         // 生成模板
-        let promises = filenames.map(name => {
-          let tem = this.handleTemplate(template, name)
-          return this.generate(`${destPath}/${name}${type}`, tem)
+        let promises = this.filenames.map(name => {
+          let content = this.handleTemplate(template, name)
+          return this.generate(`${this.destPath}/${name}${this.type}`, content)
         })
         await Promise.all(promises)
         resolve('文件创建成功')
@@ -35,10 +49,12 @@ class Tcli {
    * 获取模板
    * @param path {String} 模板文件路径
    */
-  getTemplate(path) {
+  getTemplate() {
     return new Promise((resolve, reject) => {
-      vscode.workspace.openTextDocument(path).then(document => {
+      vscode.workspace.openTextDocument(this.root).then(document => {
         resolve(document.getText())
+      }).catch(err=> {
+        reject(err)
       })
     })
   }
@@ -49,8 +65,9 @@ class Tcli {
    * @param filename {filename} 目标文件文件名
    */
   handleTemplate(template, filename) {
+    const reg = new RegExp(this.mark, 'g');
     return template.replace(
-      /App/g,
+      reg,
       filename.charAt(0).toUpperCase() + filename.slice(1)
     )
   }
@@ -72,4 +89,4 @@ class Tcli {
   }
 }
 
-module.exports = new Tcli()
+module.exports = Add
