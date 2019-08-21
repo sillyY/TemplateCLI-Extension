@@ -15,15 +15,21 @@ screenshot:
             "mark": String // configurable App
         }
     }
+    "tcli.snippets": {
+        [name]: String // local template file path
+    }
 }
 // For example
 {
     "tcli.template": {
-        'vue': {
-            "root": '/Users/AAA/BBB/CCC/index.js' // local template file path
-            "type": '.vue' // file format
-            "mark": 'App' // configurable App
+        "vue": {
+            "root": "/AAA/BBB/CCC/index.js" // local template file path
+            "type": ".vue" // file format
+            "mark": "App" // configurable App
         }
+    },
+    "tcli.snippets: {
+        "reset": "/AAA/BBB/CCC/reset.js" // local template file path
     }
 }
 ```
@@ -35,18 +41,27 @@ screenshot:
 
 ## Feats
 - add  
+create a file in the specified directory
 >   `tcli:add`
 
     Input `react src index`  
     Foramt: `Frame` `Path` `Filename`
 
-- remove
+- remove  
+remove a file or a folder
 >   `tcli:remove`
 
     Input `src index.vue`  
     Format `Path` `Filename(contains format)`
 
-- version
+- insert  
+insert a file at the input cursor of the current file
+> `tcli:insert`
+    Input `reset`
+    Format Config
+
+- version  
+query current version
 >   `tcli:version`
 
     Not Input
@@ -80,8 +95,10 @@ export default {
 
 - If you want delete folder，please input `src/ `(`path`+ `space`)
 
+- You can store your custom files in your computer, insert code when you want.
+
 ## Next to do
-- File load
+- public code repository
 - More...
 
 ## Finally

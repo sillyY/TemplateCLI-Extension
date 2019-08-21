@@ -31,3 +31,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - style: modify create to add
 
 - refactor: modify add code
+
+## [0.0.9]
+
+- feat: support insert

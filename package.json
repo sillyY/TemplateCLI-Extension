@@ -2,7 +2,7 @@
   "name": "tcli",
   "displayName": "TCli",
   "description": "template cli",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "icon": "images/tcli.png",
   "engines": {
     "vscode": "^1.35.0"
@@ -12,8 +12,8 @@
   ],
   "activationEvents": [
     "onCommand:extension.add",
-	"onCommand:extension.remove",
-	"onCommand:extension.insert",
+    "onCommand:extension.remove",
+    "onCommand:extension.insert",
     "onCommand:extension.version"
   ],
   "main": "./src/extension.js",
@@ -39,13 +39,13 @@
             }
           },
           "description": "Set template"
-		},
-		"tcli.snippets": {
-			"type":"object",
-			"default": {
-				"reset": "/Users/sillyy/学习/tcli模板/reset.css"
-			}
-		}
+        },
+        "tcli.snippets": {
+          "type": "object",
+          "default": {
+            "reset": "/Users/sillyy/学习/tcli模板/reset.css"
+          }
+        }
       }
     },
     "commands": [
