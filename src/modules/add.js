@@ -12,7 +12,7 @@ let add = vscode.commands.registerCommand('extension.add', function() {
     .then(function(input) {
       if (!input) return
 
-      const template = getConfig()
+      const template = getConfig().template
 
       let [frame, path, ...filenames] = input.split(' ')
 
