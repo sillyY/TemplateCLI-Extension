@@ -14,7 +14,8 @@
     "onCommand:extension.add",
     "onCommand:extension.remove",
     "onCommand:extension.insert",
-    "onCommand:extension.version"
+    "onCommand:extension.version",
+    "onCommand:extension.lan"
   ],
   "main": "./src/extension.js",
   "publisher": "sillyY",
@@ -67,6 +68,11 @@
       {
         "command": "extension.version",
         "title": "version",
+        "category": "Tcli"
+      },
+      {
+        "command": "extension.lan",
+        "title": "language",
         "category": "Tcli"
       }
     ]
