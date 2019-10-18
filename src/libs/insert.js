@@ -1,4 +1,5 @@
 const vscode = require('vscode')
+const { getLanguageConfig } = require('../config/language')
 
 class Insert {
   constructor(path) {
@@ -8,8 +9,9 @@ class Insert {
     return new Promise(async (resolve, reject) => {
       try {
         const document = await this._loadFile()
-        this._insert(document)
-        resolve('插入文件成功')
+        await this._insert(document)
+        let value = getLanguageConfig().INSERT_SUCCESS
+        resolve(value)
       } catch (err) {
         reject(err)
       }

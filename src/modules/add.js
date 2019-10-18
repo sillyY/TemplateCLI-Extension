@@ -1,13 +1,13 @@
 const vscode = require('vscode')
 const Add = require('../libs/add')
 const getConfig = require('../config/get')
+const { getLanguageConfig } = require('../config/language')
 
 let add = vscode.commands.registerCommand('extension.add', function() {
   vscode.window
     .showInputBox({
       // 调出输入框
-      prompt:
-        '输入框架、文件路径和文件名. 格式: <框架> <文件路径> [文件名(不带格式)...]'
+      prompt: getLanguageConfig().ADD_INPUT
     })
     .then(function(input) {
       if (!input) return

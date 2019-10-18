@@ -2,6 +2,8 @@ const fs = require('fs')
 const vscode = require('vscode')
 const mkdirp = require('mkdirp')
 
+const { getLanguageConfig } = require('../config/language')
+
 const getDirName = require('path').dirname
 
 class Add {
@@ -38,7 +40,7 @@ class Add {
           return this.generate(`${this.destPath}/${name}${this.type}`, content)
         })
         await Promise.all(promises)
-        resolve('文件创建成功')
+        resolve(getLanguageConfig().ADD_SUCCESS)
       } catch (err) {
         reject(err)
       }

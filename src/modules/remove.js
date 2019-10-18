@@ -1,12 +1,12 @@
 const vscode = require('vscode')
 const Remove = require('../libs/remove')
+const { getLanguageConfig } = require('../config/language')
 
 let remove = vscode.commands.registerCommand('extension.remove', function() {
   vscode.window
     .showInputBox({
       // 调出输入框
-      prompt:
-        '输入文件路径和文件名. 格式: <文件路径> [文件名...]'
+      prompt: getLanguageConfig().REMOVE_INPUT
     })
     .then(function(input) {
       if (!input) return

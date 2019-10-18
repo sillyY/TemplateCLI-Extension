@@ -21,18 +21,24 @@ const ENGLISH = {
   SET_LANGUAGE_SUCCESS: 'Set English successfully'
 }
 const ALL_LANGUAGE = {
-  CHINESE: '中文',
-  ENGLISH: 'English'
+  CHINESE: {
+    label: '中文',
+    value: CHINESE
+  },
+  ENGLISH: {
+    label: 'English',
+    value: ENGLISH
+  }
 }
 var LANGUAGE_CURRENT = 'CHINESE'
 
 const setLanguage = lan => {
-  if (!ALL_LANGUAGE.has(lan)) return
+  if (!Reflect.has(ALL_LANGUAGE, lan)) return
   LANGUAGE_CURRENT = lan
 }
 
 const getLanguageConfig = () => {
-  return ALL_LANGUAGE[LANGUAGE_CURRENT]
+  return ALL_LANGUAGE[LANGUAGE_CURRENT].value
 }
 
 module.exports = {
