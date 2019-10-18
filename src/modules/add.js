@@ -1,6 +1,6 @@
 const vscode = require('vscode')
 const Add = require('../libs/add')
-const getConfig = require('../libs/config')
+const getConfig = require('../config/get')
 
 let add = vscode.commands.registerCommand('extension.add', function() {
   vscode.window
