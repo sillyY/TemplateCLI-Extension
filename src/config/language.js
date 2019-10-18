@@ -30,10 +30,11 @@ const setLanguage = lan => {
 }
 
 const getLanguageConfig = () => {
-    return ALL_LANGUAGE[LANGUAGE_CURRENT]
+  return ALL_LANGUAGE[LANGUAGE_CURRENT]
 }
 
 module.exports = {
+  ALL_LANGUAGE,
   LANGUAGE_CURRENT,
   setLanguage,
   getLanguageConfig
