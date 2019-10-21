@@ -55,10 +55,22 @@ remove a file or a folder
     Format `Path` `Filename(contains format)`
 
 - insert  
-insert a file at the input cursor of the current file
+Insert a local file at the input cursor of the current file
 > `tcli:insert`
     Input `reset`
     Format Config
+
+- clone  
+Insert a remote file at the input cursor of the current file
+> `tcli:clone`   
+> use selector
+
+> Remote files originate from the network and may change frequently
+
+- lan
+Switch language
+> `tcli:lan`  
+> use selector
 
 - version  
 query current version

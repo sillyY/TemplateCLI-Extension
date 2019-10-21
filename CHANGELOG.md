@@ -35,3 +35,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.9]
 
 - feat: support insert
+
+## [0.1.0]
+- feat: support English language
+- feat: support clone to get code

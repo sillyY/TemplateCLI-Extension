@@ -1,13 +1,13 @@
 const vscode = require('vscode')
 const Add = require('../libs/add')
 const getConfig = require('../config/get')
-const { getLanguageConfig } = require('../config/language')
+const { getLanguage } = require('../config/language')
 
 let add = vscode.commands.registerCommand('extension.add', function() {
   vscode.window
     .showInputBox({
       // 调出输入框
-      prompt: getLanguageConfig().ADD_INPUT
+      prompt: getLanguage().ADD_INPUT
     })
     .then(function(input) {
       if (!input) return

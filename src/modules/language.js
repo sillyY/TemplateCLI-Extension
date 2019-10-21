@@ -1,5 +1,5 @@
 const vscode = require('vscode')
-const { ALL_LANGUAGE, setLanguage, getLanguageConfig } = require('../config/language')
+const { ALL_LANGUAGE, setLanguage, getLanguage } = require('../config/language')
 
 const lan = vscode.commands.registerCommand('extension.lan', async () => {
     const lans = Object.values(ALL_LANGUAGE),
@@ -11,7 +11,7 @@ const lan = vscode.commands.registerCommand('extension.lan', async () => {
             setLanguage(key)
         }
     }
-    const msg = getLanguageConfig().SET_LANGUAGE_SUCCESS
+    const msg = getLanguage().SET_LANGUAGE_SUCCESS
     vscode.window.showInformationMessage(msg)
 })
 

@@ -1,5 +1,5 @@
 const fs = require('fs-extra')
-const { getLanguageConfig } = require('../config/language')
+const { getLanguage } = require('../config/language')
 class Remove{
     constructor(path, filenames) {
         this.path = path
@@ -12,7 +12,7 @@ class Remove{
                     return this._delete(`${this.path}/${name}`)
                 })
                 await Promise.all(promise)
-                resolve(getLanguageConfig().REMOVE_SUCCESS)
+                resolve(getLanguage().REMOVE_SUCCESS)
             } catch (err) {
                 reject(err)
             }

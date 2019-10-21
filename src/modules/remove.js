@@ -1,12 +1,12 @@
 const vscode = require('vscode')
 const Remove = require('../libs/remove')
-const { getLanguageConfig } = require('../config/language')
+const { getLanguage } = require('../config/language')
 
 let remove = vscode.commands.registerCommand('extension.remove', function() {
   vscode.window
     .showInputBox({
       // 调出输入框
-      prompt: getLanguageConfig().REMOVE_INPUT
+      prompt: getLanguage().REMOVE_INPUT
     })
     .then(function(input) {
       if (!input) return

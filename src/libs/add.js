@@ -2,7 +2,7 @@ const fs = require('fs')
 const vscode = require('vscode')
 const mkdirp = require('mkdirp')
 
-const { getLanguageConfig } = require('../config/language')
+const { getLanguage } = require('../config/language')
 
 const getDirName = require('path').dirname
 
@@ -40,7 +40,7 @@ class Add {
           return this.generate(`${this.destPath}/${name}${this.type}`, content)
         })
         await Promise.all(promises)
-        resolve(getLanguageConfig().ADD_SUCCESS)
+        resolve(getLanguage().ADD_SUCCESS)
       } catch (err) {
         reject(err)
       }
