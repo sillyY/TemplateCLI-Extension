@@ -1,120 +1,65 @@
-# Tcli
-Help handle template files quickly!
+# template README
 
-screenshot:
-![](./show.gif)
+This is the README for your extension "template". After writing up a brief description, we recommend including the following sections.
 
-##  Usage
-- 1.Setting
-```
-{
-    "tcli.template": {
-        [name]: {
-            "root": String // local template file path
-            "type": String // file format
-            "mark": String // configurable App
-        }
-    }
-    "tcli.snippets": {
-        [name]: String // local template file path
-    }
-}
-// For example
-{
-    "tcli.template": {
-        "vue": {
-            "root": "/AAA/BBB/CCC/index.js" // local template file path
-            "type": ".vue" // file format
-            "mark": "App" // configurable App
-        }
-    },
-    "tcli.snippets: {
-        "reset": "/AAA/BBB/CCC/reset.js" // local template file path
-    }
-}
-```
+## Features
 
-- 2.Command  
-`Win: `  `Ctrl + Shift + P`
-`Mac: `  `Command + Shift + P`  
-> Input `tcli:[command]`
+Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
-## Feats
-- add  
-create a file in the specified directory
->   `tcli:add`
+For example if there is an image subfolder under your extension project workspace:
 
-    Input `react src index`  
-    Foramt: `Frame` `Path` `Filename`
+\!\[feature X\]\(images/feature-x.png\)
 
-- remove  
-remove a file or a folder
->   `tcli:remove`
+> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
-    Input `src index.vue`  
-    Format `Path` `Filename(contains format)`
+## Requirements
 
-- insert  
-Insert a local file at the input cursor of the current file
-> `tcli:insert`
-    Input `reset`
-    Format Config
+If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
-- clone  
-Insert a remote file at the input cursor of the current file
-> `tcli:clone`   
-> use selector
+## Extension Settings
 
-> Remote files originate from the network and may change frequently
+Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-- lan
-Switch language
-> `tcli:lan`  
-> use selector
+For example:
 
-- version  
-query current version
->   `tcli:version`
+This extension contributes the following settings:
 
-    Not Input
+* `myExtension.enable`: enable/disable this extension
+* `myExtension.thing`: set to `blah` to do something
 
+## Known Issues
 
-## Note
-- Please use the App field when you create a template file because the app in the template file is replaced globally
-```
-<template>
-    <div class="wrapper">
+Calling out known issues can help limit users opening duplicate issues against your extension.
 
-    </div>
-</template>
-<script>
-export default {
-    name: 'App', // You can configure your 'App', the filename will replace this here.
-    data() {
-        return {
+## Release Notes
 
-        }
-    },
-    mounted() {
-        
-    },
-    methods: {
+Users appreciate release notes as you update your extension.
 
-    }
-}
-</script>
-```
+### 1.0.0
 
-- If you want delete folder，please input `src/ `(`path`+ `space`)
+Initial release of ...
 
-- You can store your custom files in your computer, insert code when you want.
+### 1.0.1
 
-## Next to do
-- public code repository
-- More...
+Fixed issue #.
 
-## Finally
-> Please help me perfect it if you can. thanks!
+### 1.1.0
 
-## License
-MIT
+Added features X, Y, and Z.
+
+-----------------------------------------------------------------------------------------------------------
+
+## Working with Markdown
+
+**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+
+* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
+* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
+* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
+
+### For more information
+
+* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
+* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+
+**Enjoy!**

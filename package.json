@@ -1,102 +1,56 @@
 {
-  "name": "tcli",
-  "displayName": "TCli",
-  "description": "template cli",
-  "version": "0.1.0",
-  "icon": "images/tcli.png",
-  "engines": {
-    "vscode": "^1.35.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:extension.add",
-    "onCommand:extension.remove",
-    "onCommand:extension.insert",
-    "onCommand:extension.clone",
-    "onCommand:extension.version",
-    "onCommand:extension.lan"
-  ],
-  "main": "./src/extension.js",
-  "publisher": "sillyY",
-  "repository": "https://github.com/sillyY/TemplateCLI-Extension.git",
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "Tcli configuration",
-      "properties": {
-        "tcli.template": {
-          "type": "object",
-          "default": {
-            "react": {
-              "root": "",
-              "type": ".js",
-              "mark": "App"
-            },
-            "vue": {
-              "root": "",
-              "type": ".vue",
-              "mark": "App"
-            }
-          },
-          "description": "Set template"
-        },
-        "tcli.snippets": {
-          "type": "object",
-          "default": {
-            "reset": "/Users/sillyy/学习/tcli模板/reset.css"
-          }
-        }
-      }
-    },
-    "commands": [
-      {
-        "command": "extension.add",
-        "title": "add",
-        "category": "Tcli"
-      },
-      {
-        "command": "extension.remove",
-        "title": "remove",
-        "category": "Tcli"
-      },
-      {
-        "command": "extension.insert",
-        "title": "insert",
-        "category": "Tcli"
-      },
-      {
-        "command": "extension.clone",
-        "title": "clone",
-        "category": "Tcli"
-      },
-      {
-        "command": "extension.version",
-        "title": "version",
-        "category": "Tcli"
-      },
-      {
-        "command": "extension.lan",
-        "title": "language",
-        "category": "Tcli"
-      }
-    ]
-  },
-  "scripts": {
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
-  },
-  "dependencies": {
-    "download-git-repo": "^3.0.2",
-    "fs-extra": "^8.1.0",
-    "mkdirp": "^0.5.1"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.42",
-    "@types/node": "^10.12.21",
-    "eslint": "^5.13.0",
-    "typescript": "^3.3.1",
-    "vscode": "^1.1.28"
-  }
+	"name": "template",
+	"displayName": "Template",
+	"description": "",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.40.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.helloWorld",
+		"onView:templateExplorer"
+	],
+	"main": "./out/src/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.helloWorld",
+				"title": "Hello World"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "template",
+					"title": "template",
+					"icon": "resources/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"template": [
+				{
+					"id": "templateExplorer",
+					"name": ""
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28",
+		"tslint": "^5.12.1",
+		"@types/node": "^10.12.21",
+		"@types/mocha": "^2.2.42"
+	}
 }
