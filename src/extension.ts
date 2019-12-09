@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import { templateTreeDataProvider } from "./explorer/templateTreeDataProvider";
 import { TemplateNode } from "./explorer/templateNode";
 import * as operate from "./commands/operate";
+import * as download from "./commands/download";
 import { promptForOpenOutputChannel, DialogType } from "./utils/uiUtils";
 import { templateChannel } from "./templateChannel";
 
@@ -27,9 +28,9 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.registerCommand("template.refreshExplorer", () =>
         templateTreeDataProvider.update()
       ),
-      vscode.commands.registerCommand("template.downloadTemplate", () => {
-        console.log("下载成功");
-      }),
+      vscode.commands.registerCommand("template.downloadTemplate", () =>
+        download.downloadTemplate()
+      ),
       vscode.commands.registerCommand(
         "template.insertTemplate",
         (node: TemplateNode) => operate.insertTemplate(node)
@@ -37,6 +38,9 @@ export function activate(context: vscode.ExtensionContext) {
     );
   } catch (err) {
     templateChannel.appendLine(err.toString());
-    promptForOpenOutputChannel("Extension initialization failed. Please open output channel for details.", DialogType.error);
+    promptForOpenOutputChannel(
+      "Extension initialization failed. Please open output channel for details.",
+      DialogType.error
+    );
   }
 }

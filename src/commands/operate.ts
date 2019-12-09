@@ -9,7 +9,6 @@ import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 
 export async function insertTemplate(node?: TemplateNode): Promise<void> {
   if (!node) return;
-
   await insertTemplateInternal(node);
 }
 
@@ -49,15 +48,3 @@ export async function insertTemplateInternal(
     await promptForOpenOutputChannel("Failed to insert templates. Please open the output channel for details.", DialogType.error);
   }
 }
-
-// // export function setTemplateState(node: ITreeNode, state: number) {
-// //   // TODO: 优化该函数代码
-// //   const { id, fid, name, category, slug, lan, language } = node;
-// //   refreshTreeNodes(
-// //     new TemplateNode({ id, fid, name, category, slug, lan, language, state })
-// //   );
-// // }
-
-// export function setTemplateState1(slug: string, state: number) {
-//   refreshTreeNodes1(slug, state)
-// }

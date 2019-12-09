@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const templateTreeDataProvider_1 = require("./explorer/templateTreeDataProvider");
 const operate = require("./commands/operate");
+const download = require("./commands/download");
 const uiUtils_1 = require("./utils/uiUtils");
 const templateChannel_1 = require("./templateChannel");
 // this method is called when your extension is activated
@@ -19,9 +20,7 @@ function activate(context) {
         context.subscriptions.push(vscode.window.createTreeView("templateExplorer", {
             treeDataProvider: templateTreeDataProvider_1.templateTreeDataProvider,
             showCollapseAll: true
-        }), vscode.commands.registerCommand("template.refreshExplorer", () => templateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.downloadTemplate", () => {
-            console.log("下载成功");
-        }), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)));
+        }), vscode.commands.registerCommand("template.refreshExplorer", () => templateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)));
     }
     catch (err) {
         templateChannel_1.templateChannel.appendLine(err.toString());

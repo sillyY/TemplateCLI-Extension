@@ -56,14 +56,4 @@ function insertTemplateInternal(node) {
     });
 }
 exports.insertTemplateInternal = insertTemplateInternal;
-// // export function setTemplateState(node: ITreeNode, state: number) {
-// //   // TODO: 优化该函数代码
-// //   const { id, fid, name, category, slug, lan, language } = node;
-// //   refreshTreeNodes(
-// //     new TemplateNode({ id, fid, name, category, slug, lan, language, state })
-// //   );
-// // }
-// export function setTemplateState1(slug: string, state: number) {
-//   refreshTreeNodes1(slug, state)
-// }
 //# sourceMappingURL=operate.js.map
