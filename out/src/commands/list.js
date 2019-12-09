@@ -9,16 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const vscode = require("vscode");
+// import * as vscode from "vscode";
 // import { ITreeNode } from "../shared";
 const templateExecutor_1 = require("../templateExecutor");
 const shared_1 = require("../shared");
 const fileUtils_1 = require("../utils/fileUtils");
+const uiUtils_1 = require("../utils/uiUtils");
 function listTreeNodes() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const templateConfig = vscode.workspace.getConfiguration("template");
-            console.log("templateConfig: ", templateConfig);
             const result = yield templateExecutor_1.templateExecutor.listTreeNodes();
             const treeNodes = [];
             for (const node of result) {
@@ -32,8 +31,7 @@ function listTreeNodes() {
             return treeNodes;
         }
         catch (error) {
-            // TODO: ERROR catch
-            console.log("error: ", error);
+            yield uiUtils_1.promptForOpenOutputChannel("Failed to list template's. Please open the output channel for details.", uiUtils_1.DialogType.error);
             return [];
         }
     });

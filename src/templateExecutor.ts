@@ -9,7 +9,7 @@ class TemplateExecutor implements Disposable {
 
   public listTreeNodes(): any {
     return new Promise(resolve => {
-      console.log("initializing all plugins");
+      console.log("initializing all templates");
       // 1. find template config
       const config = file.data(file.configDir());
       // FIXME: config 不存在情况下

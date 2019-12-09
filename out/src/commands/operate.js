@@ -16,6 +16,7 @@ const fileUtils_1 = require("../utils/fileUtils");
 const shared_1 = require("../shared");
 const list_1 = require("./list");
 const templateTreeDataProvider_1 = require("../explorer/templateTreeDataProvider");
+const uiUtils_1 = require("../utils/uiUtils");
 function insertTemplate(node) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!node)
@@ -51,7 +52,7 @@ function insertTemplateInternal(node) {
             }
         }
         catch (err) {
-            console.error("err: ", err);
+            yield uiUtils_1.promptForOpenOutputChannel("Failed to insert templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
         }
     });
 }

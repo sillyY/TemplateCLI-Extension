@@ -8,7 +8,7 @@ class TemplateExecutor {
     dispose() { }
     listTreeNodes() {
         return new Promise(resolve => {
-            console.log("initializing all plugins");
+            console.log("initializing all templates");
             // 1. find template config
             const config = fileUtils_1.file.data(fileUtils_1.file.configDir());
             // FIXME: config 不存在情况下

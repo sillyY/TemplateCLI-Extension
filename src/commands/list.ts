@@ -1,16 +1,12 @@
-import * as vscode from "vscode";
+// import * as vscode from "vscode";
 // import { ITreeNode } from "../shared";
 import { templateExecutor } from "../templateExecutor";
 import { ITreeNode, TemplateState } from "../shared";
 import { file } from "../utils/fileUtils";
+import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 
 export async function listTreeNodes(): Promise<ITreeNode[]> {
   try {
-    const templateConfig: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration(
-      "template"
-    );
-    console.log("templateConfig: ", templateConfig);
-
     const result = await templateExecutor.listTreeNodes();
     const treeNodes: ITreeNode[] = [];
     for (const node of result) {
@@ -28,8 +24,7 @@ export async function listTreeNodes(): Promise<ITreeNode[]> {
     }
     return treeNodes;
   } catch (error) {
-    // TODO: ERROR catch
-    console.log("error: ", error);
+    await promptForOpenOutputChannel("Failed to list template's. Please open the output channel for details.", DialogType.error);
     return [];
   }
 }

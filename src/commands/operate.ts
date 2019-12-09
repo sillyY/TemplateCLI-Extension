@@ -5,6 +5,7 @@ import { file } from "../utils/fileUtils";
 import { TemplateState, ITreeNode } from "../shared";
 import { refreshTreeNodes } from "./list";
 import { templateTreeDataProvider } from "../explorer/templateTreeDataProvider";
+import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 
 export async function insertTemplate(node?: TemplateNode): Promise<void> {
   if (!node) return;
@@ -45,7 +46,7 @@ export async function insertTemplateInternal(
       );
     }
   } catch (err) {
-    console.error("err: ", err);
+    await promptForOpenOutputChannel("Failed to insert templates. Please open the output channel for details.", DialogType.error);
   }
 }
 

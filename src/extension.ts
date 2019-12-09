@@ -4,6 +4,8 @@ import * as vscode from "vscode";
 import { templateTreeDataProvider } from "./explorer/templateTreeDataProvider";
 import { TemplateNode } from "./explorer/templateNode";
 import * as operate from "./commands/operate";
+import { promptForOpenOutputChannel, DialogType } from "./utils/uiUtils";
+import { templateChannel } from "./templateChannel";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -34,6 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
       )
     );
   } catch (err) {
-    console.log('err: ',err);
+    templateChannel.appendLine(err.toString());
+    promptForOpenOutputChannel("Extension initialization failed. Please open output channel for details.", DialogType.error);
   }
 }
