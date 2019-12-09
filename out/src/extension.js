@@ -19,7 +19,7 @@ function activate(context) {
         context.subscriptions.push(vscode.window.createTreeView("templateExplorer", {
             treeDataProvider: templateTreeDataProvider_1.templateTreeDataProvider,
             showCollapseAll: true
-        }), vscode.commands.registerCommand("template.refreshExplorer", () => templateTreeDataProvider_1.templateTreeDataProvider.refresh()), vscode.commands.registerCommand("template.downloadTemplate", () => {
+        }), vscode.commands.registerCommand("template.refreshExplorer", () => templateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.downloadTemplate", () => {
             console.log("下载成功");
         }), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)));
     }

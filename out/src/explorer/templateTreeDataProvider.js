@@ -16,7 +16,8 @@ const shared_1 = require("../shared");
 class TemplateTreeDataProvider {
     constructor() {
         this.onDidChangeTreeDataEvent = new vscode.EventEmitter();
-        this.onDidChangeTreeData = this.onDidChangeTreeDataEvent.event;
+        this.onDidChangeTreeData = this
+            .onDidChangeTreeDataEvent.event;
     }
     initialize(context) {
         this.context = context;
@@ -24,6 +25,12 @@ class TemplateTreeDataProvider {
     refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield explorerNodeManager_1.explorerNodeManager.refreshCache();
+            this.onDidChangeTreeDataEvent.fire();
+        });
+    }
+    update() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield explorerNodeManager_1.explorerNodeManager.updateCache();
             this.onDidChangeTreeDataEvent.fire();
         });
     }
@@ -68,13 +75,10 @@ class TemplateTreeDataProvider {
         switch (element.state) {
             case shared_1.TemplateState.Install:
                 return this.context.asAbsolutePath(path.join("resources", "check.png"));
-                break;
             case shared_1.TemplateState.NotInstall:
                 return this.context.asAbsolutePath(path.join("resources", "warning.png"));
-                break;
             case shared_1.TemplateState.Unknown:
                 return this.context.asAbsolutePath(path.join("resources", "blank.png"));
-                break;
             default:
                 return "";
         }

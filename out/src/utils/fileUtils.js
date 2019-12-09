@@ -56,6 +56,11 @@ class File {
     write(fullpath, data) {
         return fs.writeFileSync(fullpath, data);
     }
+    listFile(fullpath) {
+        return fs.existsSync(fullpath)
+            ? fs.readdirSync(fullpath).filter(pathname => pathname !== ".DS_Store")
+            : null;
+    }
     /// online
     onlineBaseSrc() {
         return config_1.default.urls.base;

@@ -57,10 +57,15 @@ class File {
     mkdirp.sync(fullpath);
   }
   public exist(fullpath) {
-    return fs.existsSync(fullpath)
+    return fs.existsSync(fullpath);
   }
   public write(fullpath, data) {
     return fs.writeFileSync(fullpath, data);
+  }
+  public listFile(fullpath) {
+    return fs.existsSync(fullpath)
+      ? fs.readdirSync(fullpath).filter(pathname => pathname !== ".DS_Store")
+      : null;
   }
 
   /// online

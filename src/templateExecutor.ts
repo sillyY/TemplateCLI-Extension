@@ -1,30 +1,39 @@
 import { Disposable } from "vscode";
 import * as request from "request";
 import * as fs from "fs";
+import { refreshTreeNodes } from "./commands/list";
 import { file } from "./utils/fileUtils";
+import { ITreeNode, TemplateState } from "./shared";
 
 // import * as path from "path";
 class TemplateExecutor implements Disposable {
   public dispose(): void {}
 
-  public listTreeNodes(): any {
+  public async listTreeNodes(): Promise<ITreeNode[]> {
+    const data = file.data(file.configDir());
+    
+    return data ? JSON.parse(data) : await this.updateListTreeNodes();
+  }
+  public async updateListTreeNodes(): Promise<ITreeNode[]> {
+    const res = await this.updateFromOnline();
+    const files = file.listFile(file.onlineDir());
+    if (files && files.length) {
+      refreshTreeNodes(TemplateState.Install, files);
+      return JSON.parse(file.data(file.configDir())!);
+    } else {
+      return res;
+    }
+  }
+  public async updateFromOnline(): Promise<ITreeNode[]> {
     return new Promise(resolve => {
-      console.log("initializing all templates");
-      // 1. find template config
-      const config = file.data(file.configDir());
-      // FIXME: config 不存在情况下
-      if (config) {
-        resolve(JSON.parse(config));
-      } else {
-        file.mkdir(file.appDir());
-        this.executeRequest(
-          file.onlineConfigSrc(),
-          file.pluginFile(file.configDir()),
-          () => {
-            resolve(JSON.parse(file.data(file.configDir())!));
-          }
-        );
-      }
+      file.mkdir(file.appDir());
+      this.executeRequest(
+        file.onlineConfigSrc(),
+        file.pluginFile(file.configDir()),
+        () => {
+          resolve(JSON.parse(file.data(file.configDir())!));
+        }
+      );
     });
   }
   public executeRequest(src: string, dst: string, cb: Function): void {

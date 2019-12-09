@@ -24,19 +24,27 @@ class ExplorerNodeManager {
     refreshCache() {
         return __awaiter(this, void 0, void 0, function* () {
             this.dispose();
-            var res = yield list_1.listTreeNodes();
-            for (const treeItem of res) {
-                this.explorerNodeMap.set(treeItem.language + treeItem.id, new templateNode_1.TemplateNode(treeItem));
-                if (treeItem.category) {
-                    this.categoryMap.set(treeItem.category, new templateNode_1.TemplateNode(Object.assign({}, shared_1.defaultTreeNode, {
-                        id: treeItem.category,
-                        name: treeItem.category,
-                        language: treeItem.language,
-                        category: treeItem.category
-                    }, false)));
-                }
-            }
+            this.setMaps(yield list_1.listTreeNodes());
         });
+    }
+    updateCache() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.dispose();
+            this.setMaps(yield list_1.updateListTreeNodes());
+        });
+    }
+    setMaps(treeNodes) {
+        for (const treeItem of treeNodes) {
+            this.explorerNodeMap.set(treeItem.language + treeItem.id, new templateNode_1.TemplateNode(treeItem));
+            if (treeItem.category) {
+                this.categoryMap.set(treeItem.category, new templateNode_1.TemplateNode(Object.assign({}, shared_1.defaultTreeNode, {
+                    id: treeItem.category,
+                    name: treeItem.category,
+                    language: treeItem.language,
+                    category: treeItem.category
+                }, false)));
+            }
+        }
     }
     getRootNodes() {
         return [
@@ -66,7 +74,7 @@ class ExplorerNodeManager {
         }
         return result.length ? result : this.getTemplateNodes(language);
     }
-    getTemplateNodes(language, category = '') {
+    getTemplateNodes(language, category = "") {
         const result = [];
         for (const node of this.explorerNodeMap.values()) {
             if (node.language === language && node.category === category) {

@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
         showCollapseAll: true
       }),
       vscode.commands.registerCommand("template.refreshExplorer", () =>
-        templateTreeDataProvider.refresh()
+        templateTreeDataProvider.update()
       ),
       vscode.commands.registerCommand("template.downloadTemplate", () => {
         console.log("下载成功");

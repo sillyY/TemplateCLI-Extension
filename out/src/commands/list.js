@@ -18,38 +18,52 @@ const uiUtils_1 = require("../utils/uiUtils");
 function listTreeNodes() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const result = yield templateExecutor_1.templateExecutor.listTreeNodes();
-            const treeNodes = [];
-            for (const node of result) {
-                if (fileUtils_1.file.exist(fileUtils_1.file.onlineDir() + "/" + "/" + node.slug + "." + node.lan)) {
-                    treeNodes.push(Object.assign(Object.assign({}, node), {
-                        state: shared_1.TemplateState.Install
-                    }));
-                }
-                treeNodes.push(node);
-            }
-            return treeNodes;
+            return setTreeNodes(yield templateExecutor_1.templateExecutor.listTreeNodes());
         }
         catch (error) {
-            yield uiUtils_1.promptForOpenOutputChannel("Failed to list template's. Please open the output channel for details.", uiUtils_1.DialogType.error);
+            yield uiUtils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
             return [];
         }
     });
 }
 exports.listTreeNodes = listTreeNodes;
-function refreshTreeNodes(treeItem) {
-    return new Promise((resolve) => {
-        let config = fileUtils_1.file.data(fileUtils_1.file.configDir());
-        if (!config)
-            return;
-        // TODO: 优化改地方代码
-        const { id, fid, name, lan, language, category, slug, state } = treeItem;
-        const result = JSON.parse(config).map(item => item.id === treeItem.id && item.language === treeItem.language
-            ? { id, fid, name, lan, language, category, slug, state }
-            : item);
-        fileUtils_1.file.write(fileUtils_1.file.configDir(), JSON.stringify(result));
-        resolve();
+function updateListTreeNodes() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            return setTreeNodes(yield templateExecutor_1.templateExecutor.updateListTreeNodes());
+        }
+        catch (error) {
+            yield uiUtils_1.promptForOpenOutputChannel("Failed to update templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+            return [];
+        }
     });
+}
+exports.updateListTreeNodes = updateListTreeNodes;
+function setTreeNodes(result) {
+    const treeNodes = [];
+    for (const node of result) {
+        if (fileUtils_1.file.exist(fileUtils_1.file.onlineDir() + "/" + "/" + node.slug + "." + node.lan)) {
+            treeNodes.push(Object.assign(Object.assign({}, node), {
+                state: shared_1.TemplateState.Install
+            }));
+        }
+        treeNodes.push(node);
+    }
+    return treeNodes;
+}
+function refreshTreeNodes(state, arg) {
+    let result;
+    const data = fileUtils_1.file.data(fileUtils_1.file.configDir());
+    if (!data)
+        return;
+    if (typeof arg === "string") {
+        result = JSON.parse(data).map(item => item.slug === arg ? Object.assign(Object.assign({}, item), { state }) : item);
+    }
+    if (Object.prototype.toString.call(arg) === "[object Array]") {
+        result = JSON.parse(data).map((item) => arg.includes(`${item.slug}.${item.lan}`)
+            ? Object.assign(Object.assign({}, item), { state }) : item);
+    }
+    fileUtils_1.file.write(fileUtils_1.file.configDir(), JSON.stringify(result));
 }
 exports.refreshTreeNodes = refreshTreeNodes;
 //# sourceMappingURL=list.js.map

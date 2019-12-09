@@ -2,8 +2,8 @@ import * as vscode from "vscode";
 import { TemplateNode } from "../explorer/templateNode";
 import { templateExecutor } from "../templateExecutor";
 import { file } from "../utils/fileUtils";
-import { TemplateState, ITreeNode } from "../shared";
-import { refreshTreeNodes } from "./list";
+import { TemplateState } from "../shared";
+import {  refreshTreeNodes } from "./list";
 import { templateTreeDataProvider } from "../explorer/templateTreeDataProvider";
 import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 
@@ -28,7 +28,7 @@ export async function insertTemplateInternal(
         file.onlineDir() + "/" + "/" + node.slug + "." + node.lan,
         async () => {
           result = file.data(file.onlineFile(node.slug + '.' + node.lan))!;
-          await setTemplateState(node, TemplateState.Install);
+          refreshTreeNodes(TemplateState.Install, node.slug);
           const editor = vscode.window.activeTextEditor;
           if (!editor) {
             // FIXME: 加入提示语
@@ -50,10 +50,14 @@ export async function insertTemplateInternal(
   }
 }
 
-export function setTemplateState(node: ITreeNode, state: number) {
-  // TODO: 优化该函数代码
-  const { id, fid, name, category, slug, lan, language } = node;
-  refreshTreeNodes(
-    new TemplateNode({ id, fid, name, category, slug, lan, language, state })
-  );
-}
+// // export function setTemplateState(node: ITreeNode, state: number) {
+// //   // TODO: 优化该函数代码
+// //   const { id, fid, name, category, slug, lan, language } = node;
+// //   refreshTreeNodes(
+// //     new TemplateNode({ id, fid, name, category, slug, lan, language, state })
+// //   );
+// // }
+
+// export function setTemplateState1(slug: string, state: number) {
+//   refreshTreeNodes1(slug, state)
+// }

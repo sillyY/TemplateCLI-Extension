@@ -12,8 +12,9 @@ export class TemplateTreeDataProvider
     TemplateNode | undefined | null
   > = new vscode.EventEmitter<TemplateNode | undefined | null>();
 
-  public readonly onDidChangeTreeData: vscode.Event<any> = this.onDidChangeTreeDataEvent.event;
-  
+  public readonly onDidChangeTreeData: vscode.Event<any> = this
+    .onDidChangeTreeDataEvent.event;
+
   public initialize(context: vscode.ExtensionContext): void {
     this.context = context;
   }
@@ -22,7 +23,10 @@ export class TemplateTreeDataProvider
     await explorerNodeManager.refreshCache();
     this.onDidChangeTreeDataEvent.fire();
   }
-
+  public async update(): Promise<void> {
+    await explorerNodeManager.updateCache();
+    this.onDidChangeTreeDataEvent.fire();
+  }
   public getChildren(
     element?: TemplateNode | undefined
   ): vscode.ProviderResult<TemplateNode[]> {
@@ -78,13 +82,12 @@ export class TemplateTreeDataProvider
     switch (element.state) {
       case TemplateState.Install:
         return this.context.asAbsolutePath(path.join("resources", "check.png"));
-        break
       case TemplateState.NotInstall:
-        return this.context.asAbsolutePath(path.join("resources", "warning.png"))
-        break
+        return this.context.asAbsolutePath(
+          path.join("resources", "warning.png")
+        );
       case TemplateState.Unknown:
         return this.context.asAbsolutePath(path.join("resources", "blank.png"));
-        break
       default:
         return "";
     }

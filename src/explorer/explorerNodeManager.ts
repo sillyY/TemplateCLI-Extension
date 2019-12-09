@@ -1,7 +1,7 @@
 import { Disposable } from "vscode";
-import { listTreeNodes } from "../commands/list";
+import { listTreeNodes, updateListTreeNodes } from "../commands/list";
 import { TemplateNode } from "./templateNode";
-import { Language, defaultTreeNode } from "../shared";
+import { Language, defaultTreeNode, ITreeNode } from "../shared";
 class ExplorerNodeManager implements Disposable {
   private explorerNodeMap: Map<string, TemplateNode> = new Map<
     string,
@@ -18,8 +18,14 @@ class ExplorerNodeManager implements Disposable {
   }
   public async refreshCache(): Promise<void> {
     this.dispose();
-    var res = await listTreeNodes();
-    for (const treeItem of res) {
+    this.setMaps(await listTreeNodes());
+  }
+  public async updateCache(): Promise<void> {
+    this.dispose();
+    this.setMaps(await updateListTreeNodes());
+  }
+  public setMaps(treeNodes: ITreeNode[]): void {
+    for (const treeItem of treeNodes) {
       this.explorerNodeMap.set(
         treeItem.language + treeItem.id,
         new TemplateNode(treeItem)
@@ -95,7 +101,7 @@ class ExplorerNodeManager implements Disposable {
     return result.length ? result : this.getTemplateNodes(language);
   }
 
-  public getTemplateNodes(language: string, category = ''): TemplateNode[] {
+  public getTemplateNodes(language: string, category = ""): TemplateNode[] {
     const result: TemplateNode[] = [];
     for (const node of this.explorerNodeMap.values()) {
       if (node.language === language && node.category === category) {

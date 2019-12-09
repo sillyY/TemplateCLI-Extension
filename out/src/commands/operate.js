@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
-const templateNode_1 = require("../explorer/templateNode");
 const templateExecutor_1 = require("../templateExecutor");
 const fileUtils_1 = require("../utils/fileUtils");
 const shared_1 = require("../shared");
@@ -37,7 +36,7 @@ function insertTemplateInternal(node) {
                 fileUtils_1.file.mkdir(fileUtils_1.file.onlineDir());
                 templateExecutor_1.templateExecutor.executeRequest(fileUtils_1.file.onlineTemplateSrc(node), fileUtils_1.file.onlineDir() + "/" + "/" + node.slug + "." + node.lan, () => __awaiter(this, void 0, void 0, function* () {
                     result = fileUtils_1.file.data(fileUtils_1.file.onlineFile(node.slug + '.' + node.lan));
-                    yield setTemplateState(node, shared_1.TemplateState.Install);
+                    list_1.refreshTreeNodes(shared_1.TemplateState.Install, node.slug);
                     const editor = vscode.window.activeTextEditor;
                     if (!editor) {
                         // FIXME: 加入提示语
@@ -57,10 +56,14 @@ function insertTemplateInternal(node) {
     });
 }
 exports.insertTemplateInternal = insertTemplateInternal;
-function setTemplateState(node, state) {
-    // TODO: 优化该函数代码
-    const { id, fid, name, category, slug, lan, language } = node;
-    list_1.refreshTreeNodes(new templateNode_1.TemplateNode({ id, fid, name, category, slug, lan, language, state }));
-}
-exports.setTemplateState = setTemplateState;
+// // export function setTemplateState(node: ITreeNode, state: number) {
+// //   // TODO: 优化该函数代码
+// //   const { id, fid, name, category, slug, lan, language } = node;
+// //   refreshTreeNodes(
+// //     new TemplateNode({ id, fid, name, category, slug, lan, language, state })
+// //   );
+// // }
+// export function setTemplateState1(slug: string, state: number) {
+//   refreshTreeNodes1(slug, state)
+// }
 //# sourceMappingURL=operate.js.map
