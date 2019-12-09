@@ -1,8 +1,7 @@
 export enum TemplateState {
   Install = 1,
-  // TODO: NotInstall 后续改为2
-  NotInstall = 3,
-  Unknown = 2
+  NotInstall = 2,
+  Unknown = 3
 }
 export enum Language {
   All = "All",
