@@ -9,38 +9,71 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const list_1 = require("../commands/list");
 const templateNode_1 = require("./templateNode");
 const shared_1 = require("../shared");
 class ExplorerNodeManager {
-    dispose() { }
+    constructor() {
+        this.explorerNodeMap = new Map();
+        this.categoryMap = new Map();
+    }
+    dispose() {
+        this.explorerNodeMap.clear();
+        this.categoryMap.clear();
+    }
     refreshCache() {
         return __awaiter(this, void 0, void 0, function* () {
             this.dispose();
+            var res = yield list_1.listTreeNodes();
+            for (const treeItem of res) {
+                this.explorerNodeMap.set(treeItem.language + treeItem.id, new templateNode_1.TemplateNode(treeItem));
+                if (treeItem.category) {
+                    this.categoryMap.set(treeItem.category, new templateNode_1.TemplateNode(Object.assign({}, shared_1.defaultTreeNode, {
+                        id: treeItem.category,
+                        name: treeItem.category,
+                        language: treeItem.language,
+                        category: treeItem.category
+                    }, false)));
+                }
+            }
         });
     }
     getRootNodes() {
         return [
             new templateNode_1.TemplateNode(Object.assign({}, shared_1.defaultTreeNode, {
-                id: shared_1.Category.All,
-                name: shared_1.Category.All
-            }))
-            // new LeetCodeNode(Object.assign({}, defaultTreeNode, {
-            //     id: Category.Difficulty,
-            //     name: Category.Difficulty,
-            // }), false),
-            // new LeetCodeNode(Object.assign({}, defaultProblem, {
-            //     id: Category.Tag,
-            //     name: Category.Tag,
-            // }), false),
-            // new LeetCodeNode(Object.assign({}, defaultProblem, {
-            //     id: Category.Company,
-            //     name: Category.Company,
-            // }), false),
-            // new LeetCodeNode(Object.assign({}, defaultProblem, {
-            //     id: Category.Favorite,
-            //     name: Category.Favorite,
-            // }), false),
+                id: shared_1.Language.All,
+                name: shared_1.Language.All
+            }, false)),
+            new templateNode_1.TemplateNode(Object.assign({}, shared_1.defaultTreeNode, {
+                id: shared_1.Language.CSS,
+                name: shared_1.Language.CSS
+            }, false)),
+            new templateNode_1.TemplateNode(Object.assign({}, shared_1.defaultTreeNode, {
+                id: shared_1.Language.JavaScript,
+                name: shared_1.Language.JavaScript
+            }, false))
         ];
+    }
+    getAllNodes() {
+        return Array.from(this.explorerNodeMap.values());
+    }
+    getCategoryNodes(language) {
+        const result = [];
+        for (const node of this.categoryMap.values()) {
+            if (node.language === language) {
+                result.push(node);
+            }
+        }
+        return result.length ? result : this.getTemplateNodes(language);
+    }
+    getTemplateNodes(language, category = '') {
+        const result = [];
+        for (const node of this.explorerNodeMap.values()) {
+            if (node.language === language && node.category === category) {
+                result.push(node);
+            }
+        }
+        return result;
     }
 }
 exports.explorerNodeManager = new ExplorerNodeManager();
