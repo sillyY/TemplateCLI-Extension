@@ -44,25 +44,3 @@ function setTreeNodes(result): ITreeNode[] {
   }
   return treeNodes;
 }
-export function refreshTreeNodes(state: number, slug: string): void;
-export function refreshTreeNodes(state: number, slugs: string[]): void;
-export function refreshTreeNodes(state: number, arg: string | string[]): void {
-  let result;
-
-  const data = file.data(file.configDir());
-  if (!data) return;
-
-  if (typeof arg === "string") {
-    result = JSON.parse(data).map(item =>
-      item.slug === arg ? { ...item, ...{ state } } : item
-    );
-  }
-  if (Object.prototype.toString.call(arg) === "[object Array]") {
-    result = JSON.parse(data).map((item: ITreeNode) =>
-      arg.includes(`${item.slug}.${item.lan}`)
-        ? { ...item, ...{ state } }
-        : item
-    );
-  }
-  file.write(file.configDir(), JSON.stringify(result));
-}

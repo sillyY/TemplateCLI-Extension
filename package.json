@@ -13,7 +13,9 @@
     "onCommand:template.refreshExplorer",
     "onCommand:template.downloadTemplate",
     "onCommand:template.insertTemplate",
-    "onView:templateExplorer"
+    "onCommand:template.addTemplate",
+    "onView:templateExplorer",
+    "onView:localTemplateExplorer"
   ],
   "main": "./out/src/extension.js",
   "contributes": {
@@ -40,6 +42,15 @@
         "command": "template.insertTemplate",
         "title": "Insert Template",
         "category": "Template"
+      },
+      {
+        "command": "template.addTemplate",
+        "title": "Set",
+        "category": "Template",
+        "icon": {
+          "light": "resources/light/set.svg",
+          "dark": "resources/dark/set.svg"
+        }
       }
     ],
     "viewsContainers": {
@@ -54,8 +65,12 @@
     "views": {
       "template": [
         {
+          "id": "localTemplateExplorer",
+          "name": "Local"
+        },
+        {
           "id": "templateExplorer",
-          "name": ""
+          "name": "Online"
         }
       ]
     },
@@ -69,6 +84,11 @@
         {
           "command": "template.refreshExplorer",
           "when": "view == templateExplorer",
+          "group": "navigation@3"
+        },
+        {
+          "command": "template.addTemplate",
+          "when": "view == localTemplateExplorer",
           "group": "navigation@3"
         }
       ]

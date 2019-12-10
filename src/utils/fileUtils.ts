@@ -2,7 +2,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
 import DEFAULT_CONFIG from "../shared/config";
-import { TemplateNode } from "../explorer/templateNode";
+import { TemplateNode } from "../explorer/online/TemplateNode";
 
 class File {
   public isWindows() {
@@ -34,11 +34,24 @@ class File {
   public onlineFile(k) {
     return path.join(this.onlineDir(), k);
   }
-
   public configDir() {
     return path.join(this.appDir(), "config.json");
   }
 
+  /// local file ///
+  public localDir() {
+    return path.join(this.appDir(), "local");
+  }
+  public localFile(k) {
+    return path.join(this.localDir(), k);
+  }
+  public localConfigDir() {
+    return path.join(this.localDir(), "config.json");
+  }
+
+  public basename(fulllpath) {
+    return path.basename(fulllpath);
+  }
   public pluginFile(name) {
     return path.join(this.appDir(), path.basename(name));
   }

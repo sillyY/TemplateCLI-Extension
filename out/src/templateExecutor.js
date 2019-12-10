@@ -11,10 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const request = require("request");
 const fs = require("fs");
-const list_1 = require("./commands/list");
 const fileUtils_1 = require("./utils/fileUtils");
 const shared_1 = require("./shared");
 // import * as path from "path";
+// TODO: 调整为多态，本地(local)和在线(online)继承父类
 class TemplateExecutor {
     dispose() { }
     listTreeNodes() {
@@ -28,7 +28,7 @@ class TemplateExecutor {
             const res = yield this.updateFromOnline();
             const files = fileUtils_1.file.listFile(fileUtils_1.file.onlineDir());
             if (files && files.length) {
-                list_1.refreshTreeNodes(shared_1.TemplateState.Install, files);
+                this.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.configDir(), files);
                 return JSON.parse(fileUtils_1.file.data(fileUtils_1.file.configDir()));
             }
             else {
@@ -68,6 +68,26 @@ class TemplateExecutor {
                 fileUtils_1.file.rm(dst);
             cb();
         });
+    }
+    refreshTreeNodes(state, path, arg) {
+        let result;
+        const data = fileUtils_1.file.data(path);
+        if (!data)
+            return;
+        if (typeof arg === "string") {
+            result = JSON.parse(data).map(item => item.slug === arg ? Object.assign(Object.assign({}, item), { state }) : item);
+        }
+        if (Object.prototype.toString.call(arg) === "[object Array]") {
+            result = JSON.parse(data).map((item) => arg.includes(`${item.slug}.${item.lan}`)
+                ? Object.assign(Object.assign({}, item), { state }) : item);
+        }
+        fileUtils_1.file.write(path, JSON.stringify(result));
+    }
+    addSource(path) {
+        const data = fileUtils_1.file.data(path);
+        if (data) {
+            fileUtils_1.file.write(fileUtils_1.file.localFile(fileUtils_1.file.basename(path)), data);
+        }
     }
 }
 exports.templateExecutor = new TemplateExecutor();

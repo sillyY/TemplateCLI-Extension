@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { TemplateNode } from "./templateNode";
+import { TemplateNode } from "./TemplateNode";
 import { explorerNodeManager } from "./explorerNodeManager";
-import { Language, TemplateState } from "../shared";
+import { Language, TemplateState } from "../../shared";
 
 export class TemplateTreeDataProvider
   implements vscode.TreeDataProvider<TemplateNode> {

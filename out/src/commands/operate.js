@@ -13,8 +13,7 @@ const vscode = require("vscode");
 const templateExecutor_1 = require("../templateExecutor");
 const fileUtils_1 = require("../utils/fileUtils");
 const shared_1 = require("../shared");
-const list_1 = require("./list");
-const templateTreeDataProvider_1 = require("../explorer/templateTreeDataProvider");
+const TemplateTreeDataProvider_1 = require("../explorer/online/TemplateTreeDataProvider");
 const uiUtils_1 = require("../utils/uiUtils");
 function insertTemplate(node) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -35,8 +34,8 @@ function insertTemplateInternal(node) {
             else {
                 fileUtils_1.file.mkdir(fileUtils_1.file.onlineDir());
                 templateExecutor_1.templateExecutor.executeRequest(fileUtils_1.file.onlineTemplateSrc(node), fileUtils_1.file.onlineDir() + "/" + "/" + node.slug + "." + node.lan, () => __awaiter(this, void 0, void 0, function* () {
-                    result = fileUtils_1.file.data(fileUtils_1.file.onlineFile(node.slug + '.' + node.lan));
-                    list_1.refreshTreeNodes(shared_1.TemplateState.Install, node.slug);
+                    result = fileUtils_1.file.data(fileUtils_1.file.onlineFile(node.slug + "." + node.lan));
+                    templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.configDir(), node.slug);
                     const editor = vscode.window.activeTextEditor;
                     if (!editor) {
                         // FIXME: 加入提示语
@@ -46,7 +45,7 @@ function insertTemplateInternal(node) {
                     editor.edit(builder => {
                         builder.insert(new vscode.Position(selection.end.line, selection.end.character), result);
                     });
-                    templateTreeDataProvider_1.templateTreeDataProvider.refresh();
+                    TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
                 }));
             }
         }

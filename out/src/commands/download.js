@@ -12,8 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const uiUtils_1 = require("../utils/uiUtils");
 const fileUtils_1 = require("../utils/fileUtils");
 const templateExecutor_1 = require("../templateExecutor");
-const templateTreeDataProvider_1 = require("../explorer/templateTreeDataProvider");
-const list_1 = require("./list");
+const TemplateTreeDataProvider_1 = require("../explorer/online/TemplateTreeDataProvider");
 const shared_1 = require("../shared");
 function downloadTemplate() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -30,8 +29,8 @@ function downloadTemplate() {
                     }));
                 }
                 yield Promise.all(chain);
-                yield list_1.refreshTreeNodes(shared_1.TemplateState.Install, data.map(item => `${item.slug}.${item.lan}`));
-                templateTreeDataProvider_1.templateTreeDataProvider.refresh();
+                yield templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.configDir(), data.map(item => `${item.slug}.${item.lan}`));
+                TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
             }
         }
         catch (err) {

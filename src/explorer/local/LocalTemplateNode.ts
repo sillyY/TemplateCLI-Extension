@@ -1,4 +1,4 @@
-import { ITreeNode, TemplateState } from "../shared";
+import { ITreeNode, TemplateState } from "../../shared";
 import { Command } from "vscode";
 
 export class TemplateNode {

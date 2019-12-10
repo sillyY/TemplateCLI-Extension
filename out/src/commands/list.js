@@ -51,19 +51,4 @@ function setTreeNodes(result) {
     }
     return treeNodes;
 }
-function refreshTreeNodes(state, arg) {
-    let result;
-    const data = fileUtils_1.file.data(fileUtils_1.file.configDir());
-    if (!data)
-        return;
-    if (typeof arg === "string") {
-        result = JSON.parse(data).map(item => item.slug === arg ? Object.assign(Object.assign({}, item), { state }) : item);
-    }
-    if (Object.prototype.toString.call(arg) === "[object Array]") {
-        result = JSON.parse(data).map((item) => arg.includes(`${item.slug}.${item.lan}`)
-            ? Object.assign(Object.assign({}, item), { state }) : item);
-    }
-    fileUtils_1.file.write(fileUtils_1.file.configDir(), JSON.stringify(result));
-}
-exports.refreshTreeNodes = refreshTreeNodes;
 //# sourceMappingURL=list.js.map

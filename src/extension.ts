@@ -1,12 +1,14 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { templateTreeDataProvider } from "./explorer/templateTreeDataProvider";
-import { TemplateNode } from "./explorer/templateNode";
+import { templateTreeDataProvider } from "./explorer/online/TemplateTreeDataProvider";
+import { TemplateNode } from "./explorer/online/TemplateNode";
 import * as operate from "./commands/operate";
 import * as download from "./commands/download";
+import * as add from "./commands/add";
 import { promptForOpenOutputChannel, DialogType } from "./utils/uiUtils";
 import { templateChannel } from "./templateChannel";
+import { localTemplateTreeDataProvider } from "./explorer/local/LocalTemplateTreeDataProvider";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -25,11 +27,18 @@ export function activate(context: vscode.ExtensionContext) {
         treeDataProvider: templateTreeDataProvider,
         showCollapseAll: true
       }),
+      vscode.window.createTreeView("localTemplateExplorer", {
+        treeDataProvider: localTemplateTreeDataProvider,
+        showCollapseAll: true
+      }),
       vscode.commands.registerCommand("template.refreshExplorer", () =>
         templateTreeDataProvider.update()
       ),
       vscode.commands.registerCommand("template.downloadTemplate", () =>
         download.downloadTemplate()
+      ),
+      vscode.commands.registerCommand("template.addTemplate", () =>
+        add.addTemplate()
       ),
       vscode.commands.registerCommand(
         "template.insertTemplate",

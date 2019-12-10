@@ -1,7 +1,7 @@
 import { Disposable } from "vscode";
-import { listTreeNodes, updateListTreeNodes } from "../commands/list";
-import { TemplateNode } from "./templateNode";
-import { Language, defaultTreeNode, ITreeNode } from "../shared";
+import { listTreeNodes, updateListTreeNodes } from "../../commands/list";
+import { TemplateNode } from "./TemplateNode";
+import { Language, defaultTreeNode, ITreeNode } from "../../shared";
 class ExplorerNodeManager implements Disposable {
   private explorerNodeMap: Map<string, TemplateNode> = new Map<
     string,

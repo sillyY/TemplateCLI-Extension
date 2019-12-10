@@ -34,6 +34,19 @@ class File {
     configDir() {
         return path.join(this.appDir(), "config.json");
     }
+    /// local file ///
+    localDir() {
+        return path.join(this.appDir(), "local");
+    }
+    localFile(k) {
+        return path.join(this.localDir(), k);
+    }
+    localConfigDir() {
+        return path.join(this.localDir(), "config.json");
+    }
+    basename(fulllpath) {
+        return path.basename(fulllpath);
+    }
     pluginFile(name) {
         return path.join(this.appDir(), path.basename(name));
     }

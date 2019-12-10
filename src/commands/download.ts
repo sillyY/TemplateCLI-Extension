@@ -1,8 +1,7 @@
 import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 import { file } from "../utils/fileUtils";
 import { templateExecutor } from "../templateExecutor";
-import { templateTreeDataProvider } from "../explorer/templateTreeDataProvider";
-import { refreshTreeNodes } from "./list";
+import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
 import { TemplateState } from "../shared";
 
 export async function downloadTemplate(): Promise<void> {
@@ -26,8 +25,9 @@ export async function downloadTemplate(): Promise<void> {
         );
       }
       await Promise.all(chain);
-      await refreshTreeNodes(
+      await templateExecutor.refreshTreeNodes(
         TemplateState.Install,
+        file.configDir(),
         data.map(item => `${item.slug}.${item.lan}`)
       );
       templateTreeDataProvider.refresh();

@@ -1,10 +1,9 @@
 import * as vscode from "vscode";
-import { TemplateNode } from "../explorer/templateNode";
+import { TemplateNode } from "../explorer/online/TemplateNode";
 import { templateExecutor } from "../templateExecutor";
 import { file } from "../utils/fileUtils";
 import { TemplateState } from "../shared";
-import {  refreshTreeNodes } from "./list";
-import { templateTreeDataProvider } from "../explorer/templateTreeDataProvider";
+import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
 import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 
 export async function insertTemplate(node?: TemplateNode): Promise<void> {
@@ -26,8 +25,12 @@ export async function insertTemplateInternal(
         file.onlineTemplateSrc(node),
         file.onlineDir() + "/" + "/" + node.slug + "." + node.lan,
         async () => {
-          result = file.data(file.onlineFile(node.slug + '.' + node.lan))!;
-          refreshTreeNodes(TemplateState.Install, node.slug);
+          result = file.data(file.onlineFile(node.slug + "." + node.lan))!;
+          templateExecutor.refreshTreeNodes(
+            TemplateState.Install,
+            file.configDir(),
+            node.slug
+          );
           const editor = vscode.window.activeTextEditor;
           if (!editor) {
             // FIXME: 加入提示语
@@ -45,6 +48,9 @@ export async function insertTemplateInternal(
       );
     }
   } catch (err) {
-    await promptForOpenOutputChannel("Failed to insert templates. Please open the output channel for details.", DialogType.error);
+    await promptForOpenOutputChannel(
+      "Failed to insert templates. Please open the output channel for details.",
+      DialogType.error
+    );
   }
 }
