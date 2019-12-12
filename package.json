@@ -14,6 +14,7 @@
     "onCommand:template.downloadTemplate",
     "onCommand:template.insertTemplate",
     "onCommand:template.addTemplate",
+    "onCommand:template.insertLocalTemplate",
     "onView:templateExplorer",
     "onView:localTemplateExplorer"
   ],
@@ -40,6 +41,11 @@
       },
       {
         "command": "template.insertTemplate",
+        "title": "Insert Template",
+        "category": "Template"
+      },
+      {
+        "command": "template.insertLocalTemplate",
         "title": "Insert Template",
         "category": "Template"
       },

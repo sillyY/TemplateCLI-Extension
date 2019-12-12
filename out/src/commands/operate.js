@@ -55,4 +55,33 @@ function insertTemplateInternal(node) {
     });
 }
 exports.insertTemplateInternal = insertTemplateInternal;
+function insertLocalTemplate(node) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!node)
+            return;
+        const res = fileUtils_1.file.data(fileUtils_1.file.localFile(node.name + '.' + node.extname));
+        if (res) {
+            yield insertEditor(res);
+        }
+    });
+}
+exports.insertLocalTemplate = insertLocalTemplate;
+function insertEditor(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) {
+                yield uiUtils_1.promptForOpenOutputChannel("Failed to found Editor. Please open the Editor.", uiUtils_1.DialogType.warning);
+                return; // No open text editor
+            }
+            editor.edit(builder => {
+                builder.insert(new vscode.Position(editor.selection.end.line, editor.selection.end.character), data);
+            });
+        }
+        catch (err) {
+            yield uiUtils_1.promptForOpenOutputChannel("Failed to insert templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+        }
+    });
+}
+exports.insertEditor = insertEditor;
 //# sourceMappingURL=operate.js.map

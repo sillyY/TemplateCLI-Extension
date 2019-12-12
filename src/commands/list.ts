@@ -1,7 +1,7 @@
 // import * as vscode from "vscode";
 // import { ITreeNode } from "../shared";
 import { templateExecutor } from "../templateExecutor";
-import { ITreeNode, TemplateState } from "../shared";
+import { ITreeNode, ILocalTreeNode, TemplateState } from "../shared";
 import { file } from "../utils/fileUtils";
 import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 
@@ -43,4 +43,18 @@ function setTreeNodes(result): ITreeNode[] {
     treeNodes.push(node);
   }
   return treeNodes;
+}
+
+/// local
+
+export async function listLocalTreeNodes(): Promise<ILocalTreeNode[]> {
+  try {
+    return await templateExecutor.listLocalTreeNodes()
+  } catch (error) {
+    await promptForOpenOutputChannel(
+      "Failed to list templates. Please open the output channel for details.",
+      DialogType.error
+    );
+    return [];
+  }
 }

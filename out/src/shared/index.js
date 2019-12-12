@@ -22,4 +22,8 @@ exports.defaultTreeNode = {
     language: "",
     lan: ""
 };
+exports.defaultLocalTreeNode = {
+    name: "",
+    extname: ""
+};
 //# sourceMappingURL=index.js.map

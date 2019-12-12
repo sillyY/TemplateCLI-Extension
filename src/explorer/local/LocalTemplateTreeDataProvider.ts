@@ -1,16 +1,16 @@
 import * as vscode from "vscode";
 // import * as path from "path";
-import { TemplateNode } from "./LocalTemplateNode";
-// import { explorerNodeManager } from "./explorerNodeManager";
+import { LocalTemplateNode } from "./LocalTemplateNode";
+import { localExplorerNodeManager } from "./LocalExplorerNodeManage";
 // import { TemplateState } from "../../shared";
 
 export class LocalTemplateTreeDataProvider
-  implements vscode.TreeDataProvider<TemplateNode> {
+  implements vscode.TreeDataProvider<LocalTemplateNode> {
   private context: vscode.ExtensionContext;
 
   private onDidChangeTreeDataEvent: vscode.EventEmitter<
-    TemplateNode | undefined | null
-  > = new vscode.EventEmitter<TemplateNode | undefined | null>();
+    LocalTemplateNode | undefined | null
+  > = new vscode.EventEmitter<LocalTemplateNode | undefined | null>();
 
   public readonly onDidChangeTreeData: vscode.Event<any> = this
     .onDidChangeTreeDataEvent.event;
@@ -20,34 +20,21 @@ export class LocalTemplateTreeDataProvider
   }
 
   public async refresh(): Promise<void> {
-    // await explorerNodeManager.refreshCache();
-    this.onDidChangeTreeDataEvent.fire();
-  }
-  public async update(): Promise<void> {
-    // await explorerNodeManager.updateCache();
+    await localExplorerNodeManager.refreshCache();
     this.onDidChangeTreeDataEvent.fire();
   }
   public getChildren(): vscode.ProviderResult<any[]> {
-    return [
-      {
-        name: "all"
-      },
-      {
-        name: "css"
-      },
-      {
-        name: "js"
-      }
-    ];
+    return localExplorerNodeManager.getAllNodes();
   }
 
   public test() {
     console.log(this.context);
   }
 
-  public getTreeItem(element: TemplateNode): vscode.TreeItem {
+  public getTreeItem(element: LocalTemplateNode): vscode.TreeItem {
     return {
-      label: element.name
+      label: element.name,
+      command: element.insertCommand
     };
   }
 }

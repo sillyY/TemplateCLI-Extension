@@ -9,6 +9,7 @@ import * as add from "./commands/add";
 import { promptForOpenOutputChannel, DialogType } from "./utils/uiUtils";
 import { templateChannel } from "./templateChannel";
 import { localTemplateTreeDataProvider } from "./explorer/local/LocalTemplateTreeDataProvider";
+import { LocalTemplateNode } from "./explorer/local/LocalTemplateNode";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -19,6 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "template" is now active!');
 
     templateTreeDataProvider.refresh();
+    localTemplateTreeDataProvider.refresh();
 
     templateTreeDataProvider.initialize(context);
 
@@ -43,6 +45,10 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.registerCommand(
         "template.insertTemplate",
         (node: TemplateNode) => operate.insertTemplate(node)
+      ),
+      vscode.commands.registerCommand(
+        "template.insertLocalTemplate",
+        (node: LocalTemplateNode) => operate.insertLocalTemplate(node)
       )
     );
   } catch (err) {

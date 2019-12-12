@@ -5,6 +5,7 @@ import { file } from "../utils/fileUtils";
 import { TemplateState } from "../shared";
 import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
 import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
+import { LocalTemplateNode } from "../explorer/local/LocalTemplateNode";
 
 export async function insertTemplate(node?: TemplateNode): Promise<void> {
   if (!node) return;
@@ -47,6 +48,42 @@ export async function insertTemplateInternal(
         }
       );
     }
+  } catch (err) {
+    await promptForOpenOutputChannel(
+      "Failed to insert templates. Please open the output channel for details.",
+      DialogType.error
+    );
+  }
+}
+export async function insertLocalTemplate(
+  node?: LocalTemplateNode
+): Promise<void> {
+  if (!node) return;
+  const res = file.data(file.localFile(node.name + '.' + node.extname));
+  if (res) {
+    await insertEditor(res);
+  }
+}
+
+export async function insertEditor(data: string) {
+  try {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+      await promptForOpenOutputChannel(
+        "Failed to found Editor. Please open the Editor.",
+        DialogType.warning
+      );
+      return; // No open text editor
+    }
+    editor.edit(builder => {
+      builder.insert(
+        new vscode.Position(
+          editor.selection.end.line,
+          editor.selection.end.character
+        ),
+        data
+      );
+    });
   } catch (err) {
     await promptForOpenOutputChannel(
       "Failed to insert templates. Please open the output channel for details.",

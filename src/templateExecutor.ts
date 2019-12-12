@@ -2,7 +2,7 @@ import { Disposable } from "vscode";
 import * as request from "request";
 import * as fs from "fs";
 import { file } from "./utils/fileUtils";
-import { ITreeNode, TemplateState } from "./shared";
+import { ITreeNode, TemplateState, ILocalTreeNode } from "./shared";
 
 // import * as path from "path";
 // TODO: 调整为多态，本地(local)和在线(online)继承父类
@@ -91,6 +91,11 @@ class TemplateExecutor implements Disposable {
     if (data) {
       file.write(file.localFile(file.basename(path)), data);
     }
+  }
+
+  public async listLocalTreeNodes(): Promise<ILocalTreeNode[]> {
+    const data = file.data(file.localConfigDir());
+    return data ? JSON.parse(data) : []
   }
 
 }

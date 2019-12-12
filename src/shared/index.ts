@@ -30,3 +30,14 @@ export const defaultTreeNode: ITreeNode = {
   language: "",
   lan: ""
 };
+
+/// LOCAL
+export interface ILocalTreeNode {
+  name: string;
+  extname: string;
+}
+
+export const defaultLocalTreeNode: ILocalTreeNode = {
+  name: "",
+  extname: ""
+};

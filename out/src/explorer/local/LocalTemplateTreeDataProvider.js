@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
-// import { explorerNodeManager } from "./explorerNodeManager";
+const LocalExplorerNodeManage_1 = require("./LocalExplorerNodeManage");
 // import { TemplateState } from "../../shared";
 class LocalTemplateTreeDataProvider {
     constructor() {
@@ -23,35 +23,20 @@ class LocalTemplateTreeDataProvider {
     }
     refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            // await explorerNodeManager.refreshCache();
-            this.onDidChangeTreeDataEvent.fire();
-        });
-    }
-    update() {
-        return __awaiter(this, void 0, void 0, function* () {
-            // await explorerNodeManager.updateCache();
+            yield LocalExplorerNodeManage_1.localExplorerNodeManager.refreshCache();
             this.onDidChangeTreeDataEvent.fire();
         });
     }
     getChildren() {
-        return [
-            {
-                name: "all"
-            },
-            {
-                name: "css"
-            },
-            {
-                name: "js"
-            }
-        ];
+        return LocalExplorerNodeManage_1.localExplorerNodeManager.getAllNodes();
     }
     test() {
         console.log(this.context);
     }
     getTreeItem(element) {
         return {
-            label: element.name
+            label: element.name,
+            command: element.insertCommand
         };
     }
 }

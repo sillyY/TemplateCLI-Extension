@@ -18,6 +18,7 @@ function activate(context) {
     try {
         console.log('Congratulations, your extension "template" is now active!');
         TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
+        LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider.refresh();
         TemplateTreeDataProvider_1.templateTreeDataProvider.initialize(context);
         context.subscriptions.push(vscode.window.createTreeView("templateExplorer", {
             treeDataProvider: TemplateTreeDataProvider_1.templateTreeDataProvider,
@@ -25,7 +26,7 @@ function activate(context) {
         }), vscode.window.createTreeView("localTemplateExplorer", {
             treeDataProvider: LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider,
             showCollapseAll: true
-        }), vscode.commands.registerCommand("template.refreshExplorer", () => TemplateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.addTemplate", () => add.addTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)));
+        }), vscode.commands.registerCommand("template.refreshExplorer", () => TemplateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.addTemplate", () => add.addTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)), vscode.commands.registerCommand("template.insertLocalTemplate", (node) => operate.insertLocalTemplate(node)));
     }
     catch (err) {
         templateChannel_1.templateChannel.appendLine(err.toString());

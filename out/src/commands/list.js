@@ -51,4 +51,17 @@ function setTreeNodes(result) {
     }
     return treeNodes;
 }
+/// local
+function listLocalTreeNodes() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            return yield templateExecutor_1.templateExecutor.listLocalTreeNodes();
+        }
+        catch (error) {
+            yield uiUtils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+            return [];
+        }
+    });
+}
+exports.listLocalTreeNodes = listLocalTreeNodes;
 //# sourceMappingURL=list.js.map

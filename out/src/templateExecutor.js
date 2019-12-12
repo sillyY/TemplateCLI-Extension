@@ -89,6 +89,12 @@ class TemplateExecutor {
             fileUtils_1.file.write(fileUtils_1.file.localFile(fileUtils_1.file.basename(path)), data);
         }
     }
+    listLocalTreeNodes() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = fileUtils_1.file.data(fileUtils_1.file.localConfigDir());
+            return data ? JSON.parse(data) : [];
+        });
+    }
 }
 exports.templateExecutor = new TemplateExecutor();
 //# sourceMappingURL=templateExecutor.js.map
