@@ -32,7 +32,7 @@ export async function updateListTreeNodes(): Promise<ITreeNode[]> {
 function setTreeNodes(result): ITreeNode[] {
   const treeNodes: ITreeNode[] = [];
   for (const node of result) {
-    if (file.exist(file.onlineDir() + "/" + "/" + node.slug + "." + node.lan)) {
+    if (file.exist(file.onlineDir() + "/" + node.name + node.extname)) {
       treeNodes.push({
         ...node,
         ...{
@@ -49,7 +49,7 @@ function setTreeNodes(result): ITreeNode[] {
 
 export async function listLocalTreeNodes(): Promise<ILocalTreeNode[]> {
   try {
-    return await templateExecutor.listLocalTreeNodes()
+    return await templateExecutor.listLocalTreeNodes();
   } catch (error) {
     await promptForOpenOutputChannel(
       "Failed to list templates. Please open the output channel for details.",

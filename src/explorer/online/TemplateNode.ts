@@ -8,20 +8,19 @@ export class TemplateNode {
     return this.data.id;
   }
 
-  public get fid(): string {
-    return this.data.fid;
-  }
-
   public get name(): string {
     return this.data.name;
+  }
+  public get fullname(): string {
+    return `${this.data.name}.${this.data.extname}`;
   }
 
   public get category(): string {
     return this.data.category;
   }
 
-  public get slug(): string {
-    return this.data.slug;
+  public get description(): string {
+    return this.data.description;
   }
 
   public get state(): TemplateState {
@@ -30,17 +29,17 @@ export class TemplateNode {
   public get language(): string {
     return this.data.language;
   }
-  public get lan(): string {
-    return this.data.lan;
+  public get extname(): string {
+    return this.data.extname;
   }
   public get isLanguage() {
-    return !this.category && !this.slug;
+    return !this.category && !this.description;
   }
   public get isCategory() {
-    return this.category && !this.slug;
+    return this.category && !this.description;
   }
-  public get isSlug() {
-    return !!this.slug
+  public get isTemplate() {
+    return !!this.name && !! this.description;
   }
   public get insertCommand(): Command {
     return {

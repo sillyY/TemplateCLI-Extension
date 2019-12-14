@@ -10,11 +10,11 @@
     "Other"
   ],
   "activationEvents": [
+    "onCommand:template.updateExplorer",
     "onCommand:template.refreshExplorer",
     "onCommand:template.downloadTemplate",
     "onCommand:template.insertTemplate",
-    "onCommand:template.addTemplate",
-    "onCommand:template.insertLocalTemplate",
+    "onCommand:template.loadTemplate",
     "onView:templateExplorer",
     "onView:localTemplateExplorer"
   ],
@@ -22,12 +22,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "template.refreshExplorer",
-        "title": "Refresh",
+        "command": "template.updateExplorer",
+        "title": "Update",
         "category": "Template",
         "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
+          "light": "resources/light/update.svg",
+          "dark": "resources/dark/update.svg"
         }
       },
       {
@@ -40,17 +40,21 @@
         }
       },
       {
+        "command": "template.refreshExplorer",
+        "title": "Refresh",
+        "category": "Template",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
         "command": "template.insertTemplate",
         "title": "Insert Template",
         "category": "Template"
       },
       {
-        "command": "template.insertLocalTemplate",
-        "title": "Insert Template",
-        "category": "Template"
-      },
-      {
-        "command": "template.addTemplate",
+        "command": "template.loadTemplate",
         "title": "Set",
         "category": "Template",
         "icon": {
@@ -85,17 +89,22 @@
         {
           "command": "template.downloadTemplate",
           "when": "view == templateExplorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "template.updateExplorer",
+          "when": "view == templateExplorer",
           "group": "navigation@2"
         },
         {
           "command": "template.refreshExplorer",
-          "when": "view == templateExplorer",
+          "when": "view == templateExplorer || view == localTemplateExplorer",
           "group": "navigation@3"
         },
         {
-          "command": "template.addTemplate",
+          "command": "template.loadTemplate",
           "when": "view == localTemplateExplorer",
-          "group": "navigation@3"
+          "group": "navigation@2"
         }
       ]
     }

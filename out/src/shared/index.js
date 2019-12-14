@@ -14,13 +14,12 @@ var Language;
 })(Language = exports.Language || (exports.Language = {}));
 exports.defaultTreeNode = {
     id: "",
-    fid: "",
     name: "",
     category: "",
-    slug: "",
+    description: "",
     state: TemplateState.Install,
     language: "",
-    lan: ""
+    extname: ""
 };
 exports.defaultLocalTreeNode = {
     name: "",

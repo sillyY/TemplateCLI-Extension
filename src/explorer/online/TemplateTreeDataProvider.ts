@@ -60,23 +60,18 @@ export class TemplateTreeDataProvider
 
     return [];
   }
-
-  public test() {
-    console.log(this.context);
-  }
-
   public getTreeItem(element: TemplateNode): vscode.TreeItem {
     return {
-      label: element.isSlug ? `[${element.id}] ${element.name}` : element.name,
-      collapsibleState: element.slug
+      label: element.isTemplate? `[${element.id}] ${element.description}` : element.name,
+      collapsibleState: element.description
         ? vscode.TreeItemCollapsibleState.None
         : vscode.TreeItemCollapsibleState.Collapsed,
-      command: element.slug ? element.insertCommand : undefined,
+      command: element.isTemplate ? element.insertCommand : undefined,
       iconPath: this.parseIconPathFromProblemState(element)
     };
   }
   private parseIconPathFromProblemState(element: TemplateNode): string {
-    if (!element.isSlug) {
+    if (!element.isTemplate) {
       return "";
     }
     switch (element.state) {

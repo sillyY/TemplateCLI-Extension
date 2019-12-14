@@ -10,62 +10,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
-const templateExecutor_1 = require("../templateExecutor");
+const TemplateNode_1 = require("../explorer/online/TemplateNode");
 const fileUtils_1 = require("../utils/fileUtils");
+const uiUtils_1 = require("../utils/uiUtils");
+const LocalTemplateNode_1 = require("../explorer/local/LocalTemplateNode");
+const download = require("./download");
+const templateExecutor_1 = require("../templateExecutor");
 const shared_1 = require("../shared");
 const TemplateTreeDataProvider_1 = require("../explorer/online/TemplateTreeDataProvider");
-const uiUtils_1 = require("../utils/uiUtils");
+function onlineInsert(node) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const res = fileUtils_1.file.data(fileUtils_1.file.onlineFile(node.fullname));
+        if (res)
+            return insertEditor(res);
+        // 1. 下载文件
+        yield download.install([node], fileUtils_1.file.onlineTemplateSrc.bind(fileUtils_1.file), fileUtils_1.file.onlineDir());
+        // 2. 更新config
+        yield templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.onlineConfigDir(), [node.fullname]);
+        // 3. 更新Extension状态
+        TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
+        return onlineInsert(node);
+    });
+}
+function localInsert(node) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const res = fileUtils_1.file.data(fileUtils_1.file.localFile(node.fullname));
+        if (res)
+            return insertEditor(res);
+    });
+}
 function insertTemplate(node) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!node)
             return;
-        yield insertTemplateInternal(node);
+        if (node instanceof TemplateNode_1.TemplateNode)
+            return yield onlineInsert(node);
+        if (node instanceof LocalTemplateNode_1.LocalTemplateNode)
+            return yield localInsert(node);
     });
 }
 exports.insertTemplate = insertTemplate;
-function insertTemplateInternal(node) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            let result;
-            const res = fileUtils_1.file.data(fileUtils_1.file.onlineFile(node.slug));
-            if (res) {
-                result = res;
-            }
-            else {
-                fileUtils_1.file.mkdir(fileUtils_1.file.onlineDir());
-                templateExecutor_1.templateExecutor.executeRequest(fileUtils_1.file.onlineTemplateSrc(node), fileUtils_1.file.onlineDir() + "/" + "/" + node.slug + "." + node.lan, () => __awaiter(this, void 0, void 0, function* () {
-                    result = fileUtils_1.file.data(fileUtils_1.file.onlineFile(node.slug + "." + node.lan));
-                    templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.configDir(), node.slug);
-                    const editor = vscode.window.activeTextEditor;
-                    if (!editor) {
-                        // FIXME: 加入提示语
-                        return; // No open text editor
-                    }
-                    const selection = editor.selection;
-                    editor.edit(builder => {
-                        builder.insert(new vscode.Position(selection.end.line, selection.end.character), result);
-                    });
-                    TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
-                }));
-            }
-        }
-        catch (err) {
-            yield uiUtils_1.promptForOpenOutputChannel("Failed to insert templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
-        }
-    });
-}
-exports.insertTemplateInternal = insertTemplateInternal;
-function insertLocalTemplate(node) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!node)
-            return;
-        const res = fileUtils_1.file.data(fileUtils_1.file.localFile(node.name + '.' + node.extname));
-        if (res) {
-            yield insertEditor(res);
-        }
-    });
-}
-exports.insertLocalTemplate = insertLocalTemplate;
 function insertEditor(data) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

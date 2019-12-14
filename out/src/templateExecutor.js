@@ -13,13 +13,11 @@ const request = require("request");
 const fs = require("fs");
 const fileUtils_1 = require("./utils/fileUtils");
 const shared_1 = require("./shared");
-// import * as path from "path";
-// TODO: 调整为多态，本地(local)和在线(online)继承父类
 class TemplateExecutor {
     dispose() { }
     listTreeNodes() {
         return __awaiter(this, void 0, void 0, function* () {
-            const data = fileUtils_1.file.data(fileUtils_1.file.configDir());
+            const data = fileUtils_1.file.data(fileUtils_1.file.onlineConfigDir());
             return data ? JSON.parse(data) : yield this.updateListTreeNodes();
         });
     }
@@ -28,8 +26,8 @@ class TemplateExecutor {
             const res = yield this.updateFromOnline();
             const files = fileUtils_1.file.listFile(fileUtils_1.file.onlineDir());
             if (files && files.length) {
-                this.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.configDir(), files);
-                return JSON.parse(fileUtils_1.file.data(fileUtils_1.file.configDir()));
+                this.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.onlineConfigDir(), files);
+                return JSON.parse(fileUtils_1.file.data(fileUtils_1.file.onlineConfigDir()));
             }
             else {
                 return res;
@@ -39,9 +37,9 @@ class TemplateExecutor {
     updateFromOnline() {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise(resolve => {
-                fileUtils_1.file.mkdir(fileUtils_1.file.appDir());
-                this.executeRequest(fileUtils_1.file.onlineConfigSrc(), fileUtils_1.file.pluginFile(fileUtils_1.file.configDir()), () => {
-                    resolve(JSON.parse(fileUtils_1.file.data(fileUtils_1.file.configDir())));
+                fileUtils_1.file.mkdir(fileUtils_1.file.onlineDir());
+                this.executeRequest(fileUtils_1.file.onlineConfigSrc(), fileUtils_1.file.onlineConfigDir(), () => {
+                    resolve(JSON.parse(fileUtils_1.file.data(fileUtils_1.file.onlineConfigDir())));
                 });
             });
         });
@@ -75,24 +73,42 @@ class TemplateExecutor {
         if (!data)
             return;
         if (typeof arg === "string") {
-            result = JSON.parse(data).map(item => item.slug === arg ? Object.assign(Object.assign({}, item), { state }) : item);
+            result = JSON.parse(data).map(item => item.name === arg ? Object.assign(Object.assign({}, item), { state }) : item);
         }
         if (Object.prototype.toString.call(arg) === "[object Array]") {
-            result = JSON.parse(data).map((item) => arg.includes(`${item.slug}.${item.lan}`)
+            result = JSON.parse(data).map((item) => arg.includes(`${item.name}.${item.extname}`)
                 ? Object.assign(Object.assign({}, item), { state }) : item);
         }
         fileUtils_1.file.write(path, JSON.stringify(result));
     }
     addSource(path) {
         const data = fileUtils_1.file.data(path);
-        if (data) {
-            fileUtils_1.file.write(fileUtils_1.file.localFile(fileUtils_1.file.basename(path)), data);
-        }
+        data && fileUtils_1.file.write(fileUtils_1.file.localFile(fileUtils_1.file.fullname(path)), data);
     }
     listLocalTreeNodes() {
         return __awaiter(this, void 0, void 0, function* () {
+            // 1. 校检文件是否发生改变
+            const files = fileUtils_1.file.listFile(fileUtils_1.file.localDir());
+            if (files && files.length) {
+                this.updateLocalConfig(files.filter(item => item !== "config.json"));
+            }
+            // 2. 读取配置文件，并返回
             const data = fileUtils_1.file.data(fileUtils_1.file.localConfigDir());
             return data ? JSON.parse(data) : [];
+        });
+    }
+    updateLocalConfig(files) {
+        fileUtils_1.file.write(fileUtils_1.file.localConfigDir(), JSON.stringify(files.map(value => {
+            return {
+                name: value
+            };
+        })));
+    }
+    downloadExecute(chain) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const cb of chain) {
+                yield cb;
+            }
         });
     }
 }

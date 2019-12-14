@@ -10,10 +10,13 @@ class LocalTemplateNode {
     get extname() {
         return this.data.extname;
     }
+    get fullname() {
+        return `${this.data.name}.${this.data.extname}`;
+    }
     get insertCommand() {
         return {
             title: "Insert Code",
-            command: "template.insertLocalTemplate",
+            command: "template.insertTemplate",
             arguments: [this]
         };
     }

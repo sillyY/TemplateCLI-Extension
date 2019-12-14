@@ -11,24 +11,22 @@ export enum Language {
 
 export interface ITreeNode {
   id: string;
-  fid: string;
   name: string;
   category: string;
-  slug: string;
+  description: string;
   state: TemplateState;
   language: string;
-  lan: string;
+  extname: string;
 }
 
 export const defaultTreeNode: ITreeNode = {
   id: "",
-  fid: "",
   name: "",
   category: "",
-  slug: "",
+  description: "",
   state: TemplateState.Install,
   language: "",
-  lan: ""
+  extname: ""
 };
 
 /// LOCAL

@@ -10,11 +10,14 @@ export class LocalTemplateNode {
   public get extname(): string {
     return this.data.extname;
   }
+  public get fullname(): string {
+    return `${this.data.name}.${this.data.extname}`;
+  }
 
   public get insertCommand(): Command {
     return {
       title: "Insert Code",
-      command: "template.insertLocalTemplate",
+      command: "template.insertTemplate",
       arguments: [this]
     };
   }

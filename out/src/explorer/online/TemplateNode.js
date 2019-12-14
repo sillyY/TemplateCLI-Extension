@@ -7,17 +7,17 @@ class TemplateNode {
     get id() {
         return this.data.id;
     }
-    get fid() {
-        return this.data.fid;
-    }
     get name() {
         return this.data.name;
+    }
+    get fullname() {
+        return `${this.data.name}.${this.data.extname}`;
     }
     get category() {
         return this.data.category;
     }
-    get slug() {
-        return this.data.slug;
+    get description() {
+        return this.data.description;
     }
     get state() {
         return this.data.state;
@@ -25,17 +25,17 @@ class TemplateNode {
     get language() {
         return this.data.language;
     }
-    get lan() {
-        return this.data.lan;
+    get extname() {
+        return this.data.extname;
     }
     get isLanguage() {
-        return !this.category && !this.slug;
+        return !this.category && !this.description;
     }
     get isCategory() {
-        return this.category && !this.slug;
+        return this.category && !this.description;
     }
-    get isSlug() {
-        return !!this.slug;
+    get isTemplate() {
+        return !!this.name && !!this.description;
     }
     get insertCommand() {
         return {

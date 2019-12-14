@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
-const TemplateTreeDataProvider_1 = require("./explorer/online/TemplateTreeDataProvider");
 const operate = require("./commands/operate");
 const download = require("./commands/download");
-const add = require("./commands/add");
+const load = require("./commands/load");
+const TemplateTreeDataProvider_1 = require("./explorer/online/TemplateTreeDataProvider");
 const uiUtils_1 = require("./utils/uiUtils");
 const templateChannel_1 = require("./templateChannel");
 const LocalTemplateTreeDataProvider_1 = require("./explorer/local/LocalTemplateTreeDataProvider");
@@ -26,7 +26,10 @@ function activate(context) {
         }), vscode.window.createTreeView("localTemplateExplorer", {
             treeDataProvider: LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider,
             showCollapseAll: true
-        }), vscode.commands.registerCommand("template.refreshExplorer", () => TemplateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.addTemplate", () => add.addTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)), vscode.commands.registerCommand("template.insertLocalTemplate", (node) => operate.insertLocalTemplate(node)));
+        }), vscode.commands.registerCommand("template.updateExplorer", () => TemplateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.refreshExplorer", () => Promise.all([
+            TemplateTreeDataProvider_1.templateTreeDataProvider.refresh(),
+            LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider.refresh()
+        ])), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.loadTemplate", () => load.loadTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)));
     }
     catch (err) {
         templateChannel_1.templateChannel.appendLine(err.toString());

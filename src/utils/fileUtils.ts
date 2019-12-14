@@ -19,41 +19,18 @@ class File {
     return path.join(this.homeDir(), config.app || "template-library");
   }
 
-  public cacheDir() {
-    return path.join(this.appDir(), "cache");
-  }
-
-  public codeDir(dir) {
-    return path.join(__dirname, "..", dir || "");
-  }
-
-  /// online files ///
-  public onlineDir() {
-    return path.join(this.appDir(), "online");
-  }
-  public onlineFile(k) {
-    return path.join(this.onlineDir(), k);
-  }
-  public configDir() {
-    return path.join(this.appDir(), "config.json");
-  }
-
-  /// local file ///
-  public localDir() {
-    return path.join(this.appDir(), "local");
-  }
-  public localFile(k) {
-    return path.join(this.localDir(), k);
-  }
-  public localConfigDir() {
-    return path.join(this.localDir(), "config.json");
-  }
-
-  public basename(fulllpath) {
+  /// base ///
+  public fullname(fulllpath) {
     return path.basename(fulllpath);
   }
-  public pluginFile(name) {
-    return path.join(this.appDir(), path.basename(name));
+  public basename(fulllpath) {
+    return path.basename(fulllpath, path.extname(fulllpath));
+  }
+  public extname(fulllpath) {
+    return path.extname(fulllpath);
+  }
+  public dirname(fulllpath) {
+    return path.dirname(fulllpath);
   }
 
   public rm(fullpath) {
@@ -89,12 +66,34 @@ class File {
     return this.onlineBaseSrc() + "/config.json";
   }
   public onlineTemplateSrc(node: TemplateNode): string {
-    let { language, category, slug, lan } = node;
+    let { language, category, name, extname } = node;
     language = language ? `/${language}` : "";
     category = category ? `/${category}` : "";
-    slug = slug ? `/${slug}` : "";
+    name = name ? `/${name}` : "";
 
-    return `${this.onlineBaseSrc()}/libs${language}${category}${slug}.${lan}`;
+    return `${this.onlineBaseSrc()}/libs${language}${category}${name}${extname}`;
+  }
+
+  /// online files ///
+  public onlineDir() {
+    return path.join(this.appDir(), "online");
+  }
+  public onlineFile(k) {
+    return path.join(this.onlineDir(), k);
+  }
+  public onlineConfigDir() {
+    return path.join(this.onlineDir(), "config.json");
+  }
+
+  /// local file ///
+  public localDir() {
+    return path.join(this.appDir(), "local");
+  }
+  public localFile(k) {
+    return path.join(this.localDir(), k);
+  }
+  public localConfigDir() {
+    return path.join(this.localDir(), "config.json");
   }
 }
 

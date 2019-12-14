@@ -18,9 +18,6 @@ class LocalTemplateTreeDataProvider {
         this.onDidChangeTreeData = this
             .onDidChangeTreeDataEvent.event;
     }
-    initialize(context) {
-        this.context = context;
-    }
     refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield LocalExplorerNodeManage_1.localExplorerNodeManager.refreshCache();
@@ -29,9 +26,6 @@ class LocalTemplateTreeDataProvider {
     }
     getChildren() {
         return LocalExplorerNodeManage_1.localExplorerNodeManager.getAllNodes();
-    }
-    test() {
-        console.log(this.context);
     }
     getTreeItem(element) {
         return {

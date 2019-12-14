@@ -3,8 +3,9 @@ import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 import { templateExecutor } from "../templateExecutor";
 
 import { file } from "../utils/fileUtils";
+import { localTemplateTreeDataProvider } from "../explorer/local/LocalTemplateTreeDataProvider";
 
-export async function addTemplate(): Promise<void> {
+export async function loadTemplate(): Promise<void> {
   try {
     const res: vscode.Uri[] | undefined = await vscode.window.showOpenDialog({
       canSelectFiles: true,
@@ -17,17 +18,18 @@ export async function addTemplate(): Promise<void> {
     file.mkdir(file.localDir());
     await Promise.all(res.map(item => templateExecutor.addSource(item.path)));
 
-    // generate local config.json
+    // 生成本地config.json文件
     file.write(
       file.localConfigDir(),
       JSON.stringify(
         res.map((item: vscode.Uri) => {
           return {
-            name: file.basename(item.path)
+            name: file.fullname(item.path)
           };
         })
       )
     );
+    localTemplateTreeDataProvider.refresh()
   } catch (err) {
     await promptForOpenOutputChannel(
       "Failed to add templates. Please open the output channel for details.",

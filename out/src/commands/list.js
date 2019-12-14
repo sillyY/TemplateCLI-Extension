@@ -42,7 +42,7 @@ exports.updateListTreeNodes = updateListTreeNodes;
 function setTreeNodes(result) {
     const treeNodes = [];
     for (const node of result) {
-        if (fileUtils_1.file.exist(fileUtils_1.file.onlineDir() + "/" + "/" + node.slug + "." + node.lan)) {
+        if (fileUtils_1.file.exist(fileUtils_1.file.onlineDir() + "/" + node.name + node.extname)) {
             treeNodes.push(Object.assign(Object.assign({}, node), {
                 state: shared_1.TemplateState.Install
             }));
