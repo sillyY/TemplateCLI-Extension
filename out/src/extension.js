@@ -6,10 +6,13 @@ const vscode = require("vscode");
 const operate = require("./commands/operate");
 const download = require("./commands/download");
 const load = require("./commands/load");
+const edit = require("./commands/edit");
 const TemplateTreeDataProvider_1 = require("./explorer/online/TemplateTreeDataProvider");
+const TemplateNode_1 = require("./explorer/online/TemplateNode");
 const uiUtils_1 = require("./utils/uiUtils");
 const templateChannel_1 = require("./templateChannel");
 const LocalTemplateTreeDataProvider_1 = require("./explorer/local/LocalTemplateTreeDataProvider");
+const LocalTemplateNode_1 = require("./explorer/local/LocalTemplateNode");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -29,7 +32,12 @@ function activate(context) {
         }), vscode.commands.registerCommand("template.updateExplorer", () => TemplateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.refreshExplorer", () => Promise.all([
             TemplateTreeDataProvider_1.templateTreeDataProvider.refresh(),
             LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider.refresh()
-        ])), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.loadTemplate", () => load.loadTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)));
+        ])), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.loadTemplate", () => load.loadTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)), vscode.commands.registerCommand("template.editTemplate", (node) => {
+            if (node instanceof TemplateNode_1.TemplateNode)
+                edit.onlineEdit(node);
+            if (node instanceof LocalTemplateNode_1.LocalTemplateNode)
+                edit.localEdit(node);
+        }));
     }
     catch (err) {
         templateChannel_1.templateChannel.appendLine(err.toString());

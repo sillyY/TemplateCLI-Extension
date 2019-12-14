@@ -20,7 +20,7 @@ function install(data, getPath, dir) {
         for (const treeItem of data) {
             promises.push(new Promise((resolve, reject) => {
                 try {
-                    templateExecutor_1.templateExecutor.executeRequest(getPath(treeItem), `${dir}/${treeItem.name}.${treeItem.extname}`, () => __awaiter(this, void 0, void 0, function* () {
+                    templateExecutor_1.templateExecutor.executeRequest(getPath(treeItem), `${dir}/${treeItem.name}${treeItem.extname}`, () => __awaiter(this, void 0, void 0, function* () {
                         resolve();
                     }));
                 }

@@ -6,7 +6,6 @@ import { localExplorerNodeManager } from "./LocalExplorerNodeManage";
 
 export class LocalTemplateTreeDataProvider
   implements vscode.TreeDataProvider<LocalTemplateNode> {
-
   private onDidChangeTreeDataEvent: vscode.EventEmitter<
     LocalTemplateNode | undefined | null
   > = new vscode.EventEmitter<LocalTemplateNode | undefined | null>();
@@ -25,7 +24,8 @@ export class LocalTemplateTreeDataProvider
   public getTreeItem(element: LocalTemplateNode): vscode.TreeItem {
     return {
       label: element.name,
-      command: element.insertCommand
+      command: element.insertCommand,
+      contextValue: "template"
     };
   }
 }

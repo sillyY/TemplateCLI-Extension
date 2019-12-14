@@ -12,7 +12,7 @@ export async function install(data, getPath, dir): Promise<void[]> {
         try {
           templateExecutor.executeRequest(
             getPath(treeItem),
-            `${dir}/${treeItem.name}.${treeItem.extname}`,
+            `${dir}/${treeItem.name}${treeItem.extname}`,
             async () => {
               resolve();
             }

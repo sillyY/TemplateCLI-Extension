@@ -57,12 +57,15 @@ class TemplateTreeDataProvider {
     }
     getTreeItem(element) {
         return {
-            label: element.isTemplate ? `[${element.id}] ${element.description}` : element.name,
+            label: element.isTemplate
+                ? `[${element.id}] ${element.description}`
+                : element.name,
             collapsibleState: element.description
                 ? vscode.TreeItemCollapsibleState.None
                 : vscode.TreeItemCollapsibleState.Collapsed,
             command: element.isTemplate ? element.insertCommand : undefined,
-            iconPath: this.parseIconPathFromProblemState(element)
+            iconPath: this.parseIconPathFromProblemState(element),
+            contextValue: element.isTemplate ? "template" : ""
         };
     }
     parseIconPathFromProblemState(element) {

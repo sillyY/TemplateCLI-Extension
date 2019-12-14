@@ -84,7 +84,7 @@ class TemplateExecutor implements Disposable {
     }
     if (Object.prototype.toString.call(arg) === "[object Array]") {
       result = JSON.parse(data).map((item: ITreeNode) =>
-        arg.includes(`${item.name}.${item.extname}`)
+        arg.includes(`${item.name}${item.extname}`)
           ? { ...item, ...{ state } }
           : item
       );

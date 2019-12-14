@@ -12,7 +12,7 @@ export class TemplateNode {
     return this.data.name;
   }
   public get fullname(): string {
-    return `${this.data.name}.${this.data.extname}`;
+    return `${this.data.name}${this.data.extname}`;
   }
 
   public get category(): string {

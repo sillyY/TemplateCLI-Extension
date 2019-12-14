@@ -4,11 +4,13 @@ import * as vscode from "vscode";
 import * as operate from "./commands/operate";
 import * as download from "./commands/download";
 import * as load from "./commands/load";
+import * as edit from "./commands/edit";
 import { templateTreeDataProvider } from "./explorer/online/TemplateTreeDataProvider";
 import { TemplateNode } from "./explorer/online/TemplateNode";
 import { promptForOpenOutputChannel, DialogType } from "./utils/uiUtils";
 import { templateChannel } from "./templateChannel";
 import { localTemplateTreeDataProvider } from "./explorer/local/LocalTemplateTreeDataProvider";
+import { LocalTemplateNode } from "./explorer/local/LocalTemplateNode";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -50,6 +52,13 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.registerCommand(
         "template.insertTemplate",
         (node: TemplateNode) => operate.insertTemplate(node)
+      ),
+      vscode.commands.registerCommand(
+        "template.editTemplate",
+        (node: TemplateNode | LocalTemplateNode) => {
+          if (node instanceof TemplateNode) edit.onlineEdit(node);
+          if (node instanceof LocalTemplateNode) edit.localEdit(node);
+        }
       )
     );
   } catch (err) {

@@ -30,7 +30,8 @@ class LocalTemplateTreeDataProvider {
     getTreeItem(element) {
         return {
             label: element.name,
-            command: element.insertCommand
+            command: element.insertCommand,
+            contextValue: "template"
         };
     }
 }

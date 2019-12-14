@@ -11,7 +11,7 @@ class TemplateNode {
         return this.data.name;
     }
     get fullname() {
-        return `${this.data.name}.${this.data.extname}`;
+        return `${this.data.name}${this.data.extname}`;
     }
     get category() {
         return this.data.category;

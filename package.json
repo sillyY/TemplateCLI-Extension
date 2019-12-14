@@ -55,11 +55,20 @@
       },
       {
         "command": "template.loadTemplate",
-        "title": "Set",
+        "title": "Load Template",
         "category": "Template",
         "icon": {
-          "light": "resources/light/set.svg",
-          "dark": "resources/dark/set.svg"
+          "light": "resources/light/load.svg",
+          "dark": "resources/dark/load.svg"
+        }
+      },
+      {
+        "command": "template.editTemplate",
+        "title": "Edit Template",
+        "category": "Template",
+        "icon": {
+          "light": "resources/light/edit.svg",
+          "dark": "resources/dark/edit.svg"
         }
       }
     ],
@@ -105,6 +114,13 @@
           "command": "template.loadTemplate",
           "when": "view == localTemplateExplorer",
           "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "template.editTemplate",
+          "when": "view == templateExplorer && viewItem == template || view == localTemplateExplorer && viewItem == template",
+          "group": "inline"
         }
       ]
     }

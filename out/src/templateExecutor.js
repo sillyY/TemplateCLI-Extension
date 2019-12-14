@@ -76,7 +76,7 @@ class TemplateExecutor {
             result = JSON.parse(data).map(item => item.name === arg ? Object.assign(Object.assign({}, item), { state }) : item);
         }
         if (Object.prototype.toString.call(arg) === "[object Array]") {
-            result = JSON.parse(data).map((item) => arg.includes(`${item.name}.${item.extname}`)
+            result = JSON.parse(data).map((item) => arg.includes(`${item.name}${item.extname}`)
                 ? Object.assign(Object.assign({}, item), { state }) : item);
         }
         fileUtils_1.file.write(path, JSON.stringify(result));
