@@ -3,6 +3,7 @@ import { file } from "../utils/fileUtils";
 import { templateExecutor } from "../templateExecutor";
 import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
 import { TemplateState } from "../shared";
+import { TemplateNode } from "../explorer/online/TemplateNode";
 
 export async function install(data, getPath, dir): Promise<void[]> {
   let promises: Promise<void>[] | null = [];
@@ -60,4 +61,18 @@ export async function downloadTemplate(): Promise<void> {
       DialogType.error
     );
   }
+}
+
+export async function installOneTemplate(node: TemplateNode): Promise<void> {
+  await install([node], file.onlineTemplateSrc.bind(file), file.onlineDir());
+
+  // 2. 更新config
+  await templateExecutor.refreshTreeNodes(
+    TemplateState.Install,
+    file.onlineConfigDir(),
+    [node.fullname]
+  );
+
+  // 3. 更新Extension状态
+  templateTreeDataProvider.refresh();
 }

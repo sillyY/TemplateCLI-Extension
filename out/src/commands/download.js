@@ -56,4 +56,14 @@ function downloadTemplate() {
     });
 }
 exports.downloadTemplate = downloadTemplate;
+function installOneTemplate(node) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield install([node], fileUtils_1.file.onlineTemplateSrc.bind(fileUtils_1.file), fileUtils_1.file.onlineDir());
+        // 2. 更新config
+        yield templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.onlineConfigDir(), [node.fullname]);
+        // 3. 更新Extension状态
+        TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
+    });
+}
+exports.installOneTemplate = installOneTemplate;
 //# sourceMappingURL=download.js.map

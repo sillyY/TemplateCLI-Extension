@@ -1,12 +1,9 @@
 import * as vscode from "vscode";
+import * as download from "./download";
 import { TemplateNode } from "../explorer/online/TemplateNode";
 import { file } from "../utils/fileUtils";
 import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 import { LocalTemplateNode } from "../explorer/local/LocalTemplateNode";
-import * as download from "./download";
-import { templateExecutor } from "../templateExecutor";
-import { TemplateState } from "../shared";
-import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
 import { MineTemplateNode } from "../explorer/mine/MineTemplateNode";
 
 async function onlineInsert(node: TemplateNode) {
@@ -14,21 +11,7 @@ async function onlineInsert(node: TemplateNode) {
   if (res) return insertEditor(res);
 
   // 1. 下载文件
-  await download.install(
-    [node],
-    file.onlineTemplateSrc.bind(file),
-    file.onlineDir()
-  );
-
-  // 2. 更新config
-  await templateExecutor.refreshTreeNodes(
-    TemplateState.Install,
-    file.onlineConfigDir(),
-    [node.fullname]
-  );
-
-  // 3. 更新Extension状态
-  templateTreeDataProvider.refresh();
+  await download.installOneTemplate(node);
 
   return onlineInsert(node);
 }

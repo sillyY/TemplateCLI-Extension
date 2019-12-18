@@ -5,9 +5,6 @@ import { LocalTemplateNode } from "../explorer/local/LocalTemplateNode";
 import { file } from "../utils/fileUtils";
 import { mineTemplateTreeDataProvider } from "../explorer/mine/MineTemplateTreeDataProvider";
 import { MineTemplateNode } from "../explorer/mine/MineTemplateNode";
-import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
-import { templateExecutor } from "../templateExecutor";
-import { TemplateState } from "../shared";
 
 export async function like(
   node: TemplateNode | LocalTemplateNode,
@@ -18,21 +15,7 @@ export async function like(
     node instanceof TemplateNode &&
     !file.exist(file.onlineFile(node.fullname))
   ) {
-    await download.install(
-      [node],
-      file.onlineTemplateSrc.bind(file),
-      file.onlineDir()
-    );
-
-    // 2. 更新config
-    await templateExecutor.refreshTreeNodes(
-      TemplateState.Install,
-      file.onlineConfigDir(),
-      [node.fullname]
-    );
-
-    // 3. 更新Extension状态
-    templateTreeDataProvider.refresh();
+    download.installOneTemplate(node);
   }
 
   const config = file.data(file.mineConfigDir());

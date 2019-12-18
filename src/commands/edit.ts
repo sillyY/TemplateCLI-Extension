@@ -17,22 +17,7 @@ export async function onlineEdit(node: TemplateNode) {
 
     // 2. 在线本地不存在，加载网络资源
     if (!data) {
-      // 2.1 下载文件
-      await download.install(
-        [node],
-        file.onlineTemplateSrc.bind(file),
-        file.onlineDir()
-      );
-
-      // 2.2 更新config
-      await templateExecutor.refreshTreeNodes(
-        TemplateState.Install,
-        file.onlineConfigDir(),
-        [name]
-      );
-
-      // 2.3 更新Extension状态
-      templateTreeDataProvider.refresh();
+      download.installOneTemplate(node);
 
       return onlineEdit(node);
     }
