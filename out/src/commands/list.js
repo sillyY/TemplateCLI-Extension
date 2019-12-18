@@ -64,4 +64,17 @@ function listLocalTreeNodes() {
     });
 }
 exports.listLocalTreeNodes = listLocalTreeNodes;
+/// mine
+function listMineTreeNodes() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            return yield templateExecutor_1.templateExecutor.listMineTreeNodes();
+        }
+        catch (error) {
+            yield uiUtils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+            return [];
+        }
+    });
+}
+exports.listMineTreeNodes = listMineTreeNodes;
 //# sourceMappingURL=list.js.map

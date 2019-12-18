@@ -39,3 +39,16 @@ export const defaultLocalTreeNode: ILocalTreeNode = {
   name: "",
   extname: ""
 };
+
+/// mine
+export interface IMineTreeNode {
+  name: string;
+  extname: string;
+  path: string;
+}
+
+export const defaultMineTreeNode: IMineTreeNode = {
+  name: "",
+  extname: "",
+  path: ""
+};

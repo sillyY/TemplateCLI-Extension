@@ -3,16 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
-const operate = require("./commands/operate");
+const insert = require("./commands/insert");
 const download = require("./commands/download");
 const load = require("./commands/load");
 const edit = require("./commands/edit");
+const favorite = require("./commands/favorite");
 const TemplateTreeDataProvider_1 = require("./explorer/online/TemplateTreeDataProvider");
 const TemplateNode_1 = require("./explorer/online/TemplateNode");
 const uiUtils_1 = require("./utils/uiUtils");
 const templateChannel_1 = require("./templateChannel");
 const LocalTemplateTreeDataProvider_1 = require("./explorer/local/LocalTemplateTreeDataProvider");
 const LocalTemplateNode_1 = require("./explorer/local/LocalTemplateNode");
+const MineTemplateTreeDataProvider_1 = require("./explorer/mine/MineTemplateTreeDataProvider");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -22,6 +24,7 @@ function activate(context) {
         console.log('Congratulations, your extension "template" is now active!');
         TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
         LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider.refresh();
+        MineTemplateTreeDataProvider_1.mineTemplateTreeDataProvider.refresh();
         TemplateTreeDataProvider_1.templateTreeDataProvider.initialize(context);
         context.subscriptions.push(vscode.window.createTreeView("templateExplorer", {
             treeDataProvider: TemplateTreeDataProvider_1.templateTreeDataProvider,
@@ -29,15 +32,18 @@ function activate(context) {
         }), vscode.window.createTreeView("localTemplateExplorer", {
             treeDataProvider: LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider,
             showCollapseAll: true
+        }), vscode.window.createTreeView("mineTemplateExplorer", {
+            treeDataProvider: MineTemplateTreeDataProvider_1.mineTemplateTreeDataProvider,
+            showCollapseAll: true
         }), vscode.commands.registerCommand("template.updateExplorer", () => TemplateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.refreshExplorer", () => Promise.all([
             TemplateTreeDataProvider_1.templateTreeDataProvider.refresh(),
             LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider.refresh()
-        ])), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.loadTemplate", () => load.loadTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => operate.insertTemplate(node)), vscode.commands.registerCommand("template.editTemplate", (node) => {
+        ])), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.loadTemplate", () => load.loadTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => insert.insertTemplate(node)), vscode.commands.registerCommand("template.editTemplate", (node) => {
             if (node instanceof TemplateNode_1.TemplateNode)
                 edit.onlineEdit(node);
             if (node instanceof LocalTemplateNode_1.LocalTemplateNode)
                 edit.localEdit(node);
-        }));
+        }), vscode.commands.registerCommand("template.addFavorite", (node) => favorite.addFavorite(node)), vscode.commands.registerCommand("template.removeFavorite", (node) => favorite.removeFavorite(node)));
     }
     catch (err) {
         templateChannel_1.templateChannel.appendLine(err.toString());

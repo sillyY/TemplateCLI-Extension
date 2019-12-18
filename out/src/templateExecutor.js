@@ -111,6 +111,14 @@ class TemplateExecutor {
             }
         });
     }
+    /// local
+    listMineTreeNodes() {
+        return __awaiter(this, void 0, void 0, function* () {
+            // 读取配置文件，并返回
+            const data = fileUtils_1.file.data(fileUtils_1.file.mineConfigDir());
+            return data ? JSON.parse(data) : [];
+        });
+    }
 }
 exports.templateExecutor = new TemplateExecutor();
 //# sourceMappingURL=templateExecutor.js.map

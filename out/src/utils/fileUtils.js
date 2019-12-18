@@ -89,6 +89,13 @@ class File {
     localConfigDir() {
         return path.join(this.localDir(), "config.json");
     }
+    /// mine file ///
+    mineDir() {
+        return path.join(this.appDir(), "mine");
+    }
+    mineConfigDir() {
+        return path.join(this.mineDir(), "config.json");
+    }
 }
 exports.file = new File();
 //# sourceMappingURL=fileUtils.js.map

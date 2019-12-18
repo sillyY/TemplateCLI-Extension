@@ -7,6 +7,7 @@ import * as download from "./download";
 import { templateExecutor } from "../templateExecutor";
 import { TemplateState } from "../shared";
 import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
+import { MineTemplateNode } from "../explorer/mine/MineTemplateNode";
 
 async function onlineInsert(node: TemplateNode) {
   const res = file.data(file.onlineFile(node.fullname));
@@ -36,14 +37,19 @@ async function localInsert(node: LocalTemplateNode) {
   const res = file.data(file.localFile(node.fullname));
   if (res) return insertEditor(res);
 }
+async function mineInsert(node: MineTemplateNode) {
+  const res = file.data(node.path);
+  if (res) return insertEditor(res);
+}
 
 export async function insertTemplate(
-  node?: TemplateNode | LocalTemplateNode
+  node?: TemplateNode | LocalTemplateNode | MineTemplateNode
 ): Promise<void> {
   if (!node) return;
 
   if (node instanceof TemplateNode) return await onlineInsert(node);
   if (node instanceof LocalTemplateNode) return await localInsert(node);
+  if (node instanceof MineTemplateNode) return await mineInsert(node);
 }
 
 export async function insertEditor(data: string) {

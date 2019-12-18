@@ -95,6 +95,14 @@ class File {
   public localConfigDir() {
     return path.join(this.localDir(), "config.json");
   }
+
+  /// mine file ///
+  public mineDir() {
+    return path.join(this.appDir(), "mine");
+  }
+  public mineConfigDir() {
+    return path.join(this.mineDir(), "config.json");
+  }
 }
 
 export const file = new File();

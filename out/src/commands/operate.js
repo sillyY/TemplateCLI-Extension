@@ -18,6 +18,7 @@ const download = require("./download");
 const templateExecutor_1 = require("../templateExecutor");
 const shared_1 = require("../shared");
 const TemplateTreeDataProvider_1 = require("../explorer/online/TemplateTreeDataProvider");
+const MineTemplateNode_1 = require("../explorer/mine/MineTemplateNode");
 function onlineInsert(node) {
     return __awaiter(this, void 0, void 0, function* () {
         const res = fileUtils_1.file.data(fileUtils_1.file.onlineFile(node.fullname));
@@ -39,6 +40,9 @@ function localInsert(node) {
             return insertEditor(res);
     });
 }
+function mineInsert(node) {
+    return __awaiter(this, void 0, void 0, function* () { });
+}
 function insertTemplate(node) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!node)
@@ -47,6 +51,8 @@ function insertTemplate(node) {
             return yield onlineInsert(node);
         if (node instanceof LocalTemplateNode_1.LocalTemplateNode)
             return yield localInsert(node);
+        if (node instanceof MineTemplateNode_1.MineTemplateNode)
+            return yield mineInsert(node);
     });
 }
 exports.insertTemplate = insertTemplate;

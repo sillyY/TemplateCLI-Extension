@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const LocalExplorerNodeManage_1 = require("./LocalExplorerNodeManage");
-// import { TemplateState } from "../../shared";
 class LocalTemplateTreeDataProvider {
     constructor() {
         this.onDidChangeTreeDataEvent = new vscode.EventEmitter();

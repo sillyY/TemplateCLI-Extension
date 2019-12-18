@@ -32,9 +32,6 @@ class LocalExplorerNodeManager {
             this.explorerNodeSet.add(new LocalTemplateNode_1.LocalTemplateNode(treeItem));
         }
     }
-    getRootNodes() {
-        return [];
-    }
     getAllNodes() {
         return Array.from(this.explorerNodeSet.values());
     }

@@ -2,7 +2,12 @@ import { Disposable } from "vscode";
 import * as request from "request";
 import * as fs from "fs";
 import { file } from "./utils/fileUtils";
-import { ITreeNode, TemplateState, ILocalTreeNode } from "./shared";
+import {
+  ITreeNode,
+  TemplateState,
+  ILocalTreeNode,
+  IMineTreeNode
+} from "./shared";
 
 class TemplateExecutor implements Disposable {
   public dispose(): void {}
@@ -110,11 +115,13 @@ class TemplateExecutor implements Disposable {
   private updateLocalConfig(files: string[]): void {
     file.write(
       file.localConfigDir(),
-      JSON.stringify(files.map(value => {
-        return {
-          name: value
-        };
-      }))
+      JSON.stringify(
+        files.map(value => {
+          return {
+            name: value
+          };
+        })
+      )
     );
   }
   public async downloadExecute<
@@ -123,6 +130,13 @@ class TemplateExecutor implements Disposable {
     for (const cb of chain) {
       await cb;
     }
+  }
+
+  /// local
+  public async listMineTreeNodes(): Promise<IMineTreeNode[]> {
+    // 读取配置文件，并返回
+    const data = file.data(file.mineConfigDir());
+    return data ? JSON.parse(data) : [];
   }
 }
 export const templateExecutor: TemplateExecutor = new TemplateExecutor();

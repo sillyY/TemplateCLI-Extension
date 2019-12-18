@@ -1,8 +1,6 @@
 import * as vscode from "vscode";
-// import * as path from "path";
 import { LocalTemplateNode } from "./LocalTemplateNode";
 import { localExplorerNodeManager } from "./LocalExplorerNodeManage";
-// import { TemplateState } from "../../shared";
 
 export class LocalTemplateTreeDataProvider
   implements vscode.TreeDataProvider<LocalTemplateNode> {
@@ -20,7 +18,6 @@ export class LocalTemplateTreeDataProvider
   public getChildren(): vscode.ProviderResult<any[]> {
     return localExplorerNodeManager.getAllNodes();
   }
-
   public getTreeItem(element: LocalTemplateNode): vscode.TreeItem {
     return {
       label: element.name,

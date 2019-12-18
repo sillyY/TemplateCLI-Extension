@@ -25,4 +25,9 @@ exports.defaultLocalTreeNode = {
     name: "",
     extname: ""
 };
+exports.defaultMineTreeNode = {
+    name: "",
+    extname: "",
+    path: ""
+};
 //# sourceMappingURL=index.js.map

@@ -22,9 +22,7 @@ class LocalExplorerNodeManager implements Disposable {
       this.explorerNodeSet.add(new LocalTemplateNode(treeItem));
     }
   }
-  public getRootNodes(): LocalTemplateNode[] {
-    return [];
-  }
+
   public getAllNodes(): LocalTemplateNode[] {
     return Array.from(this.explorerNodeSet.values());
   }

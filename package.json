@@ -16,7 +16,8 @@
     "onCommand:template.insertTemplate",
     "onCommand:template.loadTemplate",
     "onView:templateExplorer",
-    "onView:localTemplateExplorer"
+    "onView:localTemplateExplorer",
+    "onView:mineTemplateExplorer"
   ],
   "main": "./out/src/extension.js",
   "contributes": {
@@ -70,6 +71,24 @@
           "light": "resources/light/edit.svg",
           "dark": "resources/dark/edit.svg"
         }
+      },
+      {
+        "command": "template.addFavorite",
+        "title": "Add Favorite",
+        "category": "Template",
+        "icon": {
+          "light": "resources/light/favorite.svg",
+          "dark": "resources/dark/favorite.svg"
+        }
+      },
+      {
+        "command": "template.removeFavorite",
+        "title": "Remove Favorite",
+        "category": "Template",
+        "icon": {
+          "light": "resources/light/favorite.svg",
+          "dark": "resources/dark/unfavorite.svg"
+        }
       }
     ],
     "viewsContainers": {
@@ -83,6 +102,10 @@
     },
     "views": {
       "template": [
+        {
+          "id": "mineTemplateExplorer",
+          "name": "Mine"
+        },
         {
           "id": "localTemplateExplorer",
           "name": "Local"
@@ -107,7 +130,7 @@
         },
         {
           "command": "template.refreshExplorer",
-          "when": "view == templateExplorer || view == localTemplateExplorer",
+          "when": "view == templateExplorer || view == localTemplateExplorer || view == mineTemplateExplorer",
           "group": "navigation@3"
         },
         {
@@ -120,6 +143,16 @@
         {
           "command": "template.editTemplate",
           "when": "view == templateExplorer && viewItem == template || view == localTemplateExplorer && viewItem == template",
+          "group": "inline"
+        },
+        {
+          "command": "template.addFavorite",
+          "when": "view == templateExplorer && viewItem == template || view == localTemplateExplorer && viewItem == template",
+          "group": "inline"
+        },
+        {
+          "command": "template.removeFavorite",
+          "when": "view == mineTemplateExplorer",
           "group": "inline"
         }
       ]
