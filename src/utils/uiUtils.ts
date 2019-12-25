@@ -1,6 +1,3 @@
-// Copyright (c) jdneo. All rights reserved.
-// Licensed under the MIT license.
-
 import * as vscode from "vscode";
 import { getWorkspaceConfiguration } from "./settingUtils";
 import { templateChannel } from "../templateChannel";
@@ -62,7 +59,7 @@ export async function showFileSelectDialog(fsPath?: string): Promise<vscode.Uri[
         defaultUri,
         canSelectFiles: true,
         canSelectFolders: false,
-        canSelectMany: false,
+        canSelectMany: true,
         openLabel: "Select",
     };
     return await vscode.window.showOpenDialog(options);

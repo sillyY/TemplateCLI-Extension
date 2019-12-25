@@ -21,7 +21,6 @@ function activate(context) {
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
     try {
-        console.log('Congratulations, your extension "template" is now active!');
         TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
         LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider.refresh();
         MineTemplateTreeDataProvider_1.mineTemplateTreeDataProvider.refresh();
@@ -37,7 +36,8 @@ function activate(context) {
             showCollapseAll: true
         }), vscode.commands.registerCommand("template.updateExplorer", () => TemplateTreeDataProvider_1.templateTreeDataProvider.update()), vscode.commands.registerCommand("template.refreshExplorer", () => Promise.all([
             TemplateTreeDataProvider_1.templateTreeDataProvider.refresh(),
-            LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider.refresh()
+            LocalTemplateTreeDataProvider_1.localTemplateTreeDataProvider.refresh(),
+            MineTemplateTreeDataProvider_1.mineTemplateTreeDataProvider.refresh()
         ])), vscode.commands.registerCommand("template.downloadTemplate", () => download.downloadTemplate()), vscode.commands.registerCommand("template.loadTemplate", () => load.loadTemplate()), vscode.commands.registerCommand("template.insertTemplate", (node) => insert.insertTemplate(node)), vscode.commands.registerCommand("template.editTemplate", (node) => {
             if (node instanceof TemplateNode_1.TemplateNode)
                 edit.onlineEdit(node);

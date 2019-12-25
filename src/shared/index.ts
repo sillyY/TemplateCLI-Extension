@@ -8,6 +8,9 @@ export enum Language {
   CSS = "CSS",
   JavaScript = "JavaScript"
 }
+// ONLINE
+export const ONLINE_BASE_URL =
+  "https://cdn.jsdelivr.net/gh/sillyY/template-library";
 
 export interface ITreeNode {
   id: string;
@@ -29,7 +32,7 @@ export const defaultTreeNode: ITreeNode = {
   extname: ""
 };
 
-/// LOCAL
+// LOCAL
 export interface ILocalTreeNode {
   name: string;
   extname: string;
@@ -40,7 +43,7 @@ export const defaultLocalTreeNode: ILocalTreeNode = {
   extname: ""
 };
 
-/// mine
+// MINE
 export interface IMineTreeNode {
   name: string;
   extname: string;
@@ -52,3 +55,8 @@ export const defaultMineTreeNode: IMineTreeNode = {
   extname: "",
   path: ""
 };
+
+export interface IMineConfig {
+  name: string;
+  path: string;
+}

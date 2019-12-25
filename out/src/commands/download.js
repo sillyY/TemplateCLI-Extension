@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const uiUtils_1 = require("../utils/uiUtils");
-const fileUtils_1 = require("../utils/fileUtils");
+const utils_1 = require("../utils");
+const shared_1 = require("../shared");
+const templateChannel_1 = require("../templateChannel");
 const templateExecutor_1 = require("../templateExecutor");
 const TemplateTreeDataProvider_1 = require("../explorer/online/TemplateTreeDataProvider");
-const shared_1 = require("../shared");
 function install(data, getPath, dir) {
     return __awaiter(this, void 0, void 0, function* () {
         let promises = [];
@@ -25,7 +25,6 @@ function install(data, getPath, dir) {
                     }));
                 }
                 catch (error) {
-                    console.log(error);
                     reject(error);
                 }
             }));
@@ -37,30 +36,31 @@ exports.install = install;
 function downloadTemplate() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const data = JSON.parse(fileUtils_1.file.data(fileUtils_1.file.onlineConfigDir()));
+            const data = JSON.parse(utils_1.file.data(utils_1.file.onlineConfigDir()));
             if (!data || !data.length)
                 return;
             // 1. 检查文件是否存在
-            fileUtils_1.file.mkdir(fileUtils_1.file.onlineDir());
+            utils_1.file.mkdir(utils_1.file.onlineDir());
             let chain = [];
             // 2. 下载数据
-            chain.push(install(data, fileUtils_1.file.onlineTemplateSrc, fileUtils_1.file.onlineDir()));
+            chain.push(install(data, utils_1.file.onlineTemplateSrc, utils_1.file.onlineDir()));
             // 3. 更新配置文件
-            chain.push(templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.onlineConfigDir(), JSON.parse(fileUtils_1.file.data(fileUtils_1.file.onlineConfigDir())).map(item => `${item.name}.${item.extname}`)));
+            chain.push(templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, utils_1.file.onlineConfigDir(), JSON.parse(utils_1.file.data(utils_1.file.onlineConfigDir())).map(item => `${item.name}.${item.extname}`)));
             yield templateExecutor_1.templateExecutor.downloadExecute(chain);
             TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
         }
-        catch (err) {
-            yield uiUtils_1.promptForOpenOutputChannel("Failed to download templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+        catch (error) {
+            templateChannel_1.templateChannel.appendLine(error);
+            yield utils_1.promptForOpenOutputChannel("Failed to download templates. Please open the output channel for details.", utils_1.DialogType.error);
         }
     });
 }
 exports.downloadTemplate = downloadTemplate;
 function installOneTemplate(node) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield install([node], fileUtils_1.file.onlineTemplateSrc.bind(fileUtils_1.file), fileUtils_1.file.onlineDir());
+        yield install([node], utils_1.file.onlineTemplateSrc.bind(utils_1.file), utils_1.file.onlineDir());
         // 2. 更新config
-        yield templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, fileUtils_1.file.onlineConfigDir(), [node.fullname]);
+        yield templateExecutor_1.templateExecutor.refreshTreeNodes(shared_1.TemplateState.Install, utils_1.file.onlineConfigDir(), [node.fullname]);
         // 3. 更新Extension状态
         TemplateTreeDataProvider_1.templateTreeDataProvider.refresh();
     });

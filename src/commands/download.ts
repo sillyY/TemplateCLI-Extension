@@ -1,11 +1,15 @@
-import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
-import { file } from "../utils/fileUtils";
+import { DialogType, promptForOpenOutputChannel, file } from "../utils";
+import { TemplateState, ITreeNode } from "../shared";
+import { templateChannel } from "../templateChannel";
 import { templateExecutor } from "../templateExecutor";
-import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
-import { TemplateState } from "../shared";
 import { TemplateNode } from "../explorer/online/TemplateNode";
+import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
 
-export async function install(data, getPath, dir): Promise<void[]> {
+export async function install(
+  data: ITreeNode[],
+  getPath: Function,
+  dir: string
+): Promise<void[]> {
   let promises: Promise<void>[] | null = [];
   for (const treeItem of data) {
     promises.push(
@@ -19,7 +23,6 @@ export async function install(data, getPath, dir): Promise<void[]> {
             }
           );
         } catch (error) {
-          console.log(error);
           reject(error);
         }
       })
@@ -55,7 +58,8 @@ export async function downloadTemplate(): Promise<void> {
     await templateExecutor.downloadExecute(chain);
 
     templateTreeDataProvider.refresh();
-  } catch (err) {
+  } catch (error) {
+    templateChannel.appendLine(error)
     await promptForOpenOutputChannel(
       "Failed to download templates. Please open the output channel for details.",
       DialogType.error

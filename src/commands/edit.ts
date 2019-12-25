@@ -1,13 +1,10 @@
 import * as vscode from "vscode";
 import * as download from "./download";
-import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
+import { DialogType, promptForOpenOutputChannel, file } from "../utils";
+import { templateChannel } from "../templateChannel";
 import { LocalTemplateNode } from "../explorer/local/LocalTemplateNode";
 import { TemplateNode } from "../explorer/online/TemplateNode";
-import { file } from "../utils/fileUtils";
 import { localTemplateTreeDataProvider } from "../explorer/local/LocalTemplateTreeDataProvider";
-import { templateExecutor } from "../templateExecutor";
-import { TemplateState } from "../shared";
-import { templateTreeDataProvider } from "../explorer/online/TemplateTreeDataProvider";
 
 export async function onlineEdit(node: TemplateNode) {
   try {
@@ -36,7 +33,8 @@ export async function onlineEdit(node: TemplateNode) {
 
     // 5. 打开本地副本文件
     vscode.window.showTextDocument(vscode.Uri.file(file.localFile(name)));
-  } catch (err) {
+  } catch (error) {
+    templateChannel.appendLine(error)
     await promptForOpenOutputChannel(
       "Failed to edit templates. Please open the output channel for details.",
       DialogType.error
@@ -49,7 +47,8 @@ export async function localEdit(node: LocalTemplateNode) {
     vscode.window.showTextDocument(
       vscode.Uri.file(file.localFile(node.fullname))
     );
-  } catch (err) {
+  } catch (error) {
+    templateChannel.appendLine(error)
     await promptForOpenOutputChannel(
       "Failed to edit templates. Please open the output channel for details.",
       DialogType.error

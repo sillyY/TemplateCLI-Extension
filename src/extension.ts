@@ -21,7 +21,6 @@ export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
   try {
-    console.log('Congratulations, your extension "template" is now active!');
 
     templateTreeDataProvider.refresh();
     localTemplateTreeDataProvider.refresh();
@@ -48,7 +47,8 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.registerCommand("template.refreshExplorer", () =>
         Promise.all([
           templateTreeDataProvider.refresh(),
-          localTemplateTreeDataProvider.refresh()
+          localTemplateTreeDataProvider.refresh(),
+          mineTemplateTreeDataProvider.refresh()
         ])
       ),
       vscode.commands.registerCommand("template.downloadTemplate", () =>

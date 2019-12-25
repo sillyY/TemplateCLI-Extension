@@ -1,18 +1,12 @@
 import * as vscode from "vscode";
-import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
+import { DialogType, promptForOpenOutputChannel,file, showFileSelectDialog } from "../utils";
+import { templateChannel } from "../templateChannel";
 import { templateExecutor } from "../templateExecutor";
-
-import { file } from "../utils/fileUtils";
 import { localTemplateTreeDataProvider } from "../explorer/local/LocalTemplateTreeDataProvider";
 
 export async function loadTemplate(): Promise<void> {
   try {
-    const res: vscode.Uri[] | undefined = await vscode.window.showOpenDialog({
-      canSelectFiles: true,
-      canSelectFolders: false,
-      canSelectMany: true,
-      openLabel: "Select"
-    });
+    const res: vscode.Uri[] | undefined = await showFileSelectDialog()
     if (!res || !res.length) return;
     // generate local file
     file.mkdir(file.localDir());
@@ -30,7 +24,8 @@ export async function loadTemplate(): Promise<void> {
       )
     );
     localTemplateTreeDataProvider.refresh()
-  } catch (err) {
+  } catch (error) {
+    templateChannel.appendLine(error)
     await promptForOpenOutputChannel(
       "Failed to add templates. Please open the output channel for details.",
       DialogType.error

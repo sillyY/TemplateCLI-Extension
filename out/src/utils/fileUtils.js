@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
-const config_1 = require("../shared/config");
+const shared_1 = require("../shared");
+const settingUtils_1 = require("./settingUtils");
 class File {
     isWindows() {
         return process.platform === "win32";
@@ -12,7 +13,7 @@ class File {
         return process.env.HOME || process.env.USERPROFILE || "";
     }
     homeDir() {
-        return path.join(this.userHomeDir(), ".tl");
+        return path.join(settingUtils_1.getWorkspaceFolder() || this.userHomeDir(), ".tl");
     }
     appDir() {
         const config = require("../shared/config");
@@ -55,9 +56,9 @@ class File {
             ? fs.readdirSync(fullpath).filter(pathname => pathname !== ".DS_Store")
             : null;
     }
-    /// online
+    // online
     onlineBaseSrc() {
-        return config_1.default.urls.base;
+        return shared_1.ONLINE_BASE_URL;
     }
     onlineConfigSrc() {
         return this.onlineBaseSrc() + "/config.json";
@@ -69,7 +70,7 @@ class File {
         name = name ? `/${name}` : "";
         return `${this.onlineBaseSrc()}/libs${language}${category}${name}${extname}`;
     }
-    /// online files ///
+    // online files
     onlineDir() {
         return path.join(this.appDir(), "online");
     }
@@ -79,7 +80,7 @@ class File {
     onlineConfigDir() {
         return path.join(this.onlineDir(), "config.json");
     }
-    /// local file ///
+    // local file
     localDir() {
         return path.join(this.appDir(), "local");
     }
@@ -89,7 +90,7 @@ class File {
     localConfigDir() {
         return path.join(this.localDir(), "config.json");
     }
-    /// mine file ///
+    // mine file
     mineDir() {
         return path.join(this.appDir(), "mine");
     }

@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 import * as download from "./download";
+import { DialogType, promptForOpenOutputChannel, file } from "../utils";
+import { templateChannel } from "../templateChannel";
 import { TemplateNode } from "../explorer/online/TemplateNode";
-import { file } from "../utils/fileUtils";
-import { DialogType, promptForOpenOutputChannel } from "../utils/uiUtils";
 import { LocalTemplateNode } from "../explorer/local/LocalTemplateNode";
 import { MineTemplateNode } from "../explorer/mine/MineTemplateNode";
 
@@ -54,7 +54,8 @@ export async function insertEditor(data: string) {
         data
       );
     });
-  } catch (err) {
+  } catch (error) {
+    templateChannel.appendLine(error)
     await promptForOpenOutputChannel(
       "Failed to insert templates. Please open the output channel for details.",
       DialogType.error

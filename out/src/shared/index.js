@@ -12,6 +12,8 @@ var Language;
     Language["CSS"] = "CSS";
     Language["JavaScript"] = "JavaScript";
 })(Language = exports.Language || (exports.Language = {}));
+// ONLINE
+exports.ONLINE_BASE_URL = "https://cdn.jsdelivr.net/gh/sillyY/template-library";
 exports.defaultTreeNode = {
     id: "",
     name: "",

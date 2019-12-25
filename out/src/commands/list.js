@@ -9,19 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import * as vscode from "vscode";
-// import { ITreeNode } from "../shared";
-const templateExecutor_1 = require("../templateExecutor");
+const utils_1 = require("../utils");
 const shared_1 = require("../shared");
-const fileUtils_1 = require("../utils/fileUtils");
-const uiUtils_1 = require("../utils/uiUtils");
+const templateChannel_1 = require("../templateChannel");
+const templateExecutor_1 = require("../templateExecutor");
 function listTreeNodes() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             return setTreeNodes(yield templateExecutor_1.templateExecutor.listTreeNodes());
         }
         catch (error) {
-            yield uiUtils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+            templateChannel_1.templateChannel.appendLine(error);
+            yield utils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", utils_1.DialogType.error);
             return [];
         }
     });
@@ -33,7 +32,8 @@ function updateListTreeNodes() {
             return setTreeNodes(yield templateExecutor_1.templateExecutor.updateListTreeNodes());
         }
         catch (error) {
-            yield uiUtils_1.promptForOpenOutputChannel("Failed to update templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+            templateChannel_1.templateChannel.appendLine(error);
+            yield utils_1.promptForOpenOutputChannel("Failed to update templates. Please open the output channel for details.", utils_1.DialogType.error);
             return [];
         }
     });
@@ -42,7 +42,7 @@ exports.updateListTreeNodes = updateListTreeNodes;
 function setTreeNodes(result) {
     const treeNodes = [];
     for (const node of result) {
-        if (fileUtils_1.file.exist(fileUtils_1.file.onlineDir() + "/" + node.name + node.extname)) {
+        if (utils_1.file.exist(utils_1.file.onlineDir() + "/" + node.name + node.extname)) {
             treeNodes.push(Object.assign(Object.assign({}, node), {
                 state: shared_1.TemplateState.Install
             }));
@@ -58,7 +58,8 @@ function listLocalTreeNodes() {
             return yield templateExecutor_1.templateExecutor.listLocalTreeNodes();
         }
         catch (error) {
-            yield uiUtils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+            templateChannel_1.templateChannel.appendLine(error);
+            yield utils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", utils_1.DialogType.error);
             return [];
         }
     });
@@ -71,7 +72,8 @@ function listMineTreeNodes() {
             return yield templateExecutor_1.templateExecutor.listMineTreeNodes();
         }
         catch (error) {
-            yield uiUtils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+            templateChannel_1.templateChannel.appendLine(error);
+            yield utils_1.promptForOpenOutputChannel("Failed to list templates. Please open the output channel for details.", utils_1.DialogType.error);
             return [];
         }
     });

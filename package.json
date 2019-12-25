@@ -156,7 +156,18 @@
           "group": "inline"
         }
       ]
-    }
+    },
+    "configuration": [{
+      "title": "Template",
+      "properties": {
+        "template.workspaceFolder": {
+          "type": "string",
+          "scope": "application",
+          "description": "The path of the workspace folder to store the template files.",
+          "default": ""
+        }
+      }
+    }]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

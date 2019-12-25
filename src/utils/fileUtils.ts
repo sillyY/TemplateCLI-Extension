@@ -1,8 +1,9 @@
 import * as path from "path";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
-import DEFAULT_CONFIG from "../shared/config";
+import { ONLINE_BASE_URL } from "../shared";
 import { TemplateNode } from "../explorer/online/TemplateNode";
+import { getWorkspaceFolder } from "./settingUtils";
 
 class File {
   public isWindows() {
@@ -12,7 +13,7 @@ class File {
     return process.env.HOME || process.env.USERPROFILE || "";
   }
   public homeDir() {
-    return path.join(this.userHomeDir(), ".tl");
+    return path.join(getWorkspaceFolder() || this.userHomeDir(), ".tl");
   }
   public appDir() {
     const config = require("../shared/config");
@@ -58,9 +59,9 @@ class File {
       : null;
   }
 
-  /// online
+  // online
   public onlineBaseSrc() {
-    return DEFAULT_CONFIG.urls.base;
+    return ONLINE_BASE_URL;
   }
   public onlineConfigSrc() {
     return this.onlineBaseSrc() + "/config.json";
@@ -74,7 +75,7 @@ class File {
     return `${this.onlineBaseSrc()}/libs${language}${category}${name}${extname}`;
   }
 
-  /// online files ///
+  // online files
   public onlineDir() {
     return path.join(this.appDir(), "online");
   }
@@ -85,7 +86,7 @@ class File {
     return path.join(this.onlineDir(), "config.json");
   }
 
-  /// local file ///
+  // local file
   public localDir() {
     return path.join(this.appDir(), "local");
   }
@@ -96,7 +97,7 @@ class File {
     return path.join(this.localDir(), "config.json");
   }
 
-  /// mine file ///
+  // mine file
   public mineDir() {
     return path.join(this.appDir(), "mine");
   }

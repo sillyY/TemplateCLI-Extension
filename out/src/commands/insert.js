@@ -11,14 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const download = require("./download");
+const utils_1 = require("../utils");
+const templateChannel_1 = require("../templateChannel");
 const TemplateNode_1 = require("../explorer/online/TemplateNode");
-const fileUtils_1 = require("../utils/fileUtils");
-const uiUtils_1 = require("../utils/uiUtils");
 const LocalTemplateNode_1 = require("../explorer/local/LocalTemplateNode");
 const MineTemplateNode_1 = require("../explorer/mine/MineTemplateNode");
 function onlineInsert(node) {
     return __awaiter(this, void 0, void 0, function* () {
-        const res = fileUtils_1.file.data(fileUtils_1.file.onlineFile(node.fullname));
+        const res = utils_1.file.data(utils_1.file.onlineFile(node.fullname));
         if (res)
             return insertEditor(res);
         // 1. 下载文件
@@ -28,14 +28,14 @@ function onlineInsert(node) {
 }
 function localInsert(node) {
     return __awaiter(this, void 0, void 0, function* () {
-        const res = fileUtils_1.file.data(fileUtils_1.file.localFile(node.fullname));
+        const res = utils_1.file.data(utils_1.file.localFile(node.fullname));
         if (res)
             return insertEditor(res);
     });
 }
 function mineInsert(node) {
     return __awaiter(this, void 0, void 0, function* () {
-        const res = fileUtils_1.file.data(node.path);
+        const res = utils_1.file.data(node.path);
         if (res)
             return insertEditor(res);
     });
@@ -58,15 +58,16 @@ function insertEditor(data) {
         try {
             const editor = vscode.window.activeTextEditor;
             if (!editor) {
-                yield uiUtils_1.promptForOpenOutputChannel("Failed to found Editor. Please open the Editor.", uiUtils_1.DialogType.warning);
+                yield utils_1.promptForOpenOutputChannel("Failed to found Editor. Please open the Editor.", utils_1.DialogType.warning);
                 return; // No open text editor
             }
             editor.edit(builder => {
                 builder.insert(new vscode.Position(editor.selection.end.line, editor.selection.end.character), data);
             });
         }
-        catch (err) {
-            yield uiUtils_1.promptForOpenOutputChannel("Failed to insert templates. Please open the output channel for details.", uiUtils_1.DialogType.error);
+        catch (error) {
+            templateChannel_1.templateChannel.appendLine(error);
+            yield utils_1.promptForOpenOutputChannel("Failed to insert templates. Please open the output channel for details.", utils_1.DialogType.error);
         }
     });
 }

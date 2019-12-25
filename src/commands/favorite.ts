@@ -1,15 +1,16 @@
 import * as download from "./download";
-import { promptForOpenOutputChannel, DialogType } from "../utils/uiUtils";
+import { promptForOpenOutputChannel, DialogType, file } from "../utils";
+import { IMineConfig } from "../shared";
+import { templateChannel } from '../templateChannel'
 import { TemplateNode } from "../explorer/online/TemplateNode";
 import { LocalTemplateNode } from "../explorer/local/LocalTemplateNode";
-import { file } from "../utils/fileUtils";
-import { mineTemplateTreeDataProvider } from "../explorer/mine/MineTemplateTreeDataProvider";
 import { MineTemplateNode } from "../explorer/mine/MineTemplateNode";
+import { mineTemplateTreeDataProvider } from "../explorer/mine/MineTemplateTreeDataProvider";
 
 export async function like(
   node: TemplateNode | LocalTemplateNode,
   getPath: Function
-): Promise<any[]> {
+): Promise<IMineConfig[]> {
   // TODO: 抽离下载在线文件模块
   if (
     node instanceof TemplateNode &&
@@ -23,7 +24,7 @@ export async function like(
     return [{ name: node.fullname, path: getPath.call(file, node.fullname) }];
 
   // TODO: 优化数组更新机制
-  let arr = JSON.parse(config);
+  let arr: IMineConfig[] = JSON.parse(config);
 
   if (!arr.filter(item => item.name === node.fullname).length) {
     arr.push({
@@ -52,6 +53,7 @@ export async function addFavorite(node: TemplateNode | LocalTemplateNode) {
     // 更新Extension状态
     mineTemplateTreeDataProvider.refresh();
   } catch (error) {
+    templateChannel.appendLine(error)
     await promptForOpenOutputChannel(
       "Failed to add Favorite. Please open the output channel for details.",
       DialogType.error
@@ -70,6 +72,7 @@ export async function removeFavorite(node: MineTemplateNode) {
     // 更新Extension状态
     mineTemplateTreeDataProvider.refresh();
   } catch (error) {
+    templateChannel.appendLine(error)
     await promptForOpenOutputChannel(
       "Failed to remove Favorite. Please open the output channel for details.",
       DialogType.error
