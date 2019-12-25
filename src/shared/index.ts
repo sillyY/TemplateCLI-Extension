@@ -8,6 +8,11 @@ export enum Language {
   CSS = "CSS",
   JavaScript = "JavaScript"
 }
+export enum ConfigStatus {
+  Change = 1,
+  UnChange = 2,
+  NoExist = 3,
+}
 // ONLINE
 export const ONLINE_BASE_URL =
   "https://cdn.jsdelivr.net/gh/sillyY/template-library";

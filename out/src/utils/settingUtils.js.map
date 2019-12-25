@@ -1,1 +1,0 @@
-{"version":3,"file":"settingUtils.js","sourceRoot":"","sources":["../../../src/utils/settingUtils.ts"],"names":[],"mappings":";;AAAA,mCAA2D;AAE3D,SAAgB,yBAAyB;IACrC,OAAO,kBAAS,CAAC,gBAAgB,CAAC,UAAU,CAAC,CAAC;AAClD,CAAC;AAFD,8DAEC;AAED,SAAgB,kBAAkB;IAC9B,OAAO,yBAAyB,EAAE,CAAC,GAAG,CAAS,iBAAiB,EAAE,EAAE,CAAC,CAAC;AAC1E,CAAC;AAFD,gDAEC"}
