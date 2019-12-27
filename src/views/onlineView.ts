@@ -1,16 +1,16 @@
 import { ViewBase } from "./viewBase";
+import { OnlineNode } from "./node/onlineNode";
 
 export class OnlineView extends ViewBase {
-    private _remote: string;
-    get remote() {
-        return 
-    }
-    constructor() {
-        super()
-    }
+  constructor() {
+    super();
+  }
 
-    initialize() {
-        
-    }
-
+  getRoot() {
+    return new OnlineNode(this);
+  }
+  initialize() {
+      
+  }
+  protected registerCommands() {}
 }

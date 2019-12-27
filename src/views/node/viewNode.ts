@@ -1,5 +1,6 @@
 import { TreeItem } from "vscode";
 import { View } from "../viewBase";
+import { IOnlineLibrary, ILocalLibrary, IMineLibrary } from "../../library";
 
 export abstract class ViewNode<TView extends View = View> {
   constructor(
@@ -7,6 +8,9 @@ export abstract class ViewNode<TView extends View = View> {
     protected readonly parent?: ViewNode
   ) {}
 
+  abstract _path: string;
+  abstract initConfiguration(): void;
+  
   abstract getChildren(): ViewNode<TView>[] | Promise<ViewNode<TView>[]>;
   getParent(): ViewNode | undefined {
     return this.parent;
@@ -20,7 +24,9 @@ export abstract class ViewNode<TView extends View = View> {
     return this.view.refreshNode(this, reset);
   }
 
-  triggerConfigChange(reset: boolean = false): Promise<void> {
-    return this.view.refreshConfig(this, reset)
+  triggerConfigChange(
+    data: IOnlineLibrary | ILocalLibrary | IMineLibrary
+  ): Promise<void> {
+    return this.view.refreshConfig(this, data);
   }
 }
