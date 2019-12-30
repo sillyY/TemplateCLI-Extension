@@ -20,14 +20,14 @@ export class OnlineNode extends ViewNode<OnlineView> {
     this._remote = REMOTE_URL;
   }
 
-  initConfiguration() {
-      
-  }
+  initConfiguration() {}
   async getChildren(): Promise<ViewNode[]> {
-    return [];
+    return [this];
   }
 
   getTreeItem(): TreeItem {
-    return {};
+    return {
+      label: "123"
+    };
   }
 }

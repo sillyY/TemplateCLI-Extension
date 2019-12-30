@@ -1,16 +1,19 @@
 import { ViewBase } from "./viewBase";
 import { OnlineNode } from "./node/onlineNode";
 
-export class OnlineView extends ViewBase {
+export class OnlineView extends ViewBase<OnlineNode> {
   constructor() {
-    super();
+    super("template.views.online");
   }
 
   getRoot() {
     return new OnlineNode(this);
   }
-  initialize() {
-      
-  }
   protected registerCommands() {}
+
+  protected onConfigurationChange() {
+    this.initialize('explorer')
+  }
+
+
 }

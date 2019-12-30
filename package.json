@@ -10,14 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:template.updateExplorer",
-    "onCommand:template.refreshExplorer",
-    "onCommand:template.downloadTemplate",
-    "onCommand:template.insertTemplate",
-    "onCommand:template.loadTemplate",
-    "onView:templateExplorer",
-    "onView:localTemplateExplorer",
-    "onView:mineTemplateExplorer"
+    "*"
   ],
   "main": "./out/src/extension.js",
   "contributes": {
@@ -95,7 +88,7 @@
       "activitybar": [
         {
           "id": "template",
-          "title": "template",
+          "title": "Template",
           "icon": "resources/icon.svg"
         }
       ]
@@ -103,16 +96,16 @@
     "views": {
       "template": [
         {
-          "id": "mineTemplateExplorer",
+          "id": "template.views.min:explorer",
           "name": "Mine"
         },
         {
-          "id": "localTemplateExplorer",
-          "name": "Local"
+          "id": "template.views.online:explorer",
+          "name": "Online"
         },
         {
-          "id": "templateExplorer",
-          "name": "Online"
+          "id": "template.views.local:explorer",
+          "name": "Local"
         }
       ]
     },
@@ -157,17 +150,19 @@
         }
       ]
     },
-    "configuration": [{
-      "title": "Template",
-      "properties": {
-        "template.workspaceFolder": {
-          "type": "string",
-          "scope": "application",
-          "description": "The path of the workspace folder to store the template files.",
-          "default": ""
+    "configuration": [
+      {
+        "title": "Template",
+        "properties": {
+          "template.workspaceFolder": {
+            "type": "string",
+            "scope": "application",
+            "description": "The path of the workspace folder to store the template files.",
+            "default": ""
+          }
         }
       }
-    }]
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

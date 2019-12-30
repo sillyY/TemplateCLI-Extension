@@ -1,5 +1,5 @@
 import { EventEmitter, Event } from "vscode";
-import { ViewNode } from "./views/node";
+// import { ViewNode } from "./views/node";
 
 export interface IOnlineLibrary {
   id: string;

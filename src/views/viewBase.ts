@@ -4,7 +4,8 @@ import {
   TreeItem,
   EventEmitter,
   TreeView,
-  window
+  window,
+  Event
 } from "vscode";
 import { ViewNode } from "./node";
 import { OnlineView } from "./onlineView";
@@ -17,7 +18,7 @@ import {
 
 export type View = OnlineView;
 
-export abstract class ViewBase
+export abstract class ViewBase<TRoot extends ViewNode<View>>
   implements TreeDataProvider<ViewNode<View>>, Disposable {
   protected _onDidChangeTreeData = new EventEmitter<ViewNode>();
   get onDidChangeTreeData(): Event<ViewNode> {
@@ -25,13 +26,18 @@ export abstract class ViewBase
   }
 
   protected _disposable: Disposable | undefined;
+  protected _root: TRoot | undefined;
   protected _tree: TreeView<ViewNode> | undefined;
 
-  constructor() {
+  constructor(public readonly id: string) {
     this.registerCommands();
+
+    this.onConfigurationChange()
   }
   dispose() {}
 
+  protected abstract getRoot(): TRoot;
+  
   protected initialize(
     container?: string,
     options: { showCollapseAll?: boolean } = {}
@@ -40,18 +46,29 @@ export abstract class ViewBase
       this._disposable.dispose();
       this._onDidChangeTreeData = new EventEmitter<ViewNode>();
     }
-    this._tree = window.createTreeView(container ? container : "", {
+    this._tree = window.createTreeView(`${this.id}${container ? `:${container}` : ''}`, {
       ...options,
       treeDataProvider: this
     });
     
   }
   protected abstract registerCommands(): void;
+  protected abstract onConfigurationChange(): void
+
+  protected ensureRoot() {
+		if (this._root === undefined) {
+			this._root = this.getRoot();
+		}
+
+		return this._root;
+	}
   getChildren(
     node?: ViewNode<View>
   ): ViewNode<View>[] | Promise<ViewNode<View>[]> {
     if (node !== void 0) return node.getChildren();
-    return [];
+
+    const root = this.ensureRoot();
+    return root.getChildren();
   }
 
   getParent(node: ViewNode<View>): ViewNode<View> | undefined {
@@ -62,7 +79,9 @@ export abstract class ViewBase
     return node.getTreeItem();
   }
 
-  async refreshNode(node: ViewNode, reset: boolean = false) {}
+  async refreshNode(node: ViewNode, reset: boolean = false) {
+    console.log(node, reset)
+  }
 
   async refreshConfig(
     node: ViewNode,
