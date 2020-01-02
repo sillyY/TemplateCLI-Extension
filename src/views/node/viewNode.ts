@@ -8,9 +8,12 @@ export abstract class ViewNode<TView extends View = View> {
     protected readonly parent?: ViewNode
   ) {}
 
-  abstract initConfiguration(): void;
+  initConfiguration(): void {
+    
+  }
   
   abstract getChildren(): ViewNode<TView>[] | Promise<ViewNode<TView>[]>;
+
   getParent(): ViewNode | undefined {
     return this.parent;
   }
