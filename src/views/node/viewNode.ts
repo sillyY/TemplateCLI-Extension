@@ -8,7 +8,6 @@ export abstract class ViewNode<TView extends View = View> {
     protected readonly parent?: ViewNode
   ) {}
 
-  abstract _path: string;
   abstract initConfiguration(): void;
   
   abstract getChildren(): ViewNode<TView>[] | Promise<ViewNode<TView>[]>;
@@ -25,7 +24,7 @@ export abstract class ViewNode<TView extends View = View> {
   }
 
   triggerConfigChange(
-    data: IOnlineLibrary | ILocalLibrary | IMineLibrary
+    data: (IOnlineLibrary | ILocalLibrary | IMineLibrary)[]
   ): Promise<void> {
     return this.view.refreshConfig(this, data);
   }

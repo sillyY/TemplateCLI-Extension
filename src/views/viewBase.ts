@@ -9,8 +9,7 @@ import {
 } from "vscode";
 import { ViewNode } from "./node";
 import { OnlineView } from "./onlineView";
-import {
-  library,
+import Library, {
   IOnlineLibrary,
   ILocalLibrary,
   IMineLibrary
@@ -55,6 +54,12 @@ export abstract class ViewBase<TRoot extends ViewNode<View>>
   protected abstract registerCommands(): void;
   protected abstract onConfigurationChange(): void
 
+  protected abstract initLibrary(): void
+  protected  _library: Library
+  get library() {
+    return this._library
+  }
+
   protected ensureRoot() {
 		if (this._root === undefined) {
 			this._root = this.getRoot();
@@ -85,8 +90,8 @@ export abstract class ViewBase<TRoot extends ViewNode<View>>
 
   async refreshConfig(
     node: ViewNode,
-    data: IOnlineLibrary | ILocalLibrary | IMineLibrary
+    data: (IOnlineLibrary | ILocalLibrary | IMineLibrary)[]
   ) {
-    library.triggerChange(node._path, data);
+    this._library.triggerChange(data);
   }
 }

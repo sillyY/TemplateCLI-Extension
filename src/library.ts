@@ -1,5 +1,8 @@
-import { EventEmitter, Event } from "vscode";
-// import { ViewNode } from "./views/node";
+import { EventEmitter, Event, Disposable } from "vscode";
+import { file } from "./utils";
+import { requestAndSave } from "./utils/request";
+import { REMOTE_URL } from "./views/node/onlineNode";
+import { View } from "./views/viewBase";
 
 export interface IOnlineLibrary {
   id: string;
@@ -20,12 +23,11 @@ export interface IMineLibrary {
   extname: string;
   path: string;
 }
-export interface ILibraryChange {
-  path: string;
-  library: IOnlineLibrary | ILocalLibrary | IMineLibrary;
-}
+export type ILibraryChange = (IOnlineLibrary | ILocalLibrary | IMineLibrary)[];
 
-class Library {
+class Library implements Disposable {
+  private readonly _disposable: Disposable;
+
   private _onDidOnlineChange = new EventEmitter<ILibraryChange>();
   get onDidOnlineChange(): Event<ILibraryChange> {
     return this._onDidOnlineChange.event;
@@ -41,38 +43,81 @@ class Library {
     return this._onDidMineChange.event;
   }
 
-  fireOnlineChanged(data: ILibraryChange) {
-    this._onDidOnlineChange.fire(data);
+  constructor(view: View, dst: string) {
+    this._view = view;
+
+    this.initialize(dst);
+
+    this._disposable = Disposable.from(
+      this.onDidOnlineChange(this.onLibraryChanged, this),
+      this.onDidLocalChange(this.onLibraryChanged, this),
+      this.onDidMineChange(this.onLibraryChanged, this)
+    );
   }
 
-  fireLocalChanged(data: ILibraryChange) {
-    this._onDidLocalChange.fire(data);
+  private _dst: string;
+  get dst() {
+    return this._dst;
   }
 
-  fireMineChanged(data: ILibraryChange) {
-    this._onDidMineChange.fire(data);
+  private _libraries: ILibraryChange;
+  get libraries() {
+    return this._libraries;
   }
-  triggerChange(
-    path: string,
-    library: IOnlineLibrary | ILocalLibrary | IMineLibrary
-  ) {
-    if ("id" in library) {
-      this.fireOnlineChanged({
-        path,
-        library
-      });
-    } else if ("path" in library) {
-      this.fireMineChanged({
-        path,
-        library
-      });
+
+  private _remote: string;
+  get remote() {
+    return this._remote;
+  }
+  private _view: View;
+  get view() {
+    return this.view;
+  }
+
+  initialize(dst: string) {
+    this._dst = dst;
+    file.mkdir(file.dirname(dst));
+    this._remote = REMOTE_URL;
+  }
+
+  initLibrary() {
+    const data = file.data(this._dst);
+    this._libraries = data ? JSON.parse(data) : [];
+  }
+
+  dispose() {
+    this._disposable && this._disposable.dispose();
+  }
+
+  fireOnlineChanged(libraries: IOnlineLibrary[]) {
+    this._onDidOnlineChange.fire(libraries);
+  }
+
+  fireLocalChanged(libraries: ILocalLibrary[]) {
+    this._onDidLocalChange.fire(libraries);
+  }
+
+  fireMineChanged(libraries: IMineLibrary[]) {
+    this._onDidMineChange.fire(libraries);
+  }
+  triggerChange(libraries: ILibraryChange) {
+    if ("id" in libraries) {
+      this.fireOnlineChanged(libraries);
+    } else if ("path" in libraries) {
+      this.fireMineChanged(libraries);
     } else {
-      this.fireLocalChanged({
-        path,
-        library
-      });
+      this.fireLocalChanged(libraries);
     }
+  }
+
+  private onLibraryChanged(libraries: ILibraryChange) {
+    file.write(this._dst, JSON.stringify(libraries));
+  }
+
+  async fetchLibrary() {
+    await requestAndSave(this._remote, this._dst);
+    this.initLibrary()
   }
 }
 
-export const library = new Library();
+export default Library;
