@@ -1,9 +1,9 @@
 import { ViewBase } from "./viewBase";
-import { OnlineNode } from "./node/onlineNode";
+import { OnlinesNode } from "./node/onlinesNode";
 import Library from "../library";
 import { configuration } from "../services/configuration";
 
-export class OnlineView extends ViewBase<OnlineNode> {
+export class OnlineView extends ViewBase<OnlinesNode> {
   constructor() {
     super("template.views.online");
   }
@@ -13,7 +13,7 @@ export class OnlineView extends ViewBase<OnlineNode> {
   }
 
   getRoot() {
-    return new OnlineNode(this);
+    return new OnlinesNode(this);
   }
   protected registerCommands() {}
 
@@ -24,6 +24,6 @@ export class OnlineView extends ViewBase<OnlineNode> {
   }
 
   protected initLibrary() {
-    this._library = new Library(this, configuration.onlineFolder());
+    this._library = new Library(this, configuration.onlineLibraryFile());
   }
 }

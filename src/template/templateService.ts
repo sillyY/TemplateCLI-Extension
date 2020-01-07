@@ -1,37 +1,23 @@
-import { Disposable } from "vscode";import { file } from "../utils";
-import { Online } from "../models/online";
+import { Disposable,  EventEmitter, Event } from "vscode";
 
 export class TemplateService implements Disposable {
   private readonly _disposable: Disposable;
 
-  private id
-
-  constructor() {
-    // this._disposable = Disposable.from(
-    //   library.onDidOnlineChange(this.onLibraryChanged, this),
-    //   library.onDidLocalChange(this.onLibraryChanged, this),
-    //   library.onDidMineChange(this.onLibraryChanged, this)
-    // );
+  private _onDidChangeTemplates = new EventEmitter<void>();
+  get onDidChangeTemplates(): Event<void> {
+    return this._onDidChangeTemplates.event;
   }
+
   dispose() {
     this._disposable && this._disposable.dispose();
   }
-  static async initialize(): Promise<void> {
-    // this._path = path
-  }
-  async getOnlineTemplates(): Promise<any[]> {
-    const templateTree = await this.fetchOnlineTemplates();
-    console.log(templateTree)
-    
-    return []
+  constructor() {}
+
+  private fireTemplatesChanged() {
+    this._onDidChangeTemplates.fire();
   }
 
-  async fetchOnlineTemplates() {
-    
-  }
-
-  private onLibraryChanged({ path, library }) {
-    file.mkdir(file.dirname(path));
-    file.write(path, JSON.stringify(library));
+  consoleFire() {
+    this.fireTemplatesChanged()
   }
 }

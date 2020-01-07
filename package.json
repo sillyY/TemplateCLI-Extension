@@ -100,12 +100,12 @@
           "name": "Mine"
         },
         {
-          "id": "template.views.online:explorer",
-          "name": "Online"
-        },
-        {
           "id": "template.views.local:explorer",
           "name": "Local"
+        },
+        {
+          "id": "template.views.online:explorer",
+          "name": "Online"
         }
       ]
     },

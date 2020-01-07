@@ -3,6 +3,7 @@ import { file } from "./utils";
 import { requestAndSave } from "./utils/request";
 import { REMOTE_URL } from "./views/node/onlineNode";
 import { View } from "./views/viewBase";
+import { LanguageType } from "./model/model";
 
 export interface IOnlineLibrary {
   id: string;
@@ -25,7 +26,7 @@ export interface IMineLibrary {
 }
 export type ILibraryChange = (IOnlineLibrary | ILocalLibrary | IMineLibrary)[];
 
-class Library implements Disposable {
+class Library<T extends ILibraryChange> implements Disposable {
   private readonly _disposable: Disposable;
 
   private _onDidOnlineChange = new EventEmitter<ILibraryChange>();
@@ -60,7 +61,7 @@ class Library implements Disposable {
     return this._dst;
   }
 
-  private _libraries: ILibraryChange;
+  private _libraries: T;
   get libraries() {
     return this._libraries;
   }
@@ -110,13 +111,38 @@ class Library implements Disposable {
     }
   }
 
+  consoleTemp() {
+    console.log(this._view);
+  }
+  /**
+   * @description: 根据language 获取categories
+   * @param {LanguageType} lang language
+   * @return: categories分类
+   */
+  getCategories(lang: LanguageType): string[] {
+    let obj = {};
+    this._libraries.forEach((item: IOnlineLibrary) => {
+      if (item.language === lang) {
+        if (!obj[item.category]) {
+          obj[item.category] = true;
+        }
+        // NOTE: 不存在category，直接通过name 加入
+        if (!item.category) {
+          obj[item.name] = true;
+        }
+      }
+    });
+    return Object.keys(obj);
+  }
+
+
   private onLibraryChanged(libraries: ILibraryChange) {
     file.write(this._dst, JSON.stringify(libraries));
   }
 
   async fetchLibrary() {
     await requestAndSave(this._remote, this._dst);
-    this.initLibrary()
+    this.initLibrary();
   }
 }
 

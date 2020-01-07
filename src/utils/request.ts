@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { file } from "./file";
 
 export async function requestAndSave(url: string, dst: string) {
-  try {
+  return new Promise((resolve, reject) => {
     const srcstream = request(url);
     const dststream = fs.createWriteStream(dst);
     let error;
@@ -19,12 +19,11 @@ export async function requestAndSave(url: string, dst: string) {
     dststream.on("error", function(e) {
       error = e;
       dststream.end();
+      reject(error)
     });
     dststream.on("close", function() {
       if (error) file.rm(dst);
-      return;
+      resolve()
     });
-  } catch (err) {
-    console.log(err);
-  }
+  })
 }
