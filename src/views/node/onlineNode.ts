@@ -60,11 +60,12 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
               new OnlineNode(this.view, this, new OnlineModel(item))
           );
         }
+        // NOTE: 如果是category，name 代表category，如果是template，代表name
         children = this.getCategories(this._model.name);
       }
 
       if (this._model instanceof CategoryModel) {
-        children = this.getTemplates();
+        children = this.getTemplates(this._model.name, this._model.lang);
       }
 
       this._children = children;
@@ -73,25 +74,44 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
   }
 
   private getCategories(lang: string): OnlineNode[] {
-    let obj = {};
+    let categoryMap = new Map(),
+      templateMap = new Map();
     for (const value of this.view.library.libraries) {
-      if (value.language !== lang) break;
+      if (value.language !== lang) continue;
       if (!value.category) {
-        obj[value.name] = true;
-        break;
+        templateMap.set(
+          value.name,
+          new OnlineNode(this.view, this, new OnlineModel(value))
+        );
+        continue;
       }
-      if (!obj[value.category]) {
-        obj[value.category] = true;
+      if (!categoryMap.has(value.category)) {
+        categoryMap.set(
+          value.category,
+          new OnlineNode(
+            this.view,
+            this,
+            new CategoryModel(value.category, lang)
+          )
+        );
       }
     }
-    return Object.keys(obj).map(
-      (name: string) =>
-        new OnlineNode(this.view, this, new CategoryModel(name, lang))
-    );
+    return [...categoryMap.values(), ...templateMap.values()];
   }
 
-  private getTemplates(): OnlineModel[] {
-    return [];
+  private getTemplates(category: string, lang: string): OnlineModel[] {
+    let templateMap = new Map();
+
+    if (category === void 0 || lang === void 0) return [];
+    for (const value of this.view.library.libraries) {
+      if (value.category === category && value.language === lang) {
+        templateMap.set(
+          value.name,
+          new OnlineNode(this.view, this, new OnlineModel(value))
+        );
+      }
+    }
+    return [...templateMap.values()];
   }
   /**
    * @description: 从库中获取指定key的nodes
