@@ -50,8 +50,9 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
       let children: any[] = [];
 
       const libraries = this.view.library.libraries;
-      if (!libraries || libraries.length)
+      if (!libraries || !libraries.length) {
         await this.view.library.fetchLibrary();
+      }
 
       if (this._model instanceof LangModel) {
         if (this._model.name === LanguageType.ALL) {
@@ -113,19 +114,6 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
     }
     return [...templateMap.values()];
   }
-  /**
-   * @description: 从库中获取指定key的nodes
-   * @param {LanguageType} lang 指定language
-   * @param {string} category 指定category
-   * @return: 指定key 的nodes
-   */
-  private librariesToNodes(
-    lang?: LanguageType,
-    category?: string
-  ): OnlineNode[] {
-    console.log(lang, category);
-    return [];
-  }
 
   getTreeItem() {
     let result;
@@ -139,31 +127,36 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
       };
     }
     if (this._model instanceof OnlineModel) {
-      const { id, name, description } = this._model;
+      const { name, description, state, isTemplate } = this._model;
+      console.log("state为: ", state);
       result = {
-        label: this._model.isTemplate ? `${id} ${description}` : name,
+        label: name,
+        tooltip: isTemplate ? `${description}` : "",
         collapsibleState: description
           ? TreeItemCollapsibleState.None
           : TreeItemCollapsibleState.Collapsed,
-        commands: this._model.isTemplate ? this.insert : undefined,
-        iconPath: this.parseIconPathFromProblemState(this._model.state),
-        contextValue: this._model.isTemplate ? "template" : ""
+        commands: {
+          title: "Insert Code",
+          command: "template.insertTemplate"
+        },
+        iconPath: this.parseIconPathFromProblemState(state),
+        contextValue: isTemplate ? "template" : ""
       };
     }
     return result;
   }
 
-  private parseIconPathFromProblemState(state: string): string {
+  private parseIconPathFromProblemState(state: number): string {
     switch (state) {
-      case "1":
+      case 1:
         return Container.content.asAbsolutePath(
           path.join("resources", "check.png")
         );
-      case "2":
+      case 2:
         return Container.content.asAbsolutePath(
           path.join("resources", "warning.png")
         );
-      case "3":
+      case 3:
         return Container.content.asAbsolutePath(
           path.join("resources", "blank.png")
         );
@@ -172,7 +165,7 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
     }
   }
 
-  private insert() {}
+
 
   /**
    * @description: 收藏

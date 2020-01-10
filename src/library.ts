@@ -4,13 +4,14 @@ import { requestAndSave } from "./utils/request";
 import { REMOTE_URL } from "./views/node/onlineNode";
 import { View } from "./views/viewBase";
 import { LanguageType } from "./model/model";
+import { OnlineView } from "./views/onlineView";
 
 export interface IOnlineLibrary {
   id: string;
   name: string;
   category: string;
   description: string;
-  state: string;
+  state: number;
   language: string;
   extname: string;
 }
@@ -44,16 +45,22 @@ class Library<T extends ILibraryChange> implements Disposable {
     return this._onDidMineChange.event;
   }
 
+  private _onDidExistFileChange = new EventEmitter<void>();
+  get onDidExistFileChange(): Event<void> {
+    return this._onDidExistFileChange.event;
+  }
+
   constructor(view: View, dst: string) {
     this._view = view;
-
-    this.initialize(dst);
 
     this._disposable = Disposable.from(
       this.onDidOnlineChange(this.onLibraryChanged, this),
       this.onDidLocalChange(this.onLibraryChanged, this),
-      this.onDidMineChange(this.onLibraryChanged, this)
+      this.onDidMineChange(this.onLibraryChanged, this),
+      this.onDidExistFileChange(this.onExistFileChanged, this)
     );
+
+    setImmediate(() => this.initialize(dst));
   }
 
   private _dst: string;
@@ -75,17 +82,27 @@ class Library<T extends ILibraryChange> implements Disposable {
     return this.view;
   }
 
+  private _canModify: boolean = false;
+  protected get canModify(): boolean {
+    return this._canModify;
+  }
+  protected set canModify(value: boolean) {
+    if (this._canModify === value) return;
+    this._canModify = value;
+  }
+
   initialize(dst: string) {
     this._dst = dst;
     file.mkdir(file.dirname(dst));
     this._remote = REMOTE_URL;
+    this.setLibrary();
+    this.fireExistFileChanged();
   }
 
-  initLibrary() {
+  setLibrary() {
     const data = file.data(this._dst);
     this._libraries = data ? JSON.parse(data) : [];
   }
-
   dispose() {
     this._disposable && this._disposable.dispose();
   }
@@ -135,14 +152,52 @@ class Library<T extends ILibraryChange> implements Disposable {
     return Object.keys(obj);
   }
 
-
   private onLibraryChanged(libraries: ILibraryChange) {
     file.write(this._dst, JSON.stringify(libraries));
+    this._canModify = false;
   }
 
   async fetchLibrary() {
     await requestAndSave(this._remote, this._dst);
-    this.initLibrary();
+  }
+  fireExistFileChanged() {
+    this._onDidExistFileChange.fire();
+  }
+  onExistFileChanged() {
+    if (!(this._view instanceof OnlineView)) return;
+    const files = this.getExistFile();
+
+    const libraries = this.getNewLibries(files);
+    this._canModify && this.triggerChange(libraries);
+    this.setLibrary()
+  }
+
+  /**
+   * @description: 检测库文件是否与库里文件数据一致
+   * @param {string[]} files 库文件列表
+   * @return: 新库config数据
+   */
+  getNewLibries(files: string[]): IOnlineLibrary[] {
+    return this._libraries.map((l: IOnlineLibrary) => {
+      if (files.length === 0 && l.state === 1) {
+        this._canModify = true;
+        return { ...l, ...{ state: 2 } };
+      }
+      if (files.includes(`${l.name}${l.extname}`)) {
+        this._canModify = true;
+        return { ...l, ...{ state: 1 } };
+      }
+      return l;
+    });
+  }
+  /**
+   * @description: 检查库文件是否存在
+   */
+  private getExistFile() {
+    const files = file.listFile(file.dirname(this._dst));
+    return files && files.length
+      ? files.filter(name => name !== "config.json")
+      : [];
   }
 }
 

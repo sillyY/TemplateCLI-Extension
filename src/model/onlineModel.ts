@@ -17,7 +17,7 @@ export class OnlineModel extends Model {
     return this._description;
   }
 
-  private _state: string;
+  private _state: number;
   get state() {
     return this._state;
   }

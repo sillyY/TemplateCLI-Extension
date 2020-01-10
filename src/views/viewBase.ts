@@ -47,8 +47,8 @@ export abstract class ViewBase<TRoot extends ViewNode<View>>
   }
 
   get visible(): boolean {
-		return this._tree !== undefined ? this._tree.visible : false;
-	}
+    return this._tree !== undefined ? this._tree.visible : false;
+  }
 
   protected _disposable: Disposable | undefined;
   protected _root: TRoot | undefined;
@@ -112,21 +112,25 @@ export abstract class ViewBase<TRoot extends ViewNode<View>>
     return node.getTreeItem();
   }
 
+  getQualifiedCommand(command: string) {
+    return `${this.id}.${command}`;
+  }
+
   async refresh(reset: boolean = false) {
     if (this._root !== undefined && this._root.refresh !== undefined) {
-			await this._root.refresh(reset);
-		}
+      await this._root.refresh(reset);
+    }
 
-		this.triggerNodeChange();
+    this.triggerNodeChange();
   }
 
   async refreshNode(node: ViewNode, reset: boolean = false) {
     if (node.refresh !== undefined) {
-			const cancel = await node.refresh(reset);
-			if (cancel === true) return;
-		}
+      const cancel = await node.refresh(reset);
+      if (cancel === true) return;
+    }
 
-		this.triggerNodeChange(node);
+    this.triggerNodeChange(node);
   }
 
   async refreshConfig(
@@ -138,7 +142,10 @@ export abstract class ViewBase<TRoot extends ViewNode<View>>
   }
 
   triggerNodeChange(node?: ViewNode) {
-		// Since the root node won't actually refresh, force everything
-		this._onDidChangeTreeData.fire(node !== undefined && node !== this._root ? node : undefined);
-	}
+    // Since the root node won't actually refresh, force everything
+    this._library.fireExistFileChanged()
+    this._onDidChangeTreeData.fire(
+      node !== undefined && node !== this._root ? node : undefined
+    );
+  }
 }

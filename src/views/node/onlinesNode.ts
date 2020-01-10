@@ -13,18 +13,27 @@ export class OnlinesNode extends SubscribeableViewNode<OnlineView> {
   constructor(view: OnlineView) {
     super(view);
   }
-
+  resetChildren() {
+    if (this._children === void 0) return;
+    for (const child of this._children) {
+      if (child instanceof OnlineNode) {
+        child.dispose();
+      }
+    }
+    this._children = undefined;
+  }
   async getChildren(): Promise<ViewNode[]> {
     if (this._children === void 0) {
       this._children = [
         ...[new OnlineNode(this.view, this, new LangModel(LanguageType.ALL))],
         ...[new OnlineNode(this.view, this, new LangModel(LanguageType.CSS))],
-        ...[new OnlineNode(this.view, this, new LangModel(LanguageType.JS))],
+        ...[new OnlineNode(this.view, this, new LangModel(LanguageType.JS))]
       ];
     } else {
       const libraries = this.view.library.libraries;
-      if (!libraries || libraries.length)
+      if (!libraries || !libraries.length) {
         await this.view.library.fetchLibrary();
+      }
       this._children = this.view.library.libraries.map(
         m => new OnlineNode(this.view, this, new OnlineModel(m))
       );
@@ -43,7 +52,13 @@ export class OnlinesNode extends SubscribeableViewNode<OnlineView> {
   }
 
   async refresh(reset: boolean = true) {
-    console.log(reset);
+    if (this._children === void 0) return;
+    if (reset) {
+      this.resetChildren();
+      await this.unsubscribe();
+      void this.ensureSubscription();
+      return;
+    }
   }
 
   /**
