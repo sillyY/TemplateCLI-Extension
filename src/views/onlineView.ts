@@ -38,7 +38,7 @@ export class OnlineView extends ViewBase<OnlinesNode> {
   }
 
   protected initLibrary() {
-    this._library = new Library(this, configuration.onlineLibraryFile());
+    this._library = new Library(this, configuration.onlineLibraryConfigFile());
   }
 
   private async update() {

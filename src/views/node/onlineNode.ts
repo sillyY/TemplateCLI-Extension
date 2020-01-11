@@ -8,6 +8,8 @@ import { LangModel } from "../../model/LangModel";
 import { LanguageType } from "../../model/model";
 import { IOnlineLibrary } from "../../library";
 import { CategoryModel } from "../../model/categoryModel";
+import { configuration } from "../../services/configuration";
+import { requestAndSave } from "../../utils";
 
 export const REMOTE_URL =
   "https://cdn.jsdelivr.net/gh/sillyY/template-library/config.json";
@@ -128,16 +130,16 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
     }
     if (this._model instanceof OnlineModel) {
       const { name, description, state, isTemplate } = this._model;
-      console.log("state为: ", state);
       result = {
         label: name,
         tooltip: isTemplate ? `${description}` : "",
         collapsibleState: description
           ? TreeItemCollapsibleState.None
           : TreeItemCollapsibleState.Collapsed,
-        commands: {
-          title: "Insert Code",
-          command: "template.insertTemplate"
+        command: {
+          title: "Insert Template",
+          command: "template.views.insert",
+          arguments: [() => this.triggerInsert()]
         },
         iconPath: this.parseIconPathFromProblemState(state),
         contextValue: isTemplate ? "template" : ""
@@ -145,7 +147,6 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
     }
     return result;
   }
-
   private parseIconPathFromProblemState(state: number): string {
     switch (state) {
       case 1:
@@ -165,8 +166,58 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
     }
   }
 
+  private async triggerInsert() {
+    /**
+     * 1. 判断本地模板库是否存在，存在取本地，不存在取线上
+     *    1.1 取本地数据
+     *    1.2 取线上数据
+     * 2. 调用insertTemplateToEditor插入数据
+     */
+    const { name, extname } = this._model;
 
+    const localPath = this.getLocalFilePath(name, extname),
+      onlinePath = this.getOnlieFilePath(
+        this._prefix,
+        this._model as OnlineModel
+      );
 
+    const data = this.isLocalFileExist(localPath)
+      ? this.getLocalFile(localPath)
+      : await this.onlineDataExecutor(onlinePath, localPath);
+
+    data && this.insertTemplateToEditor(data);
+  }
+  private getLocalFilePath(name, extname) {
+    return configuration.onlineLibraryFile(`${name}${extname}`);
+  }
+  /**
+   * @description: 获取线上模板库模板文件路径
+   * @param {OnlineModel} model online 模板数据
+   * @return: 线上
+   */
+  private getOnlieFilePath(prefix: string, model: OnlineModel) {
+    let { language, category, name, extname } = model;
+    language = language ? `/${language}` : "";
+    category = category ? `/${category}` : "";
+    name = name ? `/${name}` : "";
+
+    return `${prefix}/libs${language}${category}${name}${extname}`;
+  }
+  /**
+   * @description: 
+   * @param {type} 
+   * @return: 
+   */
+  private async onlineDataExecutor(src: string, fullpath) {
+    await requestAndSave(src, fullpath);
+    this.triggerFileChanged()
+    
+    return this.getLocalFile(fullpath);
+  }
+  private triggerFileChanged() {
+    this.view.library.fireExistFileChanged()
+    this.view.refresh(true)
+  }
   /**
    * @description: 收藏
    * @param {type}

@@ -51,10 +51,17 @@ class Configuration {
    * @description: 获取线上模板库配置文件路径
    * @return: 线上模板库配置文件路径
    */
-  public onlineLibraryFile(): string {
+  public onlineLibraryConfigFile(): string {
     return path.join(this.onlineFolder(), "config.json");
   }
 
+  /**
+   * @description: 获取线上模板模板文件路径
+   * @return: 线上模板库模板文件路径
+   */
+  public onlineLibraryFile(surfix: string): string {
+    return path.join(this.onlineFolder(), surfix);
+  }
 }
 
 export const configuration = new Configuration();

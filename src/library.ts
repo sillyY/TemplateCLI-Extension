@@ -1,6 +1,5 @@
 import { EventEmitter, Event, Disposable } from "vscode";
-import { file } from "./utils";
-import { requestAndSave } from "./utils/request";
+import { file, requestAndSave } from "./utils";
 import { REMOTE_URL } from "./views/node/onlineNode";
 import { View } from "./views/viewBase";
 import { LanguageType } from "./model/model";
@@ -169,7 +168,7 @@ class Library<T extends ILibraryChange> implements Disposable {
 
     const libraries = this.getNewLibries(files);
     this._canModify && this.triggerChange(libraries);
-    this.setLibrary()
+    this.setLibrary();
   }
 
   /**

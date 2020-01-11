@@ -43,7 +43,7 @@
         }
       },
       {
-        "command": "template.insertTemplate",
+        "command": "template.views.insert",
         "title": "Insert Template",
         "category": "Template"
       },
