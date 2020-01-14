@@ -1,13 +1,13 @@
 import * as path from "path";
+import { Disposable, TreeItemCollapsibleState } from "vscode";
 import { OnlineView } from "../onlineView";
 import { SubscribeableViewNode, ViewNode } from "./viewNode";
-import { Disposable, TreeItemCollapsibleState } from "vscode";
 import { Container } from "../../container";
-import { OnlineModel } from "../../model/onlineModel";
-import { LangModel } from "../../model/LangModel";
-import { LanguageType } from "../../model/model";
+import { OnlineModel } from "../../models/onlineModel";
+import { LangModel } from "../../models/LangModel";
+import { LanguageType } from "../../models/model";
 import { IOnlineLibrary } from "../../library";
-import { CategoryModel } from "../../model/categoryModel";
+import { CategoryModel } from "../../models/categoryModel";
 import { configuration } from "../../services/configuration";
 import { requestAndSave } from "../../utils";
 
@@ -213,10 +213,6 @@ export class OnlineNode extends SubscribeableViewNode<OnlineView> {
     this.triggerFileChanged()
     
     return this.getLocalFile(fullpath);
-  }
-  private triggerFileChanged() {
-    this.view.library.fireExistFileChanged()
-    this.view.refresh(true)
   }
   /**
    * @description: 收藏

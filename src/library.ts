@@ -2,8 +2,9 @@ import { EventEmitter, Event, Disposable } from "vscode";
 import { file, requestAndSave } from "./utils";
 import { REMOTE_URL } from "./views/node/onlineNode";
 import { View } from "./views/viewBase";
-import { LanguageType } from "./model/model";
+import { LanguageType } from "./models/model";
 import { OnlineView } from "./views/onlineView";
+import { LocalView } from "./views/localView";
 
 export interface IOnlineLibrary {
   id: string;
@@ -163,10 +164,16 @@ class Library<T extends ILibraryChange> implements Disposable {
     this._onDidExistFileChange.fire();
   }
   onExistFileChanged() {
-    if (!(this._view instanceof OnlineView)) return;
     const files = this.getExistFile();
 
-    const libraries = this.getNewLibries(files);
+    const libraries =
+      this._view instanceof OnlineView
+        ? this.diffOnlineLibraries(files)
+        : this._view instanceof LocalView
+        ? this.diffLocalLibraries(files)
+        : null;
+
+    if (!libraries) return;
     this._canModify && this.triggerChange(libraries);
     this.setLibrary();
   }
@@ -176,7 +183,8 @@ class Library<T extends ILibraryChange> implements Disposable {
    * @param {string[]} files 库文件列表
    * @return: 新库config数据
    */
-  getNewLibries(files: string[]): IOnlineLibrary[] {
+  diffOnlineLibraries(files: string[]): IOnlineLibrary[] {
+    // FIXME: 该处可优化
     return this._libraries.map((l: IOnlineLibrary) => {
       if (files.length === 0 && l.state === 1) {
         this._canModify = true;
@@ -188,6 +196,37 @@ class Library<T extends ILibraryChange> implements Disposable {
       }
       return l;
     });
+  }
+  /**
+   * @description: 检测库文件是否与库里文件数据一致
+   * @param {string[]} files 库文件列表
+   * @return: 新库config数据
+   */
+  diffLocalLibraries(files: string[]): ILocalLibrary[] {
+    // FIXME: 该处可优化
+    let result: ILocalLibrary[] = [];
+    if (files.length) {
+      this._libraries.length &&
+        this._libraries.forEach((l: ILocalLibrary) => {
+          const idx = files.indexOf(`${l.name}${l.extname}`);
+          if (idx > -1) {
+            files.splice(idx, 1);
+          }
+        });
+      if (files.length) {
+        let arr = files.map((fullname: string) => {
+          return {
+            name: fullname.split(".")[0],
+            extname: "." + fullname.split(".")[1]
+          };
+        });
+        this._canModify = true;
+        result = [...this._libraries, ...arr];
+      }
+    } else {
+      this._canModify = true;
+    }
+    return result;
   }
   /**
    * @description: 检查库文件是否存在

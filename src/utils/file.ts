@@ -47,6 +47,10 @@ class File {
       ? fs.readdirSync(fullpath).filter(pathname => pathname !== ".DS_Store")
       : null;
   }
+
+  public copyFile(src: string, dest: string) {
+    fs.copyFileSync(src, dest);
+  }
 }
 
 export const file = new File();

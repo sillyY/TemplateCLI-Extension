@@ -43,18 +43,27 @@
         }
       },
       {
-        "command": "template.views.insert",
-        "title": "Insert Template",
-        "category": "Template"
+        "command": "template.views.local.refresh",
+        "title": "Refresh",
+        "category": "Template",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
       },
       {
-        "command": "template.loadTemplate",
+        "command": "template.views.local.load",
         "title": "Load Template",
         "category": "Template",
         "icon": {
           "light": "resources/light/load.svg",
           "dark": "resources/dark/load.svg"
         }
+      },
+      {
+        "command": "template.views.insert",
+        "title": "Insert Template",
+        "category": "Template"
       },
       {
         "command": "template.editTemplate",
@@ -125,6 +134,16 @@
           "command": "template.views.online.refresh",
           "when": "view =~ /^template\\.views\\.online:/",
           "group": "navigation@3"
+        },
+        {
+          "command": "template.views.local.refresh",
+          "when": "view =~ /^template\\.views\\.local:/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "template.views.local.load",
+          "when": "view =~ /^template\\.views\\.local:/",
+          "group": "navigation@2"
         },
         {
           "command": "template.loadTemplate",

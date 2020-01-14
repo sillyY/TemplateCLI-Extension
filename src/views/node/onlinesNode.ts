@@ -3,9 +3,9 @@ import { Disposable, TreeItem, TreeItemCollapsibleState } from "vscode";
 import { OnlineNode } from "./onlineNode";
 import { Container } from "../../container";
 import { OnlineView } from "../onlineView";
-import { OnlineModel } from "../../model/onlineModel";
-import { LangModel } from "../../model/LangModel";
-import { LanguageType } from "../../model/model";
+import { OnlineModel } from "../../models/onlineModel";
+import { LangModel } from "../../models/LangModel";
+import { LanguageType } from "../../models/model";
 
 export class OnlinesNode extends SubscribeableViewNode<OnlineView> {
   private _children: OnlineNode[] | undefined;

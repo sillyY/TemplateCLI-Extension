@@ -17,8 +17,9 @@ import Library, {
   ILocalLibrary,
   IMineLibrary
 } from "../library";
+import { LocalView } from "./localView";
 
-export type View = OnlineView;
+export type View = OnlineView | LocalView;
 
 export interface TreeViewNodeStateChangeEvent<T>
   extends TreeViewExpansionEvent<T> {
@@ -26,7 +27,7 @@ export interface TreeViewNodeStateChangeEvent<T>
 }
 
 export abstract class ViewBase<TRoot extends ViewNode<View>>
-  implements TreeDataProvider<ViewNode<View>>, Disposable {
+  implements TreeDataProvider<ViewNode>, Disposable {
   protected _onDidChangeTreeData = new EventEmitter<ViewNode>();
   get onDidChangeTreeData(): Event<ViewNode> {
     return this._onDidChangeTreeData.event;
@@ -123,6 +124,7 @@ export abstract class ViewBase<TRoot extends ViewNode<View>>
 
     this.triggerNodeChange();
   }
+  
 
   async refreshNode(node: ViewNode, reset: boolean = false) {
     if (node.refresh !== undefined) {

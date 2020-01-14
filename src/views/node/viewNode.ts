@@ -20,7 +20,7 @@ export abstract class ViewNode<TView extends View = View> {
 
   initConfiguration(): void {}
 
-  abstract getChildren(): ViewNode<TView>[] | Promise<ViewNode<TView>[]>;
+  abstract getChildren(): ViewNode[] | Promise<ViewNode[]>;
 
   getParent(): ViewNode | undefined {
     return this.parent;
@@ -60,6 +60,11 @@ export abstract class ViewNode<TView extends View = View> {
    */
   protected insertTemplateToEditor(data: string) {
     Container.editor.insert(data);
+  }
+
+  protected triggerFileChanged() {
+    this.view.library.fireExistFileChanged()
+    this.view.refresh(true)
   }
 }
 

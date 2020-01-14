@@ -1,17 +1,13 @@
 import { ExtensionContext } from "vscode";
 import { OnlineView } from "./views/onlineView";
-import { TemplateService } from "./template/templateService";
+import { TemplateService } from "./services/templateService";
 import { EditorService } from "./services/editorService";
 import { ViewCommands } from "./views/viewCommands";
+import { LocalView } from "./views/localView";
 export class Container {
   private static _content: ExtensionContext;
   static get content() {
     return this._content;
-  }
-
-  private static _onlineView: OnlineView;
-  static get onlineView() {
-    return this._onlineView;
   }
 
   private static _template: TemplateService;
@@ -30,7 +26,17 @@ export class Container {
 			this._viewCommands = new ViewCommands();
 		}
 		return this._viewCommands;
-	}
+  }
+  
+  private static _onlineView: OnlineView;
+  static get onlineView() {
+    return this._onlineView;
+  }
+
+  private static _localView: LocalView;
+  static get localView() {
+    return this._localView
+  }
 
   static initialize(content: ExtensionContext) {
     this._content = content;
@@ -39,5 +45,7 @@ export class Container {
     content.subscriptions.push((this._editor = new EditorService()));
 
     content.subscriptions.push((this._onlineView = new OnlineView()));
+
+    content.subscriptions.push((this._localView = new LocalView()))
   }
 }

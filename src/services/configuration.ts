@@ -14,6 +14,9 @@ class Configuration {
   private getOnlineFolder(): string {
     return this.getWorkspaceConfiguration().get<string>("onlineFolder", "");
   }
+  private getLocalFolder(): string {
+    return this.getWorkspaceConfiguration().get<string>("localFolder", "");
+  }
   /**
    * @description: 获取当前系统根目录
    * @return: 根目录
@@ -61,6 +64,30 @@ class Configuration {
    */
   public onlineLibraryFile(surfix: string): string {
     return path.join(this.onlineFolder(), surfix);
+  }
+
+  /**
+   * @description: 获取本地模板库目录路径
+   * @return: 本地模板库目录路径
+   */
+  public localFolder(): string {
+    return path.join(this.appFolder(), this.getLocalFolder() || "local");
+  }
+
+  /**
+   * @description: 获取本地模板库配置文件路径
+   * @return: 本地模板库配置文件路径
+   */
+  public localLibraryConfigFile(): string {
+    return path.join(this.localFolder(), "config.json");
+  }
+
+  /**
+   * @description: 获取本地模板模板文件路径
+   * @return: 本地模板库模板文件路径
+   */
+  public localLibraryFile(surfix: string): string {
+    return path.join(this.localFolder(), surfix);
   }
 }
 
