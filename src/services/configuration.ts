@@ -17,6 +17,9 @@ class Configuration {
   private getLocalFolder(): string {
     return this.getWorkspaceConfiguration().get<string>("localFolder", "");
   }
+  private getMineFolder(): string {
+    return this.getWorkspaceConfiguration().get<string>("mineFolder", "");
+  }
   /**
    * @description: 获取当前系统根目录
    * @return: 根目录
@@ -89,6 +92,23 @@ class Configuration {
   public localLibraryFile(surfix: string): string {
     return path.join(this.localFolder(), surfix);
   }
+
+  /**
+   * @description: 获取本地模板库目录路径
+   * @return: 本地模板库目录路径
+   */
+  public mineFolder(): string {
+    return path.join(this.appFolder(), this.getMineFolder() || "mine");
+  }
+
+  /**
+   * @description: 获取本地模板库配置文件路径
+   * @return: 本地模板库配置文件路径
+   */
+  public mineLibraryConfigFile(): string {
+    return path.join(this.mineFolder(), "config.json");
+  }
+
 }
 
 export const configuration = new Configuration();

@@ -4,6 +4,7 @@ import { TemplateService } from "./services/templateService";
 import { EditorService } from "./services/editorService";
 import { ViewCommands } from "./views/viewCommands";
 import { LocalView } from "./views/localView";
+import { MineView } from "./views/mineView";
 export class Container {
   private static _content: ExtensionContext;
   static get content() {
@@ -38,6 +39,11 @@ export class Container {
     return this._localView
   }
 
+  private static _mineView: MineView;
+  static get mineView() {
+    return this._mineView
+  }
+
   static initialize(content: ExtensionContext) {
     this._content = content;
 
@@ -47,5 +53,7 @@ export class Container {
     content.subscriptions.push((this._onlineView = new OnlineView()));
 
     content.subscriptions.push((this._localView = new LocalView()))
+    
+    content.subscriptions.push((this._mineView = new MineView()))
   }
 }

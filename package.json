@@ -105,7 +105,7 @@
     "views": {
       "template": [
         {
-          "id": "template.views.min:explorer",
+          "id": "template.views.mine:explorer",
           "name": "Mine"
         },
         {
@@ -143,11 +143,6 @@
         {
           "command": "template.views.local.load",
           "when": "view =~ /^template\\.views\\.local:/",
-          "group": "navigation@2"
-        },
-        {
-          "command": "template.loadTemplate",
-          "when": "view == localTemplateExplorer",
           "group": "navigation@2"
         }
       ],

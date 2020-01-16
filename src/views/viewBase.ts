@@ -18,8 +18,9 @@ import Library, {
   IMineLibrary
 } from "../library";
 import { LocalView } from "./localView";
+import { MineView } from "./mineView";
 
-export type View = OnlineView | LocalView;
+export type View = OnlineView | LocalView | MineView;
 
 export interface TreeViewNodeStateChangeEvent<T>
   extends TreeViewExpansionEvent<T> {

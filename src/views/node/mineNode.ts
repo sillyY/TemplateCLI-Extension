@@ -1,27 +1,25 @@
 import { ViewNode, SubscribeableViewNode } from "./viewNode";
-import { LocalView } from "../localView";
-import { ILocalLibrary } from "../../library";
-import { LocalModel } from "../../models/localModel";
-import { configuration } from "../../services/configuration";
+import { MineView } from "../MineView";
+import { IMineLibrary } from "../../library";
+import { MineModel } from "../../models/MineModel";
 import { Container } from "../../container";
 import { Disposable } from "vscode";
-import { file } from "../../utils";
 
-export class LocalNode extends SubscribeableViewNode<LocalView> {
+export class MineNode extends SubscribeableViewNode<MineView> {
   private _children: ViewNode[] | undefined;
 
-  private _model: LocalModel | undefined;
+  private _model: MineModel | undefined;
   get model() {
     return this._model;
   }
-  constructor(view: LocalView, model?: LocalModel) {
+  constructor(view: MineView, model?: MineModel) {
     super(view);
     this._model = model;
   }
   resetChildren() {
     if (this._children === void 0) return;
     for (const child of this._children) {
-      if (child instanceof LocalNode) {
+      if (child instanceof MineNode) {
         child.dispose();
       }
     }
@@ -34,8 +32,7 @@ export class LocalNode extends SubscribeableViewNode<LocalView> {
       const libraries = this.view.library.libraries;
       if (libraries && libraries.length) {
         children = libraries.map(
-          (item: ILocalLibrary) =>
-            new LocalNode(this.view, new LocalModel(item))
+          (item: IMineLibrary) => new MineNode(this.view, new MineModel(item))
         );
       }
       this._children = children;
@@ -60,18 +57,16 @@ export class LocalNode extends SubscribeableViewNode<LocalView> {
 
   private async triggerInsert() {
     /**
-     * 1. 判断本地模板库是否存在，存在取本地，不存在抛出异常
+     * 1. 通过本地path 获取数据
      *
      * 2. 调用insertTemplateToEditor插入 数据
      */
 
     if (!this._model) return;
 
-    const { name, extname } = this._model;
+    const { path } = this._model;
 
-    const localPath = this.getLocalFilePath(name, extname);
-
-    const data = this.getLocalFile(localPath);
+    const data = this.getLocalFile(path);
 
     if (data) {
       this.insertTemplateToEditor(data);
@@ -89,30 +84,6 @@ export class LocalNode extends SubscribeableViewNode<LocalView> {
       void this.ensureSubscription();
       return;
     }
-  }
-
-  async load(reset: boolean) {
-    if (reset) {
-      /**
-       * 1. 弹出选择弹框，并获取选中文件
-       * 2. 将文件插入本地模板存储文件夹中
-       * 3. 触发triggerFileChanged促使配置文件更改，
-       */
-      const res = await Container.editor.load();
-      if (!res || !res.length) return;
-
-      for (const item of res) {
-        const src = item.path,
-          fullname = file.fullname(src);
-        file.copyFile(src, configuration.localLibraryFile(fullname));
-      }
-
-      this.triggerFileChanged();
-    }
-  }
-
-  private getLocalFilePath(name, extname) {
-    return configuration.localLibraryFile(`${name}${extname}`);
   }
 
   protected subscribe() {
