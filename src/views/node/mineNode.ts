@@ -79,6 +79,7 @@ export class MineNode extends SubscribeableViewNode<MineView> {
     if (this._children === void 0) return;
 
     if (reset) {
+      this.view.library.setLibrary()
       this.resetChildren();
       await this.unsubscribe();
       void this.ensureSubscription();

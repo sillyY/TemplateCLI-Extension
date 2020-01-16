@@ -61,6 +61,15 @@
         }
       },
       {
+        "command": "template.views.mine.refresh",
+        "title": "Refresh",
+        "category": "Template",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
         "command": "template.views.insert",
         "title": "Insert Template",
         "category": "Template"
@@ -144,6 +153,11 @@
           "command": "template.views.local.load",
           "when": "view =~ /^template\\.views\\.local:/",
           "group": "navigation@2"
+        },
+        {
+          "command": "template.views.mine.refresh",
+          "when": "view =~ /^template\\.views\\.mine:/",
+          "group": "navigation@3"
         }
       ],
       "view/item/context": [

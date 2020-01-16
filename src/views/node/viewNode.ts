@@ -62,9 +62,9 @@ export abstract class ViewNode<TView extends View = View> {
     Container.editor.insert(data);
   }
 
-  protected triggerFileChanged() {
+  protected triggerFileChanged(refresh: boolean = true) {
     this.view.library.fireExistFileChanged()
-    this.view.refresh(true)
+    refresh && this.view.refresh(true)
   }
 }
 

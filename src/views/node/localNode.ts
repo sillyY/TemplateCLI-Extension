@@ -84,6 +84,7 @@ export class LocalNode extends SubscribeableViewNode<LocalView> {
     if (this._children === void 0) return;
 
     if (reset) {
+      this.triggerFileChanged(false)
       this.resetChildren();
       await this.unsubscribe();
       void this.ensureSubscription();
