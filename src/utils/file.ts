@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
+import * as fse from "fs-extra";
 
 class File {
   public fullname(fullpath: string): string {
@@ -21,6 +22,10 @@ class File {
 
   public rm(fullpath: string) {
     return fs.unlinkSync(fullpath);
+  }
+
+  public remove(fullpath: string) {
+    return fse.removeSync(fullpath);
   }
 
   public data(fullpath: string): string | null {

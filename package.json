@@ -16,90 +16,38 @@
   "contributes": {
     "commands": [
       {
-        "command": "template.views.online.update",
-        "title": "Update",
+        "command": "template.view.settings",
+        "title": "设置",
         "category": "Template",
         "icon": {
-          "light": "resources/light/update.svg",
-          "dark": "resources/dark/update.svg"
+          "light": "resources/light/settings.svg",
+          "dark": "resources/dark/settings.svg"
         }
       },
       {
-        "command": "template.views.online.download",
-        "title": "Download",
-        "category": "Template",
-        "icon": {
-          "light": "resources/light/download.svg",
-          "dark": "resources/dark/download.svg"
-        }
-      },
-      {
-        "command": "template.views.online.refresh",
-        "title": "Refresh",
-        "category": "Template",
-        "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
-        }
-      },
-      {
-        "command": "template.views.local.refresh",
-        "title": "Refresh",
-        "category": "Template",
-        "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
-        }
-      },
-      {
-        "command": "template.views.local.load",
-        "title": "Load Template",
-        "category": "Template",
-        "icon": {
-          "light": "resources/light/load.svg",
-          "dark": "resources/dark/load.svg"
-        }
-      },
-      {
-        "command": "template.views.mine.refresh",
-        "title": "Refresh",
-        "category": "Template",
-        "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
-        }
-      },
-      {
-        "command": "template.views.insert",
-        "title": "Insert Template",
+        "command": "template.view.showSettings",
+        "title": "打开设置页",
         "category": "Template"
       },
       {
-        "command": "template.editTemplate",
-        "title": "Edit Template",
-        "category": "Template",
-        "icon": {
-          "light": "resources/light/edit.svg",
-          "dark": "resources/dark/edit.svg"
-        }
+        "command": "template.view.insert",
+        "title": "插入",
+        "category": "Template"
       },
       {
-        "command": "template.addFavorite",
-        "title": "Add Favorite",
-        "category": "Template",
-        "icon": {
-          "light": "resources/light/favorite.svg",
-          "dark": "resources/dark/favorite.svg"
-        }
+        "command": "template.view.edit",
+        "title": "编辑",
+        "category": "Template"
       },
       {
-        "command": "template.removeFavorite",
-        "title": "Remove Favorite",
-        "category": "Template",
-        "icon": {
-          "light": "resources/light/favorite.svg",
-          "dark": "resources/dark/unfavorite.svg"
-        }
+        "command": "template.view.rename",
+        "title": "重命名",
+        "category": "Template"
+      },
+      {
+        "command": "template.view.delete",
+        "title": "删除",
+        "category": "Template"
       }
     ],
     "viewsContainers": {
@@ -114,67 +62,39 @@
     "views": {
       "template": [
         {
-          "id": "template.views.mine:explorer",
-          "name": "Mine"
-        },
-        {
-          "id": "template.views.local:explorer",
-          "name": "Local"
-        },
-        {
-          "id": "template.views.online:explorer",
-          "name": "Online"
+          "id": "template.view:explorer",
+          "name": "模板库"
         }
       ]
     },
     "menus": {
       "view/title": [
         {
-          "command": "template.views.online.download",
-          "when": "view =~ /^template\\.views\\.online:/",
+          "command": "template.view.settings",
+          "when": "view =~ /^template\\.view/",
           "group": "navigation@1"
-        },
-        {
-          "command": "template.views.online.update",
-          "when": "view =~ /^template\\.views\\.online:/",
-          "group": "navigation@2"
-        },
-        {
-          "command": "template.views.online.refresh",
-          "when": "view =~ /^template\\.views\\.online:/",
-          "group": "navigation@3"
-        },
-        {
-          "command": "template.views.local.refresh",
-          "when": "view =~ /^template\\.views\\.local:/",
-          "group": "navigation@3"
-        },
-        {
-          "command": "template.views.local.load",
-          "when": "view =~ /^template\\.views\\.local:/",
-          "group": "navigation@2"
-        },
-        {
-          "command": "template.views.mine.refresh",
-          "when": "view =~ /^template\\.views\\.mine:/",
-          "group": "navigation@3"
         }
       ],
       "view/item/context": [
         {
-          "command": "template.editTemplate",
-          "when": "view == templateExplorer && viewItem == template || view == localTemplateExplorer && viewItem == template",
-          "group": "inline"
+          "command": "template.view.insert",
+          "when": "view == template.view:explorer && viewItem == template:File",
+          "group": "navigation@1"
         },
         {
-          "command": "template.addFavorite",
-          "when": "view == templateExplorer && viewItem == template || view == localTemplateExplorer && viewItem == template",
-          "group": "inline"
+          "command": "template.view.edit",
+          "when": "view == template.view:explorer && viewItem == template:File",
+          "group": "1_modification"
         },
         {
-          "command": "template.removeFavorite",
-          "when": "view == mineTemplateExplorer",
-          "group": "inline"
+          "command": "template.view.rename",
+          "when": "view == template.view:explorer && viewItem == template:Folder ||view == template.view:explorer && viewItem == template:File",
+          "group": "1_modification"
+        },
+        {
+          "command": "template.view.delete",
+          "when": "view == template.view:explorer && viewItem == template:Folder || view == template.view:explorer && viewItem == template:File",
+          "group": "9_cutcopypaste"
         }
       ]
     },
@@ -208,6 +128,7 @@
     "vscode": "^1.1.28"
   },
   "dependencies": {
+    "fs-extra": "^9.0.0",
     "mkdirp": "^0.5.1",
     "request": "^2.88.0"
   }

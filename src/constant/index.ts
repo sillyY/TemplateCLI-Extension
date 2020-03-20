@@ -1,1 +1,0 @@
-export const REMOTE_URL = 'https://cdn.jsdelivr.net/gh/sillyY/template-library'

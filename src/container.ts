@@ -1,59 +1,38 @@
 import { ExtensionContext } from "vscode";
-import { OnlineView } from "./views/onlineView";
-import { TemplateService } from "./services/templateService";
-import { EditorService } from "./services/editorService";
-import { ViewCommands } from "./views/viewCommands";
-import { LocalView } from "./views/localView";
-import { MineView } from "./views/mineView";
+import { Configuration } from "./services";
+import { TemplateView } from "./views/view";
+import { SettingsWebview } from "./webviews/settingsWebview";
+
 export class Container {
-  private static _content: ExtensionContext;
-  static get content() {
-    return this._content;
+  private static _context: ExtensionContext;
+  static get context() {
+    return this._context;
   }
 
-  private static _template: TemplateService;
-  static get template() {
-    return this._template;
+  private static _view: TemplateView;
+  static get view() {
+    return this._view;
   }
 
-  private static _editor: EditorService;
-  static get editor() {
-    return this._editor;
+  private static _configuration: Configuration;
+  static get configuration() {
+    return this._configuration;
   }
 
-  private static _viewCommands: ViewCommands | undefined;
-	static get viewCommands() {
-		if (this._viewCommands === undefined) {
-			this._viewCommands = new ViewCommands();
-		}
-		return this._viewCommands;
-  }
-  
-  private static _onlineView: OnlineView;
-  static get onlineView() {
-    return this._onlineView;
+  private static _settingsview: SettingsWebview;
+  static get settingsview() {
+    return this._settingsview;
   }
 
-  private static _localView: LocalView;
-  static get localView() {
-    return this._localView
-  }
+  static initialize(context: ExtensionContext) {
+    this._context = context;
 
-  private static _mineView: MineView;
-  static get mineView() {
-    return this._mineView
-  }
+    context.subscriptions.push((this._configuration = new Configuration()));
 
-  static initialize(content: ExtensionContext) {
-    this._content = content;
+    context.subscriptions.push(
+      (this._view = new TemplateView("template.view"))
+    );
 
-    content.subscriptions.push((this._template = new TemplateService()));
-    content.subscriptions.push((this._editor = new EditorService()));
-
-    content.subscriptions.push((this._onlineView = new OnlineView()));
-
-    content.subscriptions.push((this._localView = new LocalView()))
-    
-    content.subscriptions.push((this._mineView = new MineView()))
+    context.subscriptions.push((this._settingsview = new SettingsWebview()));
   }
 }
