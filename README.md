@@ -4,6 +4,12 @@ Help handle template files quickly!
 screenshot:
 ![](./show.gif)
 
+## Deprecated
+This extension will no longer be updated.  
+If you only need the current features of this extension, you can continue to use it
+
+> This extension has been migrated to 「Facility」. In the future, only Facility will be maintained and expanded
+
 ##  Usage
 - 1.Setting
 ```
